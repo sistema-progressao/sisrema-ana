@@ -151,6 +151,8 @@
   .daypanel.active{display:block;}
   .catpanel{display:none;}
   .catpanel.active{display:block;}
+  .identcatpanel{display:none;}
+  .identcatpanel.active{display:block;}
   .macro-pill{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent-dark);background:var(--pale);border:1px solid var(--line);border-radius:20px;padding:2px 8px;margin:2px 4px 2px 0;}
   .freeze-pill{display:inline-block;font-size:9.5px;font-weight:700;color:#3E6B8A;background:#E7F0F6;border:1px solid #CFE1EC;border-radius:20px;padding:2px 8px;letter-spacing:.03em;}
   .hydro-bar{background:var(--line);border-radius:20px;height:10px;overflow:hidden;margin:10px 0 6px;}
@@ -209,6 +211,111 @@
   .histitem .date{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--accent);display:block;margin-bottom:3px;}
   .histitem .txt{font-family:var(--serif);font-style:italic;font-size:13.5px;color:#56514A;}
   .histempty{font-size:13px;color:var(--muted);font-style:italic;padding:6px 0;}
+  /* ============================================================
+     SISTEMA DE ALIMENTAÇÃO — scoped, prefixed am- to avoid clashing
+     with the rest of the app's styles/variables
+     ============================================================ */
+  .am-scope{
+    --am-cream:#F7F1E8; --am-paper:#FFFDF9; --am-ink:#2E2A26; --am-ink-soft:#6B6259;
+    --am-wine:#8C3346; --am-wine-deep:#6E2436; --am-sage:#6E7F5C; --am-sage-soft:#E6EADD;
+    --am-gold:#B98A4A; --am-line:#E7DFD1; --am-danger:#B5473F; --am-radius:16px;
+    font-family:'Work Sans',var(--sans);
+  }
+  .am-scope .am-h3{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--am-ink);margin:0;}
+  .am-scope .am-display{font-family:var(--serif);font-weight:600;font-size:22px;color:var(--am-ink);}
+  .am-tabs{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:4px 0 14px;border-bottom:1px solid var(--am-line);margin-bottom:18px;-webkit-overflow-scrolling:touch;}
+  .am-tabs::-webkit-scrollbar{display:none;}
+  .am-tab-btn{flex:0 0 auto;background:transparent;border:1px solid transparent;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--am-ink-soft);white-space:nowrap;}
+  .am-tab-btn.active{background:var(--am-wine);color:#fff;}
+  .am-tab-btn:not(.active):hover{border-color:var(--am-line);color:var(--am-ink);}
+  .am-view{display:none;}
+  .am-view.active{display:block;}
+  .am-card{background:var(--am-paper);border:1px solid var(--am-line);border-radius:var(--am-radius);padding:20px;margin-bottom:16px;}
+  .am-grid{display:grid;gap:16px;}
+  .am-grid-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .am-grid-3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .am-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--am-sage-soft);color:var(--am-sage);}
+  .am-tag.gold{background:#F3E7D2;color:var(--am-gold);}
+  .am-tag.wine{background:#F3DEE2;color:var(--am-wine);}
+  .am-day-ribbon{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;-webkit-overflow-scrolling:touch;}
+  .am-day-pill{flex:0 0 auto;min-width:60px;text-align:center;padding:9px 6px;border-radius:14px;border:1px solid var(--am-line);background:var(--am-paper);}
+  .am-day-pill .am-d{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--am-ink-soft);}
+  .am-day-pill .am-n{font-family:var(--serif);font-size:18px;margin-top:2px;color:var(--am-ink);}
+  .am-day-pill.active{background:var(--am-wine);border-color:var(--am-wine);}
+  .am-day-pill.active .am-d,.am-day-pill.active .am-n{color:#fff;}
+  .am-hero-plate{display:flex;gap:22px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
+  .am-ring-wrap{position:relative;width:110px;height:110px;flex:0 0 auto;}
+  .am-ring-wrap svg{transform:rotate(-90deg);}
+  .am-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .am-ring-label .am-big{font-family:var(--serif);font-size:21px;color:var(--am-ink);}
+  .am-ring-label .am-small{font-size:9.5px;color:var(--am-ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+  .am-hero-copy p{margin:6px 0 0;color:var(--am-ink-soft);font-size:13px;max-width:420px;}
+  .am-slot-row{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--am-line);}
+  .am-slot-row:last-child{border-bottom:none;}
+  .am-slot-check{width:25px;height:25px;border-radius:50%;border:2px solid var(--am-line);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;cursor:pointer;}
+  .am-slot-check.done{background:var(--am-sage);border-color:var(--am-sage);color:#fff;}
+  .am-slot-body{flex:1;min-width:0;}
+  .am-slot-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--am-wine);font-weight:700;}
+  .am-slot-name{font-family:var(--serif);font-size:16px;margin-top:1px;color:var(--am-ink);}
+  .am-slot-meta{font-size:11.5px;color:var(--am-ink-soft);margin-top:2px;}
+  .am-slot-swap{border:1px solid var(--am-line);background:transparent;border-radius:999px;padding:6px 12px;font-size:11.5px;color:var(--am-ink-soft);cursor:pointer;}
+  .am-slot-swap:hover{border-color:var(--am-wine);color:var(--am-wine);}
+  .am-ceia-toggle{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:13px;color:var(--am-ink-soft);}
+  .am-switch{width:38px;height:22px;border-radius:999px;background:var(--am-line);position:relative;flex:0 0 auto;cursor:pointer;}
+  .am-switch.on{background:var(--am-sage);}
+  .am-switch .am-dot{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:.15s;}
+  .am-switch.on .am-dot{left:19px;}
+  .am-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .am-chip{border:1px solid var(--am-line);background:var(--am-paper);border-radius:999px;padding:6px 13px;font-size:12px;color:var(--am-ink-soft);cursor:pointer;}
+  .am-chip.active{background:var(--am-ink);border-color:var(--am-ink);color:#fff;}
+  input.am-search{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--am-line);background:var(--am-paper);font-family:inherit;font-size:13.5px;margin-bottom:14px;}
+  .am-recipe-card{cursor:pointer;transition:.15s;}
+  .am-recipe-card:hover{border-color:var(--am-wine);transform:translateY(-1px);}
+  .am-recipe-card h3{font-size:16px;font-family:var(--serif);color:var(--am-ink);margin:0;}
+  .am-cats{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 10px;}
+  .am-macro-row{display:flex;gap:14px;font-size:11.5px;color:var(--am-ink-soft);margin-top:10px;}
+  .am-macro-row b{color:var(--am-ink);}
+  .am-fav-star{color:var(--am-gold);font-size:13px;}
+  .am-modal-bg{display:none;position:fixed;inset:0;background:rgba(46,42,38,.45);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .am-modal-bg.open{display:flex;}
+  .am-modal{background:var(--am-paper);border-radius:20px;max-width:460px;width:100%;padding:24px;max-height:86vh;overflow-y:auto;}
+  .am-modal-close{float:right;border:none;background:var(--am-sage-soft);width:28px;height:28px;border-radius:50%;font-size:14px;color:var(--am-sage);cursor:pointer;}
+  .am-modal h2{font-size:20px;font-family:var(--serif);margin-bottom:4px;color:var(--am-ink);}
+  .am-modal .am-ingredientes{margin:14px 0;padding-left:18px;font-size:13px;line-height:1.7;color:var(--am-ink);}
+  .am-modal .am-note{font-size:11px;color:var(--am-ink-soft);border-top:1px solid var(--am-line);padding-top:12px;margin-top:14px;}
+  .am-prep-day{padding:16px 0;border-bottom:1px solid var(--am-line);}
+  .am-prep-day:last-child{border-bottom:none;}
+  .am-prep-day h3{font-size:17px;font-family:var(--serif);color:var(--am-ink);display:flex;align-items:center;gap:8px;margin:0;}
+  .am-prep-list{list-style:none;padding:0;margin:12px 0 0;}
+  .am-prep-list li{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;border-bottom:1px dashed var(--am-line);color:var(--am-ink);}
+  .am-prep-list li:last-child{border-bottom:none;}
+  .am-prep-time{margin-left:auto;font-size:11px;color:var(--am-ink-soft);}
+  .am-checkbox{width:18px;height:18px;border-radius:5px;border:2px solid var(--am-line);flex:0 0 auto;cursor:pointer;}
+  .am-checkbox.on{background:var(--am-sage);border-color:var(--am-sage);}
+  .am-freezer-item{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--am-line);}
+  .am-freezer-item:last-child{border-bottom:none;}
+  .am-freezer-name{flex:1;font-size:14px;font-weight:600;color:var(--am-ink);}
+  .am-freezer-name .am-low{color:var(--am-danger);font-size:10.5px;font-weight:700;display:block;margin-top:2px;}
+  .am-cubes{display:flex;gap:3px;}
+  .am-cube{width:11px;height:11px;border-radius:3px;background:var(--am-line);}
+  .am-cube.filled{background:var(--am-sage);}
+  .am-cube.warn{background:var(--am-danger);}
+  .am-stepper{display:flex;align-items:center;gap:8px;}
+  .am-stepper button{width:26px;height:26px;border-radius:50%;border:1px solid var(--am-line);background:var(--am-paper);font-size:14px;cursor:pointer;}
+  .am-stepper span{width:20px;text-align:center;font-weight:700;color:var(--am-ink);}
+  .am-compras-cat h3{font-size:13px;font-family:var(--serif);color:var(--am-wine);text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;}
+  .am-compras-list{list-style:none;padding:0;margin:0;}
+  .am-compras-list li{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--am-line);color:var(--am-ink);}
+  .am-compras-list li span.am-qtd{color:var(--am-ink-soft);}
+  .am-combo-card .am-slot-label{margin-bottom:8px;display:block;}
+  .am-combo-items{list-style:none;padding:0;margin:0;}
+  .am-combo-items li{padding:5px 0;font-size:13.5px;color:var(--am-ink);}
+  .am-empty{text-align:center;padding:36px 20px;color:var(--am-ink-soft);font-size:13px;}
+  .am-btn-primary{background:var(--am-wine);color:#fff;border:none;border-radius:999px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;}
+  .am-btn-primary:hover{background:var(--am-wine-deep);}
+  .am-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .am-section-head p{color:var(--am-ink-soft);font-size:12.5px;max-width:480px;margin:4px 0 0;}
+  @media(max-width:600px){.am-hero-plate{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
 <body>
@@ -224,6 +331,7 @@
       <button data-tab="energia">Energia</button>
       <button data-tab="cozinha">Cozinha</button>
       <button data-tab="treino">Treino</button>
+      <button data-tab="identidade">Identidade</button>
       <button data-tab="espiritualidade">Espiritualidade</button>
       <button data-tab="resumo">Resumo</button>
     </nav>
@@ -327,9 +435,113 @@
       </div>
     </div>
 
-    <h2 class="h2">Biblioteca de Refeições</h2>
-    <div class="subnav" id="refeicoesSubnav"></div>
-    <div id="refeicoesPanels"></div>
+    <h2 class="h2">Sistema de Alimentação</h2>
+    <div class="am-scope">
+      <nav class="am-tabs" id="amTabs">
+        <button class="am-tab-btn active" data-amview="dashboard">Hoje</button>
+        <button class="am-tab-btn" data-amview="biblioteca">Biblioteca</button>
+        <button class="am-tab-btn" data-amview="plano">Plano da Semana</button>
+        <button class="am-tab-btn" data-amview="prep">Preparo</button>
+        <button class="am-tab-btn" data-amview="freezer">Freezer</button>
+        <button class="am-tab-btn" data-amview="compras">Compras</button>
+        <button class="am-tab-btn" data-amview="combos">Combinações</button>
+      </nav>
+
+      <section class="am-view active" id="am-view-dashboard">
+        <div class="am-day-ribbon" id="amDayRibbon"></div>
+        <div class="am-card">
+          <div class="am-hero-plate">
+            <div class="am-ring-wrap">
+              <svg width="118" height="118">
+                <circle cx="59" cy="59" r="50" stroke="#E7DFD1" stroke-width="10" fill="none"/>
+                <circle id="amRingProgress" cx="59" cy="59" r="50" stroke="#8C3346" stroke-width="10" fill="none"
+                  stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"/>
+              </svg>
+              <div class="am-ring-label">
+                <span class="am-big" id="amRingCount">0/6</span>
+                <span class="am-small">refeições</span>
+              </div>
+            </div>
+            <div class="am-hero-copy">
+              <span class="am-display" id="amDashDayName">Segunda-feira</span>
+              <p>Marque cada refeição feita. O prato de hoje já está pronto — é só seguir.</p>
+            </div>
+          </div>
+          <div id="amSlotsToday"></div>
+          <div class="am-ceia-toggle">
+            <div class="am-switch" id="amCeiaSwitch"><div class="am-dot"></div></div>
+            <span>Incluir ceia hoje</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="am-view" id="am-view-biblioteca">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Biblioteca de refeições</h3>
+            <p>Todas as receitas cadastradas, com tempo, macros e para qual horário servem. Toque para abrir a receita completa.</p>
+          </div>
+        </div>
+        <input class="am-search" id="amSearchInput" placeholder="Buscar por nome (ex: hambúrguer, tapioca, wrap)…">
+        <div class="am-filters" id="amFilterChips"></div>
+        <div class="am-grid am-grid-2" id="amRecipeGrid"></div>
+      </section>
+
+      <section class="am-view" id="am-view-plano">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Cardápio da semana</h3>
+            <p>Gerado automaticamente a partir das suas receitas favoritas, variando ao longo da semana e priorizando proteína alta.</p>
+          </div>
+          <button class="am-btn-primary" id="amGenerateBtn">Gerar cardápio da semana</button>
+        </div>
+        <div id="amWeekPlanGrid" class="am-grid" style="grid-template-columns:1fr;gap:10px;"></div>
+      </section>
+
+      <section class="am-view" id="am-view-prep">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Preparo da semana</h3>
+            <p>O que cozinhar em cada dia de preparo, com base no cardápio gerado. Gere o cardápio primeiro para atualizar esta lista.</p>
+          </div>
+        </div>
+        <div class="am-card" id="amPrepContent"></div>
+      </section>
+
+      <section class="am-view" id="am-view-freezer">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Estoque do freezer</h3>
+            <p>Cada quadrado representa uma porção congelada. Ajuste conforme congela e consome. Abaixo de 2 porções, o item entra em alerta.</p>
+          </div>
+        </div>
+        <div class="am-card" id="amFreezerList"></div>
+      </section>
+
+      <section class="am-view" id="am-view-compras">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Lista de compras</h3>
+            <p>Gerada a partir do cardápio da semana atual, agrupada por categoria. Quantidades são aproximadas — ajuste conforme sua despensa.</p>
+          </div>
+        </div>
+        <div class="am-grid am-grid-3" id="amComprasGrid"></div>
+      </section>
+
+      <section class="am-view" id="am-view-combos">
+        <div class="am-section-head">
+          <div>
+            <h3 class="am-h3">Combinações prontas</h3>
+            <p>Sugestões rápidas para quando você não quer nem pensar — só montar o prato.</p>
+          </div>
+        </div>
+        <div class="am-grid am-grid-3" id="amCombosGrid"></div>
+      </section>
+
+      <div class="am-modal-bg" id="amModalBg">
+        <div class="am-modal" id="amModalContent"></div>
+      </div>
+    </div>
 
     <h2 class="h2">Cardápio semanal</h2>
     <div class="card" style="overflow-x:auto;">
@@ -355,6 +567,17 @@
     <div class="callout"><span class="eyebrow">Seu treino</span><p>6× por semana · Foco em glúteo &amp; definição · Registro de evolução por 4 semanas. Regra geral de progressão: quando completar todas as reps com folga, suba cerca de +2kg.</p></div>
     <div class="subnav" id="treinoSubnav"></div>
     <div id="treinoDayPanels"></div>
+  </section>
+
+  <section class="panel" id="panel-identidade">
+    <div class="callout"><span class="eyebrow">Como usar</span><p>Este é o coração do sistema — o lugar que lembra quem você está se tornando, todos os dias. As outras abas cuidam das tarefas; esta cuida da identidade por trás delas.</p></div>
+
+    <h2 class="h2">Quem é a Ana que estou me tornando?</h2>
+    <div class="card" id="visaoCard"></div>
+
+    <h2 class="h2">Biblioteca de Identidade</h2>
+    <div class="subnav" id="identSubnav"></div>
+    <div id="identPanels"></div>
   </section>
 
   <section class="panel" id="panel-espiritualidade">
@@ -884,161 +1107,440 @@ function renderEnergia(){
 }
 
 /* ============================================================
-   BIBLIOTECA DE REFEIÇÕES
+   SISTEMA DE ALIMENTAÇÃO — biblioteca de receitas, plano semanal
+   automático, preparo, freezer, compras e combinações prontas.
+   Prefixo "am" em toda função/variável pra não colidir com o
+   resto do app. Usa loadKey/saveKey (mesma persistência do app).
    ============================================================ */
-const REFEICAO_CATS = [
- {id:"cafe", nome:"Café da manhã", emoji:"☀️"},
- {id:"pretreino", nome:"Pré-treino", emoji:"⚡"},
- {id:"postreino", nome:"Pós-treino", emoji:"💪"},
- {id:"almoco", nome:"Almoço", emoji:"🍽️"},
- {id:"jantar", nome:"Jantar", emoji:"🌙"},
- {id:"lanches", nome:"Lanches", emoji:"🥪"},
- {id:"rapidas", nome:"Rápidas (10 min)", emoji:"⏱️"},
- {id:"congelaveis", nome:"Congeláveis", emoji:"❄️"},
- {id:"levar", nome:"Para levar", emoji:"🥡"},
- {id:"emergencia", nome:"Emergência", emoji:"🆘"}
+const AM_RECIPES = [
+  // ---- CAFÉ / LANCHE RÁPIDOS ----
+  {id:'pao-ovo', nome:'Pão com Ovo (recheio cremoso)', slots:['cafe','lanche','pos'], tempo:10, prot:18, carb:28, kcal:320, congela:false, dura:'2 dias na geladeira', favorita:true, ingredientes:['pão','ovo cozido','creme de ricota'], contexto:['diaCorrido']},
+  {id:'ovo-tapioca', nome:'Ovo com Tapioca', slots:['cafe','pre'], tempo:8, prot:12, carb:22, kcal:230, congela:false, dura:'consumo imediato', favorita:true, ingredientes:['goma de tapioca','ovo'], contexto:['diaCorrido']},
+  {id:'toast-ovos', nome:'Toast de Ovos Cremosos', slots:['cafe','lanche'], tempo:10, prot:16, carb:24, kcal:290, congela:false, dura:'consumo imediato', favorita:false, ingredientes:['pão de forma','ovo','queijo'], contexto:['diaCorrido']},
+  {id:'toast-frango', nome:'Toast de Frango', slots:['cafe','lanche','pos'], tempo:12, prot:22, carb:24, kcal:310, congela:true, dura:'congela até 60 dias', favorita:true, ingredientes:['pão de forma','frango desfiado','queijo'], contexto:['diaCorrido']},
+  {id:'toast-banana', nome:'Toast de Banana', slots:['cafe','pre'], tempo:8, prot:9, carb:34, kcal:280, congela:false, dura:'consumo imediato', favorita:false, ingredientes:['pão de forma','banana','queijo'], contexto:['pre']},
+  {id:'pao-queijo-cremoso', nome:'Pão de Queijo Cremoso', slots:['cafe','lanche'], tempo:35, prot:9, carb:26, kcal:260, congela:true, dura:'congela cru até 90 dias', favorita:false, ingredientes:['polvilho','queijo','leite'], contexto:[]},
+  {id:'bolinha-queijo', nome:'Bolinhas de Pão de Queijo Saudável', slots:['cafe','lanche'], tempo:30, prot:8, carb:20, kcal:210, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['polvilho','queijo','ovo'], contexto:[]},
+  {id:'panqueca-banana', nome:'Panqueca de Banana', slots:['cafe','pre'], tempo:12, prot:14, carb:36, kcal:330, congela:false, dura:'consumo imediato', favorita:true, ingredientes:['banana','ovo','aveia','muçarela'], contexto:['pre']},
+  {id:'banana-queijo', nome:'Banana com Queijo', slots:['cafe','pre'], tempo:8, prot:10, carb:26, kcal:230, congela:false, dura:'consumo imediato', favorita:false, ingredientes:['banana','queijo'], contexto:['pre']},
+  {id:'pao-cenoura-aveia', nome:'Pão de Cenoura com Aveia', slots:['cafe','lanche'], tempo:50, prot:7, carb:32, kcal:230, congela:true, dura:'congela fatiado até 60 dias', favorita:false, ingredientes:['cenoura','aveia','farinha','ovo'], contexto:['diaCorrido']},
+  {id:'milhovo', nome:'Milhovo', slots:['cafe','lanche'], tempo:10, prot:13, carb:16, kcal:220, congela:false, dura:'consumo imediato', favorita:false, ingredientes:['ovo','milho','queijo'], contexto:['diaCorrido']},
+  {id:'muffin-frango', nome:'Muffin com Muçarela e Frango', slots:['cafe','lanche','pos'], tempo:35, prot:17, carb:14, kcal:210, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['ovo','frango desfiado','muçarela'], contexto:['diaCorrido']},
+  {id:'cestinha-ovos', nome:'Cestinha de Ovos', slots:['cafe','lanche'], tempo:25, prot:13, carb:10, kcal:180, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['massa folhada ou rap10','ovo','queijo'], contexto:[]},
+  {id:'pao-gluten', nome:'Pão sem Glúten (fatiado)', slots:['cafe','lanche'], tempo:60, prot:6, carb:24, kcal:150, congela:true, dura:'congela fatiado até 90 dias', favorita:false, ingredientes:['farinha sem glúten','fermento'], contexto:[]},
+  {id:'pao-batata-gluten', nome:'Pão de Batata sem Glúten', slots:['cafe','lanche'], tempo:60, prot:7, carb:26, kcal:180, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['batata','farinha sem glúten','ovo'], contexto:[]},
+  {id:'paozinho-pizza', nome:'Pãozinho de Pizza', slots:['cafe','lanche'], tempo:40, prot:9, carb:24, kcal:230, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['massa','queijo','presunto/tomate'], contexto:[]},
+  // ---- WRAPS / SANDUÍCHES ----
+  {id:'wrap-atum', nome:'Wrap de Atum', slots:['cafe','lanche','pos'], tempo:15, prot:24, carb:12, kcal:280, congela:false, dura:'2 dias na geladeira', favorita:true, ingredientes:['ovo','atum','cenoura ralada','cebola roxa'], contexto:['diaCorrido']},
+  {id:'pao-ovo-salada', nome:'Sanduíche de Ovo com Salada', slots:['cafe','lanche','pos'], tempo:12, prot:18, carb:26, kcal:300, congela:false, dura:'2 dias na geladeira', favorita:true, ingredientes:['pão integral','ovo cozido','cenoura','salsa'], contexto:['diaCorrido']},
+  {id:'rap10-carne-temperada', nome:'Rap 10 com Carne Temperada', slots:['lanche','pos'], tempo:15, prot:22, carb:20, kcal:330, congela:false, dura:'consumo imediato ou 1 dia', favorita:true, ingredientes:['rap 10','carne moída','alface','tomate'], contexto:['diaCorrido']},
+  {id:'hamburguer-rap10', nome:'Hambúrguer com Rap 10', slots:['lanche','pos'], tempo:15, prot:24, carb:18, kcal:320, congela:false, dura:'consumo imediato', favorita:true, ingredientes:['rap 10','hambúrguer de carne','queijo'], contexto:['diaCorrido']},
+  {id:'lanche-rap10', nome:'Lanche com Rap 10 (cestinha)', slots:['lanche'], tempo:30, prot:16, carb:20, kcal:260, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['rap 10','frango desfiado','queijo'], contexto:[]},
+  {id:'tortinha-rap10', nome:'Tortinha de Rap 10', slots:['lanche'], tempo:25, prot:12, carb:20, kcal:230, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['rap 10','ovo','frango desfiado','queijo'], contexto:[]},
+  {id:'tortinha-rap10-frango', nome:'Tortinha de Rap 10 com Frango', slots:['lanche'], tempo:25, prot:15, carb:20, kcal:250, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['rap 10','frango desfiado','tomate','queijo'], contexto:[]},
+  {id:'pao-frances-carne', nome:'Pão Francês com Carne Moída', slots:['lanche','jantar'], tempo:15, prot:20, carb:34, kcal:360, congela:false, dura:'consumo imediato', favorita:true, ingredientes:['pão francês','carne moída','molho de tomate'], contexto:['diaCorrido']},
+  // ---- LANCHES / TORTAS SALGADAS ----
+  {id:'pizza-batata', nome:'Pizza de Batata', slots:['lanche'], tempo:35, prot:10, carb:22, kcal:230, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['batata','molho de tomate','queijo'], contexto:[]},
+  {id:'mini-pizza-batata', nome:'Mini Pizzas de Batata', slots:['lanche'], tempo:35, prot:10, carb:20, kcal:210, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['batata','frango ou queijo','milho/brócolis'], contexto:[]},
+  {id:'cestinha-carne', nome:'Cestinha de Carne Moída', slots:['lanche','jantar'], tempo:30, prot:20, carb:8, kcal:250, congela:true, dura:'congela até 90 dias', favorita:true, ingredientes:['carne moída','queijo'], contexto:['diaCorrido']},
+  {id:'cestinha-carne-abobora', nome:'Cestinha de Carne Moída com Purê de Abóbora', slots:['jantar'], tempo:35, prot:20, carb:14, kcal:270, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['carne moída','abóbora','queijo'], contexto:[]},
+  {id:'esfiha-frango', nome:'Esfiha de Frango com Queijo', slots:['lanche'], tempo:35, prot:18, carb:18, kcal:250, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['frango','queijo','massa'], contexto:[]},
+  {id:'nuggets-frango', nome:'Nuggets de Frango', slots:['lanche','jantar'], tempo:30, prot:19, carb:10, kcal:220, congela:true, dura:'congela cru até 90 dias', favorita:false, ingredientes:['frango','ovo','farinha panko'], contexto:[]},
+  {id:'batata-recheada', nome:'Batata Recheada', slots:['lanche','jantar'], tempo:40, prot:18, carb:26, kcal:290, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['batata','carne moída','queijo'], contexto:[]},
+  {id:'frango-cremoso', nome:'Frango Cremoso com Batata', slots:['jantar'], tempo:35, prot:22, carb:24, kcal:260, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['batata','frango desfiado','creme'], contexto:[]},
+  {id:'torta-frango-semana', nome:'Torta de Frango pra Semana', slots:['jantar','lanche'], tempo:45, prot:20, carb:16, kcal:250, congela:true, dura:'congela em fatias até 90 dias', favorita:false, ingredientes:['frango desfiado','ovo','milho','queijo'], contexto:['diaCorrido']},
+  {id:'pizza-proteica', nome:'Pizza Protéica', slots:['jantar','lanche'], tempo:20, prot:24, carb:10, kcal:260, congela:false, dura:'consumo imediato', favorita:false, ingredientes:['massa proteica','queijo','tomate'], contexto:[]},
+  {id:'tortinha-frango-legumes', nome:'Tortinha de Frango com Legumes', slots:['jantar','lanche'], tempo:40, prot:18, carb:12, kcal:210, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['frango desfiado','legumes','ovo'], contexto:[]},
+  // ---- ALMOÇO / JANTAR — PROTEÍNAS PRINCIPAIS ----
+  {id:'hamburguer-carne', nome:'Hambúrguer de Carne Caseiro', slots:['almoco','jantar'], tempo:20, prot:26, carb:2, kcal:280, congela:true, dura:'congela cru até 90 dias', favorita:true, ingredientes:['carne moída','temperos'], contexto:['diaCorrido']},
+  {id:'hamburguer-frango', nome:'Hambúrguer de Frango', slots:['almoco','jantar'], tempo:20, prot:24, carb:3, kcal:220, congela:true, dura:'congela cru até 90 dias', favorita:true, ingredientes:['frango moído','temperos'], contexto:['diaCorrido']},
+  {id:'hamburguer-recheado', nome:'Hambúrguer de Carne Recheado com Queijo', slots:['almoco','jantar'], tempo:22, prot:28, carb:2, kcal:320, congela:true, dura:'congela cru até 90 dias', favorita:true, ingredientes:['carne moída','queijo'], contexto:[]},
+  {id:'almondegas', nome:'Almôndegas de Carne', slots:['almoco','jantar'], tempo:25, prot:22, carb:3, kcal:250, congela:true, dura:'congela até 90 dias', favorita:true, ingredientes:['carne moída','cebola','ovo'], contexto:['diaCorrido']},
+  {id:'kafta', nome:'Kafta', slots:['almoco','jantar'], tempo:20, prot:24, carb:2, kcal:260, congela:true, dura:'congela cru até 90 dias', favorita:false, ingredientes:['carne moída','salsinha','temperos árabes'], contexto:[]},
+  {id:'espetinho-carne', nome:'Espetinho de Carne', slots:['almoco','jantar'], tempo:20, prot:26, carb:4, kcal:240, congela:true, dura:'congela cru até 90 dias', favorita:false, ingredientes:['carne em cubos','pimentão','cebola'], contexto:[]},
+  {id:'espetinho-frango', nome:'Espetinho de Frango', slots:['almoco','jantar'], tempo:20, prot:24, carb:4, kcal:210, congela:true, dura:'congela cru até 90 dias', favorita:false, ingredientes:['frango em cubos','pimentão','cebola'], contexto:[]},
+  {id:'file-carne-milanesa', nome:'Filé de Carne à Milanesa', slots:['almoco','jantar'], tempo:20, prot:26, carb:12, kcal:290, congela:true, dura:'congela empanado até 90 dias', favorita:false, ingredientes:['filé de carne','farinha panko','ovo'], contexto:[]},
+  {id:'file-frango-milanesa', nome:'Filé de Frango à Milanesa', slots:['almoco','jantar'], tempo:20, prot:24, carb:12, kcal:260, congela:true, dura:'congela empanado até 90 dias', favorita:false, ingredientes:['filé de frango','farinha panko','ovo'], contexto:[]},
+  {id:'tabletes-carne', nome:'Tabletes de Carne', slots:['almoco','jantar'], tempo:20, prot:22, carb:2, kcal:230, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['carne moída','temperos'], contexto:['diaCorrido']},
+  {id:'tabletes-frango', nome:'Tabletes de Frango', slots:['almoco','jantar'], tempo:20, prot:20, carb:3, kcal:200, congela:true, dura:'congela até 90 dias', favorita:false, ingredientes:['frango moído','temperos'], contexto:['diaCorrido']},
+  {id:'tabletes-bisnaguinha', nome:'Tabletes de Carne na Forminha de Bisnaguinha', slots:['lanche','jantar'], tempo:25, prot:18, carb:14, kcal:250, congela:true, dura:'congela até 60 dias', favorita:false, ingredientes:['carne moída','bisnaguinha','queijo'], contexto:[]},
+  {id:'carne-moida-forminha', nome:'Carne Moída na Forminha', slots:['almoco','jantar'], tempo:25, prot:20, carb:2, kcal:210, congela:true, dura:'congela até 90 dias', favorita:true, ingredientes:['carne moída','molho de tomate'], contexto:['diaCorrido']},
+  {id:'rap10-carne', nome:'Rap 10 com Carne', slots:['almoco','lanche'], tempo:15, prot:20, carb:20, kcal:300, congela:false, dura:'consumo imediato', favorita:true, ingredientes:['rap 10','carne moída','tomate','queijo'], contexto:['diaCorrido']}
 ];
-function defaultBiblioteca(){
-  return {
-    cafe:[
-      {nome:"Ovos mexidos + aveia com fruta", proteina:28, carbo:35, kcal:380, tempo:10, congela:false},
-      {nome:"Iogurte proteico + aveia + fruta", proteina:25, carbo:30, kcal:320, tempo:5, congela:false}
-    ],
-    pretreino:[
-      {nome:"Banana + whey", proteina:25, carbo:30, kcal:250, tempo:3, congela:false},
-      {nome:"Pão integral + ovo", proteina:15, carbo:25, kcal:250, tempo:8, congela:false}
-    ],
-    postreino:[
-      {nome:"Whey + fruta", proteina:25, carbo:25, kcal:220, tempo:3, congela:false},
-      {nome:"Frango + batata-doce + salada", proteina:35, carbo:35, kcal:400, tempo:20, congela:true}
-    ],
-    almoco:[
-      {nome:"Patinho moído + arroz + feijão + salada", proteina:35, carbo:45, kcal:480, tempo:25, congela:true},
-      {nome:"Frango grelhado + batata + legumes", proteina:35, carbo:35, kcal:420, tempo:20, congela:true}
-    ],
-    jantar:[
-      {nome:"Peixe assado + legumes + arroz", proteina:30, carbo:30, kcal:380, tempo:20, congela:true},
-      {nome:"Omelete de claras + vegetais", proteina:25, carbo:8, kcal:230, tempo:10, congela:false}
-    ],
-    lanches:[
-      {nome:"Iogurte + granola", proteina:15, carbo:20, kcal:220, tempo:2, congela:false},
-      {nome:"Atum + torradas integrais", proteina:20, carbo:20, kcal:250, tempo:5, congela:false}
-    ],
-    rapidas:[
-      {nome:"Ovos mexidos + pão integral", proteina:20, carbo:20, kcal:280, tempo:8, congela:false}
-    ],
-    congelaveis:[
-      {nome:"Marmita de frango + arroz + brócolis", proteina:35, carbo:40, kcal:420, tempo:0, congela:true},
-      {nome:"Marmita de patinho + batata-doce + vagem", proteina:35, carbo:35, kcal:400, tempo:0, congela:true}
-    ],
-    levar:[
-      {nome:"Marmita pronta do freezer", proteina:35, carbo:35, kcal:420, tempo:2, congela:true}
-    ],
-    emergencia:[
-      {nome:"Whey + fruta", proteina:25, carbo:25, kcal:220, tempo:3, congela:false},
-      {nome:"Atum de lata + torrada", proteina:20, carbo:15, kcal:220, tempo:3, congela:false}
-    ]
-  };
-}
-let biblioteca = defaultBiblioteca();
-let refeicaoActiveCat = "cafe";
+const AM_ACOMPANHAMENTO_PADRAO = 'arroz + legumes + salada';
+const AM_SLOTS = [
+  {key:'cafe', label:'Café da Manhã'},
+  {key:'lanche', label:'Lanche'},
+  {key:'almoco', label:'Almoço'},
+  {key:'pre', label:'Pré-Treino'},
+  {key:'pos', label:'Pós-Treino'},
+  {key:'jantar', label:'Jantar'}
+];
+const AM_SLOT_OPCIONAL = {key:'ceia', label:'Ceia'};
+const AM_DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+const AM_COMBOS = {
+  cafe: [
+    {titulo:'Prático', itens:['Pão com Ovo','Café','Fruta da estação']},
+    {titulo:'Proteico', itens:['Toast de Frango','Mamão']},
+    {titulo:'Doce', itens:['Panqueca de Banana','Iogurte natural']}
+  ],
+  almoco: [
+    {titulo:'Clássico', itens:['Hambúrguer de Carne Caseiro','Arroz','Legumes no vapor','Salada']},
+    {titulo:'Árabe', itens:['Kafta','Arroz','Salada de tomate e cebola']},
+    {titulo:'Leve', itens:['Filé de Frango à Milanesa','Arroz','Legumes','Salada']}
+  ],
+  pos: [
+    {titulo:'Rápido', itens:['Whey Protein','Banana','30 min depois: almoço/jantar']},
+    {titulo:'Sanduíche', itens:['Wrap de Atum','Água de coco']},
+    {titulo:'Prático', itens:['Sanduíche de Ovo com Salada']}
+  ]
+};
+const AM_CATEGORIAS = {
+  'Proteínas': ['carne moída','carne em cubos','filé de carne','frango desfiado','frango moído','filé de frango','frango em cubos','atum','ovo','ovo cozido'],
+  'Laticínios': ['queijo','muçarela','creme de ricota','creme','leite','iogurte natural'],
+  'Hortifruti': ['tomate','cebola roxa','cebola','alface','cenoura','cenoura ralada','pimentão','salsinha','banana','mamão','abóbora','água de coco'],
+  'Carboidratos': ['pão','pão de forma','pão integral','pão francês','rap 10','goma de tapioca','batata','farinha','farinha panko','farinha sem glúten','polvilho','bisnaguinha','massa','massa folhada ou rap10','massa proteica','arroz'],
+  'Temperos/Outros': ['temperos','temperos árabes','molho de tomate','aveia','milho','fermento','páprica','azeite']
+};
 
-function renderRefeicoesSubnav(){
-  const nav = document.getElementById("refeicoesSubnav");
-  nav.innerHTML = REFEICAO_CATS.map(c=>
-    `<button class="subtab${c.id===refeicaoActiveCat?" active":""}" data-cat="${c.id}">${c.emoji} ${c.nome}</button>`
-  ).join("");
-  nav.querySelectorAll(".subtab").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      refeicaoActiveCat = btn.dataset.cat;
-      nav.querySelectorAll(".subtab").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      document.querySelectorAll(".catpanel").forEach(p=>p.classList.remove("active"));
-      document.getElementById("catpanel-"+refeicaoActiveCat).classList.add("active");
+function amDefaultState(){ return {freezer:{}, weekPlan:null, checkins:{}, ceiaAtiva:false, selectedDay:0}; }
+let amState = amDefaultState();
+function amSave(){ saveKey("alimentacao_state", amState); }
+function amRecipeById(id){ return AM_RECIPES.find(r=>r.id===id); }
+function amTodayKey(dayIdx){ return 'day-'+dayIdx; }
+function amCategoriaDe(item){
+  for(const [cat, lista] of Object.entries(AM_CATEGORIAS)){ if(lista.includes(item)) return cat; }
+  return 'Outros';
+}
+function amPoolForSlot(slotKey){ return AM_RECIPES.filter(r => r.slots.includes(slotKey)); }
+function amWeightedPick(pool, usedCount){
+  const weighted = [];
+  pool.forEach(r=>{
+    const used = usedCount[r.id] || 0;
+    if(used >= 2) return;
+    const weight = (r.favorita ? 3 : 1) * (used === 0 ? 2 : 1);
+    for(let i=0;i<weight;i++) weighted.push(r);
+  });
+  if(weighted.length === 0) return pool[Math.floor(Math.random()*pool.length)];
+  return weighted[Math.floor(Math.random()*weighted.length)];
+}
+function amGenerateWeekPlan(){
+  const usedCount = {};
+  const plan = {};
+  AM_DAYS.forEach((day, di)=>{
+    plan[di] = {};
+    AM_SLOTS.forEach(slot=>{
+      const pool = amPoolForSlot(slot.key);
+      const pick = amWeightedPick(pool, usedCount);
+      usedCount[pick.id] = (usedCount[pick.id]||0)+1;
+      plan[di][slot.key] = pick.id;
     });
   });
+  amState.weekPlan = plan;
+  amState.checkins = {};
+  amSave();
+  amRenderAll();
 }
+function amEnsurePlan(){ if(!amState.weekPlan) amGenerateWeekPlan(); }
 
-function mealCardHtml(cat, meal, idx){
-  return `
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-        <b style="font-size:14.5px;color:var(--ink);">${meal.nome}</b>
-        <span class="del" data-idx="${idx}" style="cursor:pointer;color:var(--muted);font-size:11px;white-space:nowrap;">remover</span>
-      </div>
-      <div style="margin-top:8px;">
-        <span class="macro-pill">${meal.proteina}g proteína</span>
-        <span class="macro-pill">${meal.carbo}g carbo</span>
-        <span class="macro-pill">${meal.kcal} kcal</span>
-        <span class="macro-pill">${meal.tempo} min</span>
-        ${meal.congela ? '<span class="freeze-pill">❄️ Congela</span>' : ''}
-      </div>
-    </div>`;
-}
-
-function catPanelHtml(cat){
-  const meals = biblioteca[cat] || [];
-  const empty = meals.length===0 ? '<div class="histempty">Nenhuma refeição aqui ainda — adicione abaixo.</div>' : '';
-  return `
-    ${empty}
-    ${meals.map((m,i)=> mealCardHtml(cat,m,i)).join("")}
-    <div class="card" style="background:var(--pale);">
-      <div class="grid3">
-        <div class="field"><label class="field-label">Nome da refeição</label><input type="text" class="rf-nome" placeholder="Ex: Frango + arroz + salada"></div>
-        <div class="field"><label class="field-label">Tempo de preparo (min)</label><input type="text" inputmode="numeric" class="rf-tempo" placeholder="20"></div>
-        <div class="field"><label class="field-label">Proteína (g)</label><input type="text" inputmode="numeric" class="rf-proteina" placeholder="35"></div>
-      </div>
-      <div class="grid3">
-        <div class="field"><label class="field-label">Carboidrato (g)</label><input type="text" inputmode="numeric" class="rf-carbo" placeholder="35"></div>
-        <div class="field"><label class="field-label">Calorias (kcal)</label><input type="text" inputmode="numeric" class="rf-kcal" placeholder="420"></div>
-        <div class="field" style="display:flex;align-items:flex-end;padding-bottom:12px;"><label style="font-size:13px;"><input type="checkbox" class="rf-congela"> Pode congelar</label></div>
-      </div>
-      <button class="btn primary rf-add">+ Adicionar refeição</button>
-    </div>`;
-}
-
-function wireCatPanelEvents(cat, panelEl){
-  panelEl.querySelectorAll(".del").forEach(d=>{
-    d.addEventListener("click", async ()=>{
-      const removed = biblioteca[cat].splice(+d.dataset.idx,1);
-      const ok = await saveKey("biblioteca", biblioteca);
-      if(!ok) biblioteca[cat].splice(+d.dataset.idx,0,removed[0]);
-      renderCatPanel(cat);
-    });
+function amRenderDayRibbon(){
+  const el = document.getElementById('amDayRibbon');
+  if(!el) return;
+  el.innerHTML = '';
+  AM_DAYS.forEach((d,i)=>{
+    const pill = document.createElement('div');
+    pill.className = 'am-day-pill' + (i===amState.selectedDay ? ' active' : '');
+    pill.innerHTML = `<div class="am-d">${d.slice(0,3)}</div><div class="am-n">${i+1}</div>`;
+    pill.onclick = ()=>{ amState.selectedDay = i; amSave(); amRenderDashboard(); amRenderDayRibbon(); };
+    el.appendChild(pill);
   });
-  const addBtn = panelEl.querySelector(".rf-add");
-  addBtn.addEventListener("click", async ()=>{
-    const nome = panelEl.querySelector(".rf-nome").value.trim();
-    if(!nome) return;
-    const meal = {
-      nome,
-      proteina: +panelEl.querySelector(".rf-proteina").value || 0,
-      carbo: +panelEl.querySelector(".rf-carbo").value || 0,
-      kcal: +panelEl.querySelector(".rf-kcal").value || 0,
-      tempo: +panelEl.querySelector(".rf-tempo").value || 0,
-      congela: panelEl.querySelector(".rf-congela").checked
+}
+function amRenderDashboard(){
+  amEnsurePlan();
+  const nameEl = document.getElementById('amDashDayName');
+  if(!nameEl) return;
+  nameEl.textContent = AM_DAYS[amState.selectedDay] + '-feira';
+  const dayPlan = amState.weekPlan[amState.selectedDay];
+  const slotsAll = amState.ceiaAtiva ? [...AM_SLOTS, AM_SLOT_OPCIONAL] : AM_SLOTS;
+  const key = amTodayKey(amState.selectedDay);
+  const checkedIn = amState.checkins[key] || {};
+  const container = document.getElementById('amSlotsToday');
+  container.innerHTML = '';
+  slotsAll.forEach(slot=>{
+    let recipeId = dayPlan[slot.key];
+    if(slot.key === 'ceia' && !recipeId){
+      const leves = amPoolForSlot('cafe').filter(r=>r.kcal<=250);
+      recipeId = (leves[Math.floor(Math.random()*leves.length)] || amPoolForSlot('cafe')[0]).id;
+      dayPlan.ceia = recipeId;
+    }
+    const r = amRecipeById(recipeId);
+    const row = document.createElement('div');
+    row.className = 'am-slot-row';
+    const done = !!checkedIn[slot.key];
+    row.innerHTML = `
+      <div class="am-slot-check ${done?'done':''}" data-slot="${slot.key}">${done?'✓':''}</div>
+      <div class="am-slot-body">
+        <div class="am-slot-label">${slot.label}</div>
+        <div class="am-slot-name">${r.nome}${(slot.key==='almoco'||slot.key==='jantar')?' <span style="font-weight:400;font-size:11px;color:var(--am-ink-soft);">+ '+AM_ACOMPANHAMENTO_PADRAO+'</span>':''}</div>
+        <div class="am-slot-meta">${r.tempo} min · ${r.prot}g proteína · ${r.kcal} kcal</div>
+      </div>
+      <button class="am-slot-swap" data-swap="${slot.key}">trocar</button>
+    `;
+    row.querySelector('.am-slot-check').onclick = ()=>{
+      if(!amState.checkins[key]) amState.checkins[key] = {};
+      amState.checkins[key][slot.key] = !amState.checkins[key][slot.key];
+      amSave(); amRenderDashboard();
     };
-    if(!biblioteca[cat]) biblioteca[cat] = [];
-    biblioteca[cat].push(meal);
-    const ok = await saveKey("biblioteca", biblioteca);
-    if(!ok){ biblioteca[cat].pop(); return; }
-    renderCatPanel(cat);
-    toast("Refeição adicionada");
+    row.querySelector('[data-swap]').onclick = ()=>{
+      const pool = amPoolForSlot(slot.key);
+      let novo = pool[Math.floor(Math.random()*pool.length)];
+      let tries = 0;
+      while(novo.id === recipeId && pool.length>1 && tries<8){ novo = pool[Math.floor(Math.random()*pool.length)]; tries++; }
+      dayPlan[slot.key] = novo.id;
+      amSave(); amRenderDashboard();
+    };
+    container.appendChild(row);
+  });
+  const total = slotsAll.length;
+  const done = Object.values(checkedIn).filter(Boolean).length;
+  document.getElementById('amRingCount').textContent = `${done}/${total}`;
+  const circumference = 314;
+  const offset = circumference - (done/total)*circumference;
+  document.getElementById('amRingProgress').setAttribute('stroke-dashoffset', offset);
+  const sw = document.getElementById('amCeiaSwitch');
+  sw.className = 'am-switch' + (amState.ceiaAtiva ? ' on' : '');
+}
+
+let amActiveFilter = 'todos';
+const AM_FILTER_LABELS = {todos:'Todas', cafe:'Café', lanche:'Lanche', almoco:'Almoço', jantar:'Jantar', pre:'Pré-Treino', pos:'Pós-Treino', favorita:'★ Favoritas', congela:'Congela'};
+function amRenderFilterChips(){
+  const el = document.getElementById('amFilterChips');
+  if(!el) return;
+  el.innerHTML = '';
+  Object.keys(AM_FILTER_LABELS).forEach(k=>{
+    const chip = document.createElement('button');
+    chip.className = 'am-chip' + (amActiveFilter===k ? ' active':'');
+    chip.textContent = AM_FILTER_LABELS[k];
+    chip.onclick = ()=>{ amActiveFilter = k; amRenderFilterChips(); amRenderRecipeGrid(); };
+    el.appendChild(chip);
   });
 }
-
-function renderCatPanel(cat){
-  const panelEl = document.getElementById("catpanel-"+cat);
-  panelEl.innerHTML = catPanelHtml(cat);
-  wireCatPanelEvents(cat, panelEl);
+function amRenderRecipeGrid(){
+  const searchEl = document.getElementById('amSearchInput');
+  const term = (searchEl && searchEl.value || '').toLowerCase();
+  let list = AM_RECIPES.filter(r=>{
+    if(term && !r.nome.toLowerCase().includes(term)) return false;
+    if(amActiveFilter==='todos') return true;
+    if(amActiveFilter==='favorita') return r.favorita;
+    if(amActiveFilter==='congela') return r.congela;
+    return r.slots.includes(amActiveFilter);
+  });
+  const grid = document.getElementById('amRecipeGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  if(list.length===0){ grid.innerHTML = '<div class="am-empty">Nenhuma receita encontrada.</div>'; return; }
+  list.forEach(r=>{
+    const card = document.createElement('div');
+    card.className = 'am-card am-recipe-card';
+    card.innerHTML = `
+      <h3>${r.favorita?'<span class="am-fav-star">★</span> ':''}${r.nome}</h3>
+      <div class="am-cats">${r.slots.map(s=>`<span class="am-tag">${(AM_SLOTS.find(x=>x.key===s)||AM_SLOT_OPCIONAL).label}</span>`).join('')}${r.congela?'<span class="am-tag gold">congela</span>':''}</div>
+      <div class="am-macro-row">
+        <span>⏱ <b>${r.tempo}min</b></span>
+        <span>🥩 <b>${r.prot}g</b></span>
+        <span>🔥 <b>${r.kcal}kcal</b></span>
+      </div>
+    `;
+    card.onclick = ()=> amOpenModal(r);
+    grid.appendChild(card);
+  });
 }
-
-function renderRefeicoes(){
-  renderRefeicoesSubnav();
-  const root = document.getElementById("refeicoesPanels");
-  root.innerHTML = REFEICAO_CATS.map(c=> `<div class="catpanel${c.id===refeicaoActiveCat?" active":""}" id="catpanel-${c.id}"></div>`).join("");
-  REFEICAO_CATS.forEach(c=> renderCatPanel(c.id));
+function amOpenModal(r){
+  const m = document.getElementById('amModalContent');
+  m.innerHTML = `
+    <button class="am-modal-close" id="amCloseModalBtn">✕</button>
+    <h2>${r.nome}</h2>
+    <div class="am-cats" style="margin:10px 0;">${r.slots.map(s=>`<span class="am-tag">${(AM_SLOTS.find(x=>x.key===s)||AM_SLOT_OPCIONAL).label}</span>`).join('')}${r.favorita?'<span class="am-tag wine">favorita</span>':''}</div>
+    <div class="am-macro-row" style="margin-bottom:6px;">
+      <span>⏱ <b>${r.tempo} min</b></span>
+      <span>🥩 <b>${r.prot}g</b></span>
+      <span>🍞 <b>${r.carb}g</b></span>
+      <span>🔥 <b>${r.kcal} kcal</b></span>
+    </div>
+    <p style="font-size:12px;color:var(--am-ink-soft);margin-top:10px;">${r.congela ? '❄️ Congela — ' + r.dura : '🍽 Melhor fresco — ' + r.dura}</p>
+    <div class="am-ingredientes">${r.ingredientes.map(i=>`<div>• ${i}</div>`).join('')}</div>
+    <div class="am-note">Macros estimados a partir dos ingredientes principais — ajuste se pesar os itens.</div>
+  `;
+  document.getElementById('amModalBg').classList.add('open');
+  document.getElementById('amCloseModalBtn').onclick = amCloseModal;
 }
+function amCloseModal(){ document.getElementById('amModalBg').classList.remove('open'); }
+
+function amRenderWeekPlanGrid(){
+  amEnsurePlan();
+  const grid = document.getElementById('amWeekPlanGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  AM_DAYS.forEach((d, di)=>{
+    const dayPlan = amState.weekPlan[di];
+    const card = document.createElement('div');
+    card.className = 'am-card';
+    card.innerHTML = `
+      <h3 class="am-h3" style="font-size:15px;margin-bottom:10px;">${d}-feira</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+        ${AM_SLOTS.map(slot=>{
+          const r = amRecipeById(dayPlan[slot.key]);
+          return `<div>
+            <div class="am-slot-label" style="font-size:9px;">${slot.label}</div>
+            <div style="font-size:12.5px;font-weight:600;margin-top:2px;color:var(--am-ink);">${r.nome}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+function amRenderMealPrep(){
+  amEnsurePlan();
+  const container = document.getElementById('amPrepContent');
+  if(!container) return;
+  const counts = {domingo:{}, quarta:{}};
+  AM_DAYS.forEach((d, di)=>{
+    const bucket = di<=2 ? 'domingo' : 'quarta';
+    const dayPlan = amState.weekPlan[di];
+    AM_SLOTS.forEach(slot=>{
+      const r = amRecipeById(dayPlan[slot.key]);
+      if(r.congela) counts[bucket][r.id] = (counts[bucket][r.id]||0)+1;
+    });
+  });
+  function bucketHtml(label, data){
+    const entries = Object.entries(data);
+    if(entries.length===0) return `<div class="am-prep-day"><h3>${label}</h3><p style="color:var(--am-ink-soft);font-size:13px;margin-top:10px;">Nada a preparar — gere o cardápio da semana.</p></div>`;
+    const totalTime = entries.reduce((acc,[id])=>acc + amRecipeById(id).tempo, 0);
+    return `<div class="am-prep-day">
+      <h3>${label} <span style="font-size:11px;color:var(--am-ink-soft);font-weight:400;">· ~${totalTime} min no total</span></h3>
+      <ul class="am-prep-list">
+        ${entries.map(([id,qtd])=>{
+          const r = amRecipeById(id);
+          return `<li><div class="am-checkbox" data-prep-item="${id}"></div><span>${r.nome} <b>× ${qtd}${qtd>1?' porções':''}</b></span><span class="am-prep-time">${r.tempo}min</span></li>`;
+        }).join('')}
+        <li><div class="am-checkbox"></div><span>Arroz + legumes para a semana</span><span class="am-prep-time">40min</span></li>
+        <li><div class="am-checkbox"></div><span>Ovos cozidos (reserva)</span><span class="am-prep-time">15min</span></li>
+      </ul>
+    </div>`;
+  }
+  container.innerHTML = bucketHtml('Domingo — preparar para segunda a quarta', counts.domingo) + bucketHtml('Quarta — preparar para quinta a domingo', counts.quarta);
+  container.querySelectorAll('[data-prep-item]').forEach(box=>{ box.onclick = ()=> box.classList.toggle('on'); });
+}
+function amRenderFreezer(){
+  const container = document.getElementById('amFreezerList');
+  if(!container) return;
+  const freezable = AM_RECIPES.filter(r=>r.congela);
+  container.innerHTML = '';
+  freezable.forEach(r=>{
+    const count = amState.freezer[r.id] ?? 0;
+    const low = count < 2;
+    const row = document.createElement('div');
+    row.className = 'am-freezer-item';
+    const cubes = Array.from({length:6}).map((_,i)=> i < count ? `<div class="am-cube filled"></div>` : `<div class="am-cube ${low?'warn':''}"></div>`).join('');
+    row.innerHTML = `
+      <div class="am-freezer-name">${r.nome}${low?'<span class="am-low">estoque baixo — hora de preparar</span>':''}</div>
+      <div class="am-cubes">${cubes}</div>
+      <div class="am-stepper">
+        <button data-op="-" data-id="${r.id}">–</button>
+        <span>${count}</span>
+        <button data-op="+" data-id="${r.id}">+</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+  container.querySelectorAll('.am-stepper button').forEach(btn=>{
+    btn.onclick = ()=>{
+      const id = btn.dataset.id;
+      const cur = amState.freezer[id] ?? 0;
+      amState.freezer[id] = btn.dataset.op==='+' ? Math.min(cur+1,6) : Math.max(cur-1,0);
+      amSave(); amRenderFreezer();
+    };
+  });
+}
+function amRenderCompras(){
+  amEnsurePlan();
+  const counts = {};
+  AM_DAYS.forEach((d, di)=>{
+    const dayPlan = amState.weekPlan[di];
+    AM_SLOTS.forEach(slot=>{
+      const r = amRecipeById(dayPlan[slot.key]);
+      r.ingredientes.forEach(ing=>{ counts[ing] = (counts[ing]||0)+1; });
+    });
+  });
+  const grouped = {};
+  Object.entries(counts).forEach(([ing,qtd])=>{
+    const cat = amCategoriaDe(ing);
+    if(!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push([ing,qtd]);
+  });
+  const grid = document.getElementById('amComprasGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  Object.entries(grouped).forEach(([cat, items])=>{
+    items.sort((a,b)=>b[1]-a[1]);
+    const card = document.createElement('div');
+    card.className = 'am-card am-compras-cat';
+    card.innerHTML = `<h3>${cat}</h3><ul class="am-compras-list">
+      ${items.map(([ing,qtd])=>`<li><span>${ing}</span><span class="am-qtd">usado ${qtd}x na semana</span></li>`).join('')}
+    </ul>`;
+    grid.appendChild(card);
+  });
+  if(Object.keys(grouped).length===0){ grid.innerHTML = '<div class="am-empty">Gere o cardápio da semana para ver a lista de compras.</div>'; }
+}
+function amRenderCombos(){
+  const grid = document.getElementById('amCombosGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const labels = {cafe:'Café da Manhã', almoco:'Almoço', pos:'Pós-Treino'};
+  Object.entries(AM_COMBOS).forEach(([slot, list])=>{
+    list.forEach(combo=>{
+      const card = document.createElement('div');
+      card.className = 'am-card am-combo-card';
+      card.innerHTML = `
+        <span class="am-slot-label">${labels[slot]} · ${combo.titulo}</span>
+        <ul class="am-combo-items">${combo.itens.map(i=>`<li>• ${i}</li>`).join('')}</ul>
+      `;
+      grid.appendChild(card);
+    });
+  });
+}
+function amRenderAll(){
+  amRenderDayRibbon();
+  amRenderDashboard();
+  amRenderFilterChips();
+  amRenderRecipeGrid();
+  amRenderWeekPlanGrid();
+  amRenderMealPrep();
+  amRenderFreezer();
+  amRenderCompras();
+  amRenderCombos();
+}
+function amWireStaticEvents(){
+  document.querySelectorAll("#amTabs .am-tab-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll("#amTabs .am-tab-btn").forEach(b=>b.classList.remove("active"));
+      document.querySelectorAll(".am-view").forEach(v=>v.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("am-view-"+btn.dataset.amview).classList.add("active");
+    });
+  });
+  const searchInput = document.getElementById('amSearchInput');
+  if(searchInput) searchInput.addEventListener('input', amRenderRecipeGrid);
+  const genBtn = document.getElementById('amGenerateBtn');
+  if(genBtn) genBtn.onclick = amGenerateWeekPlan;
+  const ceiaSwitch = document.getElementById('amCeiaSwitch');
+  if(ceiaSwitch) ceiaSwitch.onclick = ()=>{ amState.ceiaAtiva = !amState.ceiaAtiva; amSave(); amRenderDashboard(); };
+  const modalBg = document.getElementById('amModalBg');
+  if(modalBg) modalBg.addEventListener('click', e=>{ if(e.target.id==='amModalBg') amCloseModal(); });
+}
+amWireStaticEvents();
+
 
 /* ============================================================
    HIDRATAÇÃO
@@ -1061,6 +1563,133 @@ function adjustHidratacao(delta){
 }
 document.getElementById("hydroPlus").addEventListener("click",()=> adjustHidratacao(250));
 document.getElementById("hydroMinus").addEventListener("click",()=> adjustHidratacao(-250));
+
+/* ============================================================
+   IDENTIDADE — Quem é a Ana que estou me tornando?
+   ============================================================ */
+const VISAO_TOPICS = [
+ {slug:"acorda", label:"Como ela acorda"},
+ {slug:"pensa", label:"Como ela pensa"},
+ {slug:"fala", label:"Como ela fala"},
+ {slug:"veste", label:"Como ela se veste"},
+ {slug:"trabalha", label:"Como ela trabalha"},
+ {slug:"decisoes", label:"Como ela toma decisões"},
+ {slug:"corpo", label:"Como cuida do corpo"},
+ {slug:"alimenta", label:"Como se alimenta"},
+ {slug:"treina", label:"Como treina"},
+ {slug:"estuda", label:"Como estuda"},
+ {slug:"dinheiro", label:"Como administra o dinheiro"},
+ {slug:"marido", label:"Como trata o marido"},
+ {slug:"filho", label:"Como cria o filho"},
+ {slug:"casa", label:"Como organiza a casa"},
+ {slug:"problemas", label:"Como reage aos problemas"},
+ {slug:"criticas", label:"Como lida com críticas"},
+ {slug:"descansa", label:"Como descansa"},
+ {slug:"paz", label:"Como protege sua paz"},
+ {slug:"principios", label:"Quais são seus princípios"},
+ {slug:"inaceitavel", label:"Quais comportamentos ela nunca aceita"}
+];
+let visao = {};
+function renderVisao(){
+  const box = document.getElementById("visaoCard");
+  box.innerHTML = VISAO_TOPICS.map(t=>`
+    <div class="field">
+      <label class="field-label">${t.label}</label>
+      <textarea rows="2" data-slug="${t.slug}" placeholder="Escreva livremente…">${visao[t.slug]||""}</textarea>
+    </div>`).join("");
+  let debounce;
+  box.querySelectorAll("textarea").forEach(ta=>{
+    ta.addEventListener("input",()=>{
+      visao[ta.dataset.slug] = ta.value;
+      clearTimeout(debounce);
+      debounce = setTimeout(()=> saveKey("visao", visao), 900);
+    });
+  });
+}
+
+const IDENT_CATS = [
+ {id:"frases", nome:"Frases", emoji:"💬"},
+ {id:"valores", nome:"Valores", emoji:"⭐"},
+ {id:"principios", nome:"Princípios", emoji:"🧭"},
+ {id:"licoes", nome:"Lições", emoji:"📖"},
+ {id:"reflexoes", nome:"Reflexões", emoji:"🪞"},
+ {id:"mantras", nome:"Mantras", emoji:"🔁"},
+ {id:"afirmacoesid", nome:"Afirmações", emoji:"✨"},
+ {id:"textos", nome:"Textos que inspiram", emoji:"📝"}
+];
+function defaultIdentBiblioteca(){
+  const o = {}; IDENT_CATS.forEach(c=> o[c.id]=[]); return o;
+}
+let identBiblioteca = defaultIdentBiblioteca();
+let identActiveCat = "frases";
+
+function renderIdentSubnav(){
+  const nav = document.getElementById("identSubnav");
+  nav.innerHTML = IDENT_CATS.map(c=>
+    `<button class="subtab${c.id===identActiveCat?" active":""}" data-cat="${c.id}">${c.emoji} ${c.nome}</button>`
+  ).join("");
+  nav.querySelectorAll(".subtab").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      identActiveCat = btn.dataset.cat;
+      nav.querySelectorAll(".subtab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".identcatpanel").forEach(p=>p.classList.remove("active"));
+      document.getElementById("identcatpanel-"+identActiveCat).classList.add("active");
+    });
+  });
+}
+function identCatPanelHtml(cat){
+  const items = identBiblioteca[cat] || [];
+  const empty = items.length===0 ? '<div class="histempty">Nada guardado aqui ainda.</div>' : '';
+  return `
+    ${empty}
+    <div class="entries">
+      ${items.map((it,idx)=>`
+        <div class="entry">
+          <span class="del" data-idx="${idx}">excluir</span>
+          <span class="date">${fmtDate(it.date)}</span>${it.text}
+        </div>`).join("")}
+    </div>
+    <div class="addrow">
+      <input type="text" class="id-add-input" placeholder="Adicionar em ${IDENT_CATS.find(c=>c.id===cat).nome.toLowerCase()}…">
+      <button class="btn id-add-btn">+ adicionar</button>
+    </div>`;
+}
+function wireIdentPanelEvents(cat, panelEl){
+  panelEl.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const removed = identBiblioteca[cat].splice(+d.dataset.idx,1);
+      const ok = await saveKey("ident_biblioteca", identBiblioteca);
+      if(!ok) identBiblioteca[cat].splice(+d.dataset.idx,0,removed[0]);
+      renderIdentCatPanel(cat);
+    });
+  });
+  const input = panelEl.querySelector(".id-add-input");
+  const addBtn = panelEl.querySelector(".id-add-btn");
+  async function add(){
+    const v = input.value.trim();
+    if(!v) return;
+    if(!identBiblioteca[cat]) identBiblioteca[cat] = [];
+    identBiblioteca[cat].unshift({date: todayStr(), text: v});
+    const ok = await saveKey("ident_biblioteca", identBiblioteca);
+    if(!ok){ identBiblioteca[cat].shift(); return; }
+    renderIdentCatPanel(cat);
+  }
+  addBtn.addEventListener("click", add);
+  input.addEventListener("keydown",(e)=>{ if(e.key==="Enter") add(); });
+}
+function renderIdentCatPanel(cat){
+  const panelEl = document.getElementById("identcatpanel-"+cat);
+  panelEl.innerHTML = identCatPanelHtml(cat);
+  wireIdentPanelEvents(cat, panelEl);
+}
+function renderIdentidade(){
+  renderVisao();
+  renderIdentSubnav();
+  const root = document.getElementById("identPanels");
+  root.innerHTML = IDENT_CATS.map(c=> `<div class="identcatpanel${c.id===identActiveCat?" active":""}" id="identcatpanel-${c.id}"></div>`).join("");
+  IDENT_CATS.forEach(c=> renderIdentCatPanel(c.id));
+}
 
 /* ============================================================
    TREINO
@@ -1337,7 +1966,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, biblioteca, hidratacao,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -1365,8 +1994,10 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.treino_summary!==undefined){ treinoSummary = data.treino_summary; ops.push(saveKey("treino_summary", treinoSummary)); }
       if(data.treino_semanal!==undefined){ treinoSemanal = data.treino_semanal; ops.push(saveKey("treino_semanal", treinoSemanal)); }
       if(data.planejamento!==undefined){ planejamento = data.planejamento; ops.push(saveKey("planejamento", planejamento)); }
-      if(data.biblioteca!==undefined){ biblioteca = data.biblioteca; ops.push(saveKey("biblioteca", biblioteca)); }
+      if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
+      if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
+      if(data.ident_biblioteca!==undefined){ identBiblioteca = data.ident_biblioteca; ops.push(saveKey("ident_biblioteca", identBiblioteca)); }
       await Promise.all(ops);
       toast("Backup importado");
       renderAll();
@@ -1515,8 +2146,9 @@ function renderAll(){
   diarioContainer();
   renderEnergia();
   renderMenu();
-  renderRefeicoes();
+  amRenderAll();
   renderHidratacao();
+  renderIdentidade();
   makeListBox("box-reposicao","reposicao","novo item da lista de compras…", true, reposicao);
   makeListBox("box-freezer","freezer","novo item no freezer…", false, freezer);
   makeListBox("box-geladeira","geladeira","novo item na geladeira…", false, geladeira);
@@ -1539,8 +2171,10 @@ function init(){
   treinoSummary = loadKey("treino_summary", {});
   treinoSemanal = loadKey("treino_semanal", []);
   planejamento = loadKey("planejamento", []);
-  biblioteca = loadKey("biblioteca", defaultBiblioteca());
+  amState = loadKey("alimentacao_state", amDefaultState());
   hidratacao = loadKey("hidratacao", {});
+  visao = loadKey("visao", {});
+  identBiblioteca = loadKey("ident_biblioteca", defaultIdentBiblioteca());
   renderAll();
 }
 init();
