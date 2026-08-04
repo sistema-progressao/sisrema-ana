@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Operacional da Ana</title>
+<style>
+  :root{
+    --ink:#3A362F;
+    --muted:#8A8378;
+    --accent:#AD6E4B;
+    --accent-dark:#7C4B30;
+    --line:#E3DCCF;
+    --pale:#F6F1E9;
+    --pale2:#F1EADC;
+    --bg:#FBF8F4;
+    --white:#FFFFFF;
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);}
+  ::selection{background:var(--pale2);}
+  a{color:var(--accent-dark);}
+
+  .shell{max-width:900px;margin:0 auto;padding:0 24px 80px;}
+  header.top{padding:36px 0 18px;border-bottom:1px solid var(--line);margin-bottom:0;}
+  .eyebrow{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--accent);text-transform:uppercase;}
+  h1.title{font-family:var(--serif);font-weight:400;font-size:34px;margin:6px 0 2px;color:var(--ink);}
+  .subtitle{font-style:italic;color:var(--muted);font-size:14.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:#7C9A6E;display:inline-block;}
+  .dot.off{background:#C0644A;}
+
+  nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px;}
+  nav.tabs button{
+    font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--muted);
+    background:transparent;border:none;padding:10px 16px;cursor:pointer;
+    border-bottom:2px solid transparent;letter-spacing:.01em;
+  }
+  nav.tabs button.active{color:var(--accent-dark);border-bottom-color:var(--accent);}
+  nav.tabs button:hover{color:var(--accent-dark);}
+
+  .toolbar{display:flex;gap:8px;align-items:center;padding:14px 0 0;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--accent-dark);
+    background:var(--pale);border:1px solid var(--line);padding:8px 14px;border-radius:3px;cursor:pointer;
+  }
+  .btn:hover{background:var(--pale2);}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn.primary:hover{background:var(--accent-dark);}
+  .btn.ghost{background:transparent;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  input[type=file]{display:none;}
+
+  section.panel{display:none;padding-top:26px;}
+  section.panel.active{display:block;}
+
+  h2.h2{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--accent-dark);margin:30px 0 12px;}
+  h2.h2:first-child{margin-top:0;}
+  h3.h3{font-size:14.5px;font-weight:700;margin:18px 0 8px;color:var(--ink);}
+  p.desc{font-size:14px;line-height:1.6;color:#56514A;margin:0 0 14px;}
+
+  .card{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:18px 20px;margin-bottom:16px;}
+  .prayer-text{font-family:var(--serif);font-style:italic;font-size:14.5px;line-height:1.75;color:#56514A;margin:0;}
+  .callout{border-left:3px solid var(--accent);background:var(--pale);padding:14px 18px;margin:14px 0 22px;border-radius:0 3px 3px 0;}
+  .callout .eyebrow{margin-bottom:4px;display:block;}
+  .callout p{margin:0;font-size:14px;color:var(--ink);line-height:1.55;}
+
+  ul.checklist{list-style:none;margin:0;padding:0;}
+  ul.checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px;}
+  ul.checklist li:last-child{border-bottom:none;}
+  ul.checklist input[type=checkbox]{
+    appearance:none;-webkit-appearance:none;width:17px;height:17px;min-width:17px;margin-top:2px;
+    border:1.5px solid var(--muted);border-radius:3px;cursor:pointer;position:relative;background:#fff;
+  }
+  ul.checklist input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent);}
+  ul.checklist input[type=checkbox]:checked::after{
+    content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;
+    border:solid white;border-width:0 2px 2px 0;transform:rotate(40deg);
+  }
+  ul.checklist label{cursor:pointer;flex:1;}
+  ul.checklist li.done label{color:var(--muted);text-decoration:line-through;}
+  .progress{font-size:12px;color:var(--muted);margin-top:8px;}
+
+  label.field-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin:0 0 5px;}
+  input[type=text],input[type=number],input[type=date],textarea,select{
+    width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);
+    border:1px solid var(--line);border-radius:3px;padding:9px 10px;background:#fff;
+  }
+  textarea{resize:vertical;font-family:var(--serif);font-style:italic;line-height:1.5;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  @media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .field{margin-bottom:12px;}
+
+  details.bloco{border:1px solid var(--line);border-radius:4px;margin-bottom:10px;background:#fff;}
+  details.bloco > summary{
+    list-style:none;cursor:pointer;padding:13px 18px;font-family:var(--serif);font-size:17px;color:var(--accent-dark);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  details.bloco > summary::-webkit-details-marker{display:none;}
+  details.bloco > summary .count{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:600;}
+  .bloco-body{padding:0 18px 16px;}
+  .question{padding:16px 0;border-top:1px solid var(--line);}
+  .question:first-child{border-top:none;}
+  .qtext{font-family:var(--serif);font-style:italic;font-size:15px;margin-bottom:8px;}
+  .qtext b{color:var(--accent);font-style:normal;margin-right:4px;}
+  .entries{margin-top:10px;}
+  .entry{background:var(--pale);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:13.5px;}
+  .entry .date{font-size:10.5px;color:var(--muted);font-weight:700;letter-spacing:.05em;display:block;margin-bottom:2px;}
+  .entry .del{float:right;color:var(--muted);cursor:pointer;font-size:11px;}
+  .entry .del:hover{color:var(--accent-dark);}
+  .qactions{display:flex;gap:8px;margin-top:6px;align-items:center;}
+
+  table.hist{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px;}
+  table.hist th{background:var(--pale2);color:var(--accent-dark);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:8px 8px;}
+  table.hist td{padding:7px 8px;border-bottom:1px solid var(--line);}
+  table.hist td.del{color:var(--muted);cursor:pointer;text-align:center;}
+  .bars{display:flex;align-items:flex-end;gap:4px;height:80px;margin-top:14px;}
+  .bar{flex:1;background:var(--accent);border-radius:2px 2px 0 0;position:relative;min-width:6px;}
+  .bar span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted);margin-bottom:2px;white-space:nowrap;}
+
+  table.menu{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.menu th{background:var(--pale2);color:var(--accent-dark);font-size:10.5px;text-transform:uppercase;padding:7px;text-align:left;}
+  table.menu td{border:1px solid var(--line);padding:2px;}
+  table.menu td input{border:none;font-family:var(--sans);font-style:normal;font-size:12.5px;padding:7px;}
+  table.menu td input:focus{outline:1px solid var(--accent);}
+
+  .listbox ul{list-style:none;margin:0 0 8px;padding:0;}
+  .listbox li{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .listbox li .del{color:var(--muted);cursor:pointer;font-size:12px;}
+  .addrow{display:flex;gap:6px;margin-top:8px;}
+  .addrow input{flex:1;}
+
+  footer.foot{text-align:center;padding:40px 0 10px;color:var(--muted);font-size:11.5px;font-style:italic;}
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:10px 18px;border-radius:4px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;
+  }
+  .toast.show{opacity:1;}
+  .toast.err{background:#8C4A38;}
+
+
+  /* treino */
+  .subnav{display:flex;gap:2px;overflow-x:auto;margin:6px 0 20px;border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch;}
+  .subnav::-webkit-scrollbar{display:none;}
+  .subtab{flex-shrink:0;padding:9px 13px;font-size:12.5px;font-weight:600;color:var(--muted);border:none;background:transparent;
+    border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:var(--sans);}
+  .subtab.active{color:var(--accent-dark);border-bottom-color:var(--accent);}
+  .daypanel{display:none;}
+  .daypanel.active{display:block;}
+  .catpanel{display:none;}
+  .catpanel.active{display:block;}
+  .macro-pill{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent-dark);background:var(--pale);border:1px solid var(--line);border-radius:20px;padding:2px 8px;margin:2px 4px 2px 0;}
+  .freeze-pill{display:inline-block;font-size:9.5px;font-weight:700;color:#3E6B8A;background:#E7F0F6;border:1px solid #CFE1EC;border-radius:20px;padding:2px 8px;letter-spacing:.03em;}
+  .hydro-bar{background:var(--line);border-radius:20px;height:10px;overflow:hidden;margin:10px 0 6px;}
+  .hydro-fill{background:var(--accent);height:100%;border-radius:20px;transition:width .3s;}
+  .hydro-controls{display:flex;gap:8px;align-items:center;margin-top:10px;}
+  .hydro-controls button{flex:1;}
+  .day-focus-line{font-size:13.5px;color:var(--muted);margin:-8px 0 18px;font-style:italic;font-family:var(--serif);}
+  .safe-pill{display:inline-block;font-size:9.5px;font-weight:700;color:#5B7A52;background:#EAF1E4;border:1px solid #D3E3C9;
+    padding:2px 8px;border-radius:20px;margin-left:8px;letter-spacing:.03em;vertical-align:middle;}
+  .ex-sets-line{font-size:12.5px;color:var(--muted);margin:2px 0 10px;}
+  .load-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+  .load-box label{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;text-align:center;}
+  .load-box input{text-align:center;padding:7px 4px;font-family:var(--sans);font-style:normal;font-size:13px;}
+  .cardio-card{background:var(--pale);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin:18px 0 8px;}
+  .cardio-card .ctitle{font-weight:700;font-size:13.5px;color:var(--accent-dark);margin-bottom:8px;}
+  .cardio-line{display:flex;gap:12px;font-size:12.5px;padding:6px 0;border-top:1px solid var(--line);color:#56514A;}
+  .cardio-line:first-of-type{border-top:none;}
+  .cardio-line .ctime{font-weight:700;color:var(--accent);min-width:74px;flex-shrink:0;}
+  .opt-card{border-left:3px solid var(--accent);background:var(--pale);padding:12px 16px;border-radius:0 3px 3px 0;margin-bottom:10px;font-size:13.5px;}
+  .opt-card b{color:var(--accent-dark);}
+  .exnote{margin-top:10px;}
+
+  /* resumo / progresso */
+  .statgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.statgrid{grid-template-columns:1fr;}}
+  .donutwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 4px;}
+  .donut{width:132px;height:132px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .donut-inner{width:98px;height:98px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .donut-inner .num{font-family:var(--serif);font-size:25px;color:var(--accent-dark);line-height:1;}
+  .donut-inner .lbl{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;text-align:center;padding:0 8px;}
+  .donutcap{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px;}
+
+  .streakbig{text-align:center;padding:6px 0;}
+  .streakbig .num{font-family:var(--serif);font-size:44px;color:var(--accent);line-height:1;}
+  .streakbig .lbl{font-size:11.5px;color:var(--muted);margin-top:4px;}
+
+  .statbar{margin-bottom:14px;}
+  .statbar:last-child{margin-bottom:0;}
+  .statbar .row{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;color:var(--ink);}
+  .statbar .row b{color:var(--accent-dark);}
+  .statbar .track{height:7px;border-radius:4px;background:var(--pale2);overflow:hidden;}
+  .statbar .fill{height:100%;background:var(--accent);border-radius:4px;transition:width .3s;}
+
+  .minibars{margin-top:6px;}
+  .minirow{display:flex;align-items:center;gap:10px;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line);}
+  .minirow:last-child{border-bottom:none;}
+  .minirow .code{width:34px;color:var(--accent-dark);font-weight:700;}
+  .minirow .title{flex:1;color:#56514A;}
+  .minirow .track{width:80px;height:6px;border-radius:3px;background:var(--pale2);overflow:hidden;}
+  .minirow .fill{height:100%;background:var(--accent);}
+  .minirow .pct{width:34px;text-align:right;color:var(--muted);font-size:11px;}
+
+  .histlist{margin-top:4px;}
+  .histitem{padding:10px 0;border-bottom:1px solid var(--line);}
+  .histitem:last-child{border-bottom:none;}
+  .histitem .date{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--accent);display:block;margin-bottom:3px;}
+  .histitem .txt{font-family:var(--serif);font-style:italic;font-size:13.5px;color:#56514A;}
+  .histempty{font-size:13px;color:var(--muted);font-style:italic;padding:6px 0;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <header class="top">
+    <span class="eyebrow">Projeto Ana Primeiro</span>
+    <h1 class="title">Sistema Operacional da Ana</h1>
+    <div class="subtitle">seu app pessoal — funciona offline; exporte um backup de vez em quando para manter PC e celular iguais</div>
+    <nav class="tabs">
+      <button data-tab="hoje" class="active">Hoje</button>
+      <button data-tab="diario">Diário</button>
+      <button data-tab="energia">Energia</button>
+      <button data-tab="cozinha">Cozinha</button>
+      <button data-tab="treino">Treino</button>
+      <button data-tab="espiritualidade">Espiritualidade</button>
+      <button data-tab="resumo">Resumo</button>
+    </nav>
+    <div class="toolbar">
+      <button class="btn" id="btnExportJson">⬇ Exportar backup (.json)</button>
+      <button class="btn" id="btnImportJson">⬆ Importar backup</button>
+      <input type="file" id="fileImport" accept="application/json">
+      <button class="btn ghost" id="btnExportDiario">Exportar diário (.txt)</button>
+    </div>
+  </header>
+
+  <section class="panel active" id="panel-hoje">
+    <div class="callout"><span class="eyebrow">Critério do dia</span><p>&ldquo;Isso aproxima ou afasta a mulher que estou construindo?&rdquo;</p></div>
+
+    <h2 class="h2">Manhã essencial</h2>
+    <div class="card"><ul class="checklist" id="cl-manha"></ul><div class="progress" id="prog-manha"></div></div>
+
+    <h2 class="h2">Noite prepara a manhã</h2>
+    <div class="card"><ul class="checklist" id="cl-noite"></ul><div class="progress" id="prog-noite"></div></div>
+
+    <h2 class="h2">Planejamento de amanhã — antes de dormir</h2>
+    <div class="card">
+      <p class="desc">Escreva as prioridades e tarefas de amanhã antes de dormir, e vá marcando conforme for cumprindo ao longo do dia.</p>
+      <div class="listbox" id="box-planejamento"></div>
+    </div>
+
+    <h2 class="h2">Fechamento do trabalho</h2>
+    <div class="card"><ul class="checklist" id="cl-fechamento"></ul><div class="progress" id="prog-fechamento"></div></div>
+
+    <h2 class="h2">Fechamento diário</h2>
+    <div class="card">
+      <div class="field">
+        <label class="field-label">O que aconteceu de bom hoje / maior vitória / o que aprendi / o que preparo para amanhã</label>
+        <textarea id="fechamentoTexto" rows="4" placeholder="Escreva livremente…"></textarea>
+      </div>
+      <button class="btn primary" id="btnSalvarFechamento">Salvar fechamento de hoje</button>
+      <span class="progress" id="fechamentoSalvo"></span>
+    </div>
+
+    <h2 class="h2">Histórico — últimos fechamentos</h2>
+    <div class="card">
+      <div class="histlist" id="historicoFechamentos"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-diario">
+    <div class="callout"><span class="eyebrow">Como responder</span><p>Responda uma pergunta por vez, com a sua voz. Cada resposta fica datada — se sua visão mudar, escreva de novo sem apagar a anterior.</p></div>
+    <div id="diarioBlocos"></div>
+  </section>
+
+  <section class="panel" id="panel-energia">
+    <h2 class="h2">Registro de hoje</h2>
+    <div class="card">
+      <div class="grid3">
+        <div class="field"><label class="field-label">Sono (0–10)</label><input type="number" min="0" max="10" id="e-sono"></div>
+        <div class="field"><label class="field-label">Energia (0–10)</label><input type="number" min="0" max="10" id="e-energia"></div>
+        <div class="field"><label class="field-label">Humor (0–10)</label><input type="number" min="0" max="10" id="e-humor"></div>
+        <div class="field"><label class="field-label">Foco (0–10)</label><input type="number" min="0" max="10" id="e-foco"></div>
+        <div class="field"><label class="field-label">Fome (0–10)</label><input type="number" min="0" max="10" id="e-fome"></div>
+        <div class="field"><label class="field-label">Compulsão</label>
+          <select id="e-compulsao"><option value="">—</option><option>Baixa</option><option>Média</option><option>Alta</option></select>
+        </div>
+        <div class="field"><label class="field-label">Água</label><input type="text" id="e-agua" placeholder="ex.: 2L"></div>
+        <div class="field"><label class="field-label">Treino</label>
+          <select id="e-treino"><option value="">—</option><option>Sim</option><option>Não</option><option>Adaptação</option></select>
+        </div>
+        <div class="field"><label class="field-label">Estudo</label><input type="text" id="e-estudo" placeholder="tempo / missão"></div>
+      </div>
+      <button class="btn primary" id="btnSalvarEnergia">Registrar hoje</button>
+      <span class="progress" id="energiaSalvo"></span>
+    </div>
+
+    <h2 class="h2">Energia — últimos dias</h2>
+    <div class="card">
+      <div class="bars" id="energiaBars"></div>
+      <table class="hist" id="energiaTable"></table>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cozinha">
+    <h2 class="h2">Estratégia Alimentar</h2>
+    <div class="callout"><p>Recomposição corporal: alta proteína, déficit calórico moderado, carboidrato usado estrategicamente ao redor do treino — nunca zerado. Comida prática, planejada em lote, pra reduzir decisão no dia a dia. Constância importa mais que perfeição.</p></div>
+
+    <h2 class="h2">Perfil &amp; metas diárias</h2>
+    <div class="card">
+      <div class="grid3">
+        <div class="field"><label class="field-label">Proteína/dia</label><div style="font-size:16px;font-weight:700;color:var(--ink);">120–140 g</div></div>
+        <div class="field"><label class="field-label">Hidratação/dia</label><div style="font-size:16px;font-weight:700;color:var(--ink);">3,5–4 L</div></div>
+        <div class="field"><label class="field-label">Suplementação</label><div style="font-size:16px;font-weight:700;color:var(--ink);">Creatina + Whey</div></div>
+      </div>
+      <p class="desc" style="margin:8px 0 0;">Rotina corrida, pouco tempo pra cozinhar todo dia → prioridade pra preparo em lote, congelamento e refeições rápidas. Toda refeição principal leva proteína + carboidrato + vegetal (+ gordura boa quando fizer sentido). Evitar desperdício — usar o que já tem em casa antes de comprar mais.</p>
+    </div>
+
+    <h2 class="h2">Água de hoje</h2>
+    <div class="card">
+      <div class="hydro-bar"><div class="hydro-fill" id="hydroFill" style="width:0%"></div></div>
+      <div class="progress" id="hydroLabel">0 ml de 3.500–4.000 ml</div>
+      <div class="hydro-controls">
+        <button class="btn" id="hydroMinus">− 250ml</button>
+        <button class="btn primary" id="hydroPlus">+ 250ml</button>
+      </div>
+    </div>
+
+    <h2 class="h2">Biblioteca de Refeições</h2>
+    <div class="subnav" id="refeicoesSubnav"></div>
+    <div id="refeicoesPanels"></div>
+
+    <h2 class="h2">Cardápio semanal</h2>
+    <div class="card" style="overflow-x:auto;">
+      <table class="menu" id="menuTable"></table>
+    </div>
+
+    <h2 class="h2">Lista de reposição</h2>
+    <div class="card listbox" id="box-reposicao"></div>
+
+    <div class="grid2">
+      <div>
+        <h2 class="h2">Freezer</h2>
+        <div class="card listbox" id="box-freezer"></div>
+      </div>
+      <div>
+        <h2 class="h2">Geladeira</h2>
+        <div class="card listbox" id="box-geladeira"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-treino">
+    <div class="callout"><span class="eyebrow">Seu treino</span><p>6× por semana · Foco em glúteo &amp; definição · Registro de evolução por 4 semanas. Regra geral de progressão: quando completar todas as reps com folga, suba cerca de +2kg.</p></div>
+    <div class="subnav" id="treinoSubnav"></div>
+    <div id="treinoDayPanels"></div>
+  </section>
+
+  <section class="panel" id="panel-espiritualidade">
+    <div class="callout"><span class="eyebrow">Como usar</span><p>As práticas seguem sua tradição e a orientação da sua casa religiosa; este espaço só organiza a rotina de conexão. Vela sempre em base estável, longe de cortinas, papéis, crianças e animais, e nunca acesa sem supervisão.</p></div>
+
+    <h2 class="h2">Oração de conexão com Ori e Pai Bará</h2>
+    <div class="card"><p class="prayer-text">Meu Ori, minha cabeça, meu guia interno, eu te saúdo com respeito. Que hoje eu esteja firme, lúcida e alinhada com aquilo que é verdadeiro para mim. Que meus pensamentos sejam claros, minhas escolhas conscientes e minhas atitudes honrem quem estou me tornando. Meu Pai Bará, eu me coloco diante da sua força com amor, respeito e gratidão. Quero me aproximar com verdade, não apenas para pedir, mas para aprender a caminhar. Que meu Ori esteja firme, equilibrado e protegido. Que eu tenha clareza para reconhecer os caminhos certos, coragem para agir e sabedoria para não me perder da minha essência. Ensina-me a viver com honra, responsabilidade e presença. Fortalece minha palavra, meu caráter e minha coragem. Que eu saiba prosperar sem perder a humildade, cuidar dos meus sem me abandonar e honrar sua força em meus pensamentos, palavras e atitudes. Gratidão pela vida, pela proteção e por mais um dia de caminhada.</p></div>
+
+    <h2 class="h2">Oração aos Exus</h2>
+    <div class="card"><p class="prayer-text">Meus Exus, guardiões dos meus caminhos, firmo esta luz com respeito e gratidão pela presença, pela proteção e pelos livramentos reconhecidos e não reconhecidos. Que eu tenha clareza para perceber sinais, firmeza para seguir o caminho certo e coragem para fechar as portas que não me pertencem. Que minha casa, minha família e meu propósito sejam guardados conforme a justiça espiritual. Que eu caminhe pela verdade, coragem e sabedoria, e não pelo medo ou pela impulsividade. Gratidão pelos caminhos protegidos e pela intuição desperta. Laroyê, meus Exus.</p></div>
+
+    <h2 class="h2">Oração ao Povo Cigano</h2>
+    <div class="card"><p class="prayer-text">Povo Cigano de luz, firmo esta vela verde com respeito e gratidão. Que a prosperidade caminhe comigo de forma limpa, honesta, leve e abundante. Que eu reconheça oportunidades, tenha coragem para agir e responsabilidade para administrar o que chega às minhas mãos. Que não me falte o necessário para viver bem, cuidar da minha família, desfrutar, ajudar e transformar. Que minha casa seja próspera, minha mesa farta e meus projetos floresçam alinhados ao bem, à verdade e à luz. Gratidão ao Povo Cigano.</p></div>
+
+    <h2 class="h2">Minhas afirmações</h2>
+    <div class="card">
+      <div class="field">
+        <label class="field-label">Nova afirmação</label>
+        <textarea id="afirmacaoTexto" rows="2" placeholder="Escreva uma afirmação…"></textarea>
+      </div>
+      <button class="btn primary" id="btnSalvarAfirmacao">Salvar afirmação</button>
+      <div class="entries" id="afirmacoesList" style="margin-top:14px;"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-resumo">
+    <div class="callout"><span class="eyebrow">Seu progresso</span><p>Constância vence intensidade — este resumo mostra o padrão dos últimos dias, não a perfeição de um único dia.</p></div>
+
+    <div class="statgrid">
+      <div class="card">
+        <h3 class="h3" style="margin-top:0;">Constância — últimos 7 dias</h3>
+        <div class="donutwrap">
+          <div class="donut" id="donutConstancia"><div class="donut-inner"><span class="num" id="donutConstanciaNum">0%</span><span class="lbl">rotina completa</span></div></div>
+        </div>
+        <p class="donutcap">Média entre manhã essencial, noite prepara a manhã e fechamento do trabalho.</p>
+      </div>
+      <div class="card">
+        <h3 class="h3" style="margin-top:0;">Sequência atual</h3>
+        <div class="streakbig">
+          <div class="num" id="streakNum">0</div>
+          <div class="lbl" id="streakLbl">dias seguidos com fechamento diário registrado</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="h2">Rotina — últimos 7 dias</h2>
+    <div class="card">
+      <div class="statbar">
+        <div class="row"><span>Manhã essencial</span><b id="pctManha">0%</b></div>
+        <div class="track"><div class="fill" id="fillManha" style="width:0%"></div></div>
+      </div>
+      <div class="statbar">
+        <div class="row"><span>Noite prepara a manhã</span><b id="pctNoite">0%</b></div>
+        <div class="track"><div class="fill" id="fillNoite" style="width:0%"></div></div>
+      </div>
+      <div class="statbar">
+        <div class="row"><span>Fechamento do trabalho</span><b id="pctFechamento">0%</b></div>
+        <div class="track"><div class="fill" id="fillFechamento" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <h2 class="h2">Caderno de Descoberta</h2>
+    <div class="card">
+      <div class="statbar" style="margin-bottom:16px;">
+        <div class="row"><span>Perguntas respondidas</span><b id="pctDiario">0/85</b></div>
+        <div class="track"><div class="fill" id="fillDiario" style="width:0%"></div></div>
+      </div>
+      <div class="minibars" id="minibarsDiario"></div>
+    </div>
+
+    <h2 class="h2">Energia — média dos últimos 7 dias</h2>
+    <div class="card">
+      <div class="grid3" id="energiaMedias"></div>
+    </div>
+
+    <h2 class="h2">Cardápio da semana</h2>
+    <div class="card">
+      <div class="statbar">
+        <div class="row"><span>Refeições preenchidas</span><b id="pctCardapio">0/42</b></div>
+        <div class="track"><div class="fill" id="fillCardapio" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <h2 class="h2">Treino</h2>
+    <div class="card">
+      <div class="statbar">
+        <div class="row"><span>Exercícios com carga registrada</span><b id="pctTreino">0/0</b></div>
+        <div class="track"><div class="fill" id="fillTreino" style="width:0%"></div></div>
+      </div>
+      <p class="desc" style="margin-top:12px;margin-bottom:0;" id="treinoSemanaResumo"></p>
+    </div>
+  </section>
+
+  <footer class="foot">&ldquo;Constância vence intensidade.&rdquo; — Sistema Operacional da Ana</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const CL_MANHA = ["Água","Higiene e autocuidado","Café","Conexão espiritual","Escrita breve","Prioridade do dia","Estudo / investimento em si","Transição para casa e trabalho"];
+const CL_NOITE = ["Pia e bancadas no mínimo funcional","Lixo retirado quando necessário","Varanda varrida e mesa limpa","Escritório utilizável e mesa pronta","Mamadeiras encaminhadas conforme rotina de higiene","Almoço definido e itens descongelando na geladeira","Garrafa de água cheia","Roupa e materiais de estudo separados","Roupa de treino preparada","Prioridade de amanhã registrada"];
+const CL_FECHAMENTO = ["Registrar o ponto de parada e a próxima ação física","Atualizar a prioridade de amanhã","Deixar mesa e materiais prontos","Encerrar mentalmente o expediente antes de entrar na noite familiar"];
+
+const DIAS = ["Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"];
+const REFEICOES = ["Café","Lanche","Almoço / prato Ana","Mini-refeição","Jantar","Descongelar"];
+
+const BLOCOS = [
+["D.1","A Ana que eu vejo daqui a cinco anos",[
+"Quando imagino a Ana daqui a cinco anos, qual é a primeira imagem que aparece?",
+"Quem é essa mulher quando ninguém está olhando?",
+"Como ela acorda e quais são os primeiros sentimentos do dia?",
+"Como ela cuida do corpo, da aparência e da saúde?",
+"Como ela se veste e o que sua presença comunica?",
+"Como ela fala, toma decisões e estabelece limites?",
+"Como ela trabalha e qual impacto gera nas pessoas?",
+"Como ela se relaciona com Thiago?",
+"Como ela se relaciona com Alan e com os filhos?",
+"Como ela trata a si mesma nos dias bons e nos dias difíceis?",
+"O que ela faz quando chega em casa?",
+"Como é a casa em que ela vive e o que esse ambiente faz a família sentir?",
+"Como é sua relação com dinheiro, liberdade, conforto e prosperidade?",
+"Que paz ela sente e o que precisou aprender para chegar até ela?"]],
+["D.2","A Ana de hoje — ponto de partida",[
+"Quem sou eu hoje, sem diminuir minhas forças nem esconder minhas dificuldades?",
+"O que mais consome minha energia atualmente?",
+"Quando a vida aperta, qual cuidado comigo costuma ser abandonado primeiro?",
+"Em quais momentos eu me sinto mais viva, inteira e parecida comigo?",
+"O que tenho feito por obrigação, medo, culpa ou desejo de agradar?",
+"Quais necessidades minhas venho adiando?",
+"Do que me orgulho na Ana executora?",
+"O que a Ana que sabe viver precisa reaprender?",
+"Que parte de mim está pedindo descanso, proteção ou espaço?",
+"Se eu pudesse aliviar apenas um peso agora, qual seria?"]],
+["D.3","Identidade, valores e limites",[
+"Quais valores quero que conduzam minha vida, mesmo quando ninguém me cobra?",
+"O que é inegociável para minha saúde, dignidade e paz?",
+"Que papéis desempenho e em quais deles costumo desaparecer de mim?",
+"O que significa, na prática, colocar a Ana na lista de prioridades?",
+"Para quais situações preciso aprender a dizer não?",
+"Que tipo de cobrança não quero mais usar contra mim?",
+"Como reconheço que estou sendo constante, mesmo sem perfeição?",
+"O que sucesso significa para mim além de peso, dinheiro e produtividade?"]],
+["D.4","Corpo, saúde e energia",[
+"Como me sinto hoje dentro do meu corpo?",
+"O que meu corpo vem tentando me dizer por meio do cansaço, fome, sono ou desconfortos?",
+"Que relação quero construir com alimentação e prazer?",
+"Como quero me sentir antes, durante e depois de comer?",
+"Que movimentos ou treinos me devolvem energia?",
+"O que atrapalha meu sono e o que está sob meu controle melhorar?",
+"Quais sinais indicam que preciso reduzir o ritmo?",
+"Que cuidados de saúde precisam de acompanhamento profissional ou exames?",
+"Como seria uma semana saudável que ainda coubesse na minha vida real?"]],
+["D.5","Tempo, rotina, casa e carga mental",[
+"Como seria uma manhã possível que me preparasse, sem me cobrar perfeição?",
+"Quais decisões repetidas mais cansam minha mente?",
+"O que pode virar rotina, checklist, estoque ou preparo antecipado?",
+"O que posso delegar, simplificar, cancelar ou fazer com menor frequência?",
+"Quais ambientes me trazem paz e quais aumentam meu caos?",
+"Como desejo que minha casa sirva à vida da família?",
+"Qual é a versão mínima do meu dia quando Alan não dorme ou tudo sai do controle?",
+"Como quero encerrar o trabalho e entrar no tempo da família?"]],
+["D.6","Família, amor e presença",[
+"Que esposa desejo ser sem deixar de ser eu?",
+"Que mãe desejo ser e quais memórias quero construir com Alan?",
+"O que presença significa para mim nos momentos simples?",
+"Que conversas, pedidos de ajuda ou acordos familiares estão faltando?",
+"Como posso amar minha família sem assumir sozinha tudo o que pertence a todos?",
+"Que tradições ou pequenos rituais quero criar em casa?"]],
+["D.7","Propósito, carreira e prosperidade",[
+"Que transformação desejo provocar nas pessoas por meio do meu trabalho?",
+"Quais talentos meus aparecem repetidamente em tudo o que faço?",
+"O que eu faria mesmo que ninguém aplaudisse?",
+"Que projetos pertencem ao meu propósito e quais apenas ocupam espaço?",
+"Como quero trabalhar sem permitir que o trabalho consuma a Ana inteira?",
+"O que liberdade financeira representa concretamente para mim?",
+"Que conhecimento, habilidade ou coragem preciso desenvolver agora?",
+"Qual legado desejo deixar para minha família e para outras mulheres?"]],
+["D.8","Espiritualidade e reencontro",[
+"Como reconheço minha conexão espiritual no cotidiano?",
+"Quais práticas me devolvem ao centro?",
+"O que preciso entregar, agradecer, pedir ou perdoar?",
+"Como minha fé pode apoiar meu descanso, e não virar mais uma cobrança?",
+"Em quais momentos sinto que estou alinhada com minha essência?",
+"Que frase, oração ou verdade quero levar comigo nesta fase?"]],
+["D.9","Manual pessoal para dias difíceis",[
+"Como percebo que estou entrando em sobrecarga antes de chegar ao limite?",
+"O que realmente me ajuda quando estou cansada, ansiosa ou sem direção?",
+"Quem posso procurar e que ajuda concreta posso pedir?",
+"Qual é minha refeição de segurança quando não consigo cozinhar?",
+"Qual é meu ritual mínimo de autocuidado em dez minutos?",
+"O que não devo decidir quando estou exausta, faminta ou emocionalmente abalada?",
+"Que palavras preciso ouvir de mim mesma depois de um dia ruim?",
+"Qual é o primeiro passo para voltar ao caminho sem esperar segunda-feira?"]],
+["D.10","Primeira temporada — próximos 90 dias",[
+"Qual transformação mais importante desejo sentir nos próximos 90 dias?",
+"Quais três resultados seriam evidências reais de progresso?",
+"Quais três hábitos merecem prioridade nesta temporada?",
+"O que não será prioridade agora, mesmo sendo uma boa ideia?",
+"Que apoio, recursos ou organização preciso providenciar?",
+"Como vou medir energia, alimentação, treino, sono e bem-estar sem obsessão?",
+"Que dificuldade previsível pode me tirar do caminho e qual será meu plano de proteção?",
+"Como quero celebrar a constância ao final desta temporada?"]]
+];
+
+const TREINO_DIAS = [
+{id:"seg", emoji:"🍑", nome:"Segunda-feira", foco:"Glúteo A + Posterior de coxa",
+ cardioBanner:"Aquecimento: 10 min de escada, ritmo moderado — ativa o glúteo antes de qualquer exercício. Novo: protocolo de respiração/core antes de pegar peso (2 min).",
+ exercicios:[
+  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8–10 respirações lentas", safe:true, tip:"Antes de começar: deitada ou sentada, mãos nas costelas. Inspire pelo nariz expandindo as costelas para os lados (não estufe a barriga para frente). Expire soltando todo o ar e puxando o umbigo suavemente em direção à coluna, sem prender a respiração. Segure a contração leve por 3–5 segundos e solte. Prepara o core para estabilizar os exercícios de hoje."},
+  {nome:"Hip Thrust — Máquina ou Barra", sets:"4 séries × 15 reps · 2 segundos no topo", tip:"Sente no chão com as costas apoiadas no banco, barra/almofada no quadril. Empurre o quadril para cima até o corpo ficar reto. Segure 2 segundos contraindo forte o glúteo no topo. Desça devagar. Joelhos alinhados com os pés."},
+  {nome:"Agachamento Livre ou Smith", sets:"4 séries × 12 reps · Sentar fundo, pausa no fundo", tip:"Pés na largura dos ombros ou um pouco mais abertos. Desça como se fosse sentar numa cadeira baixa, mantendo o peito aberto e joelhos apontando para fora. Desça até as coxas ficarem paralelas ao chão (ou abaixo). Adicione uma pausa de 1–2 segundos no fundo — aumenta o tempo sob tensão do glúteo sem precisar de mais carga ou volume. Sobe empurrando o chão."},
+  {nome:"Stiff com Halteres", sets:"3 séries × 12 reps · Sente o alongamento", tip:"Em pé, segure os halteres na frente das coxas. Desça deslizando os halteres pelas pernas, mantendo as costas retas e os joelhos levemente dobrados. Pare quando sentir o alongamento no posterior da coxa. Sobe contraindo o glúteo."},
+  {nome:"Cadeira Flexora", sets:"3 séries × 15 reps · Posterior isolado", tip:"Sentada ou deitada na máquina, pés sob o rolo. Puxe os calcanhares em direção às nádegas com força e contraia no topo por 1 segundo. Volta devagar (fase excêntrica = onde o músculo cresce!)."},
+  {nome:"Afundo Reverso com Halteres", sets:"3 séries × 12 reps cada perna", tip:"Em pé, dê um passo para trás (não para frente) e desça até o joelho de trás quase tocar o chão. O joelho da frente fica alinhado com o tornozelo, sem passar da ponta do pé. Empurre pelo calcanhar da frente para voltar. O passo para trás reduz a sobrecarga no joelho da frente e aumenta a ativação do glúteo em relação ao afundo tradicional."},
+  {nome:"Abdução no Cabo ou Máquina", sets:"3 séries × 20 reps · Lateral do glúteo", tip:"Na máquina de abdução: sente com as almofadas na parte externa das coxas e empurre para fora. No cabo: fica de lado, tornozeira no tornozelo de fora, eleva a perna lateralmente mantendo o tronco estável. Esse exercício define o glúteo lateral (elimina o \\u201cbalão\\u201d)."}
+ ],
+ cardio:{titulo:"🏃 Escada HIIT — 20 minutos", linhas:[["0–3 min","Aquecimento — ritmo confortável, nível baixo"],["3–7 min","40s rápido/intenso + 20s lento. Repete 4×"],["7–12 min","Ritmo moderado constante — nível médio"],["12–17 min","40s intenso + 20s lento. Repete 4×"],["17–20 min","Desaceleração — ritmo lento para recuperar"]]}
+},
+{id:"ter", emoji:"💪", nome:"Terça-feira", foco:"Costas + Bíceps · Postura e cintura definida",
+ exercicios:[
+  {nome:"Puxada Frontal — Pegada Larga", sets:"4 séries × 12 reps · Costas largas", tip:"Sente na máquina, segure a barra com pegada mais larga que os ombros. Puxe em direção ao peito, abrindo os cotovelos para baixo e para os lados. Imagine que você está tentando dobrar a barra ao meio. Sobe devagar controlando o movimento."},
+  {nome:"Remada Curvada — Barra ou Halteres", sets:"3 séries × 12 reps · Costas média e lombar", tip:"Incline o tronco ~45°, costas retas. Puxe a barra/halteres em direção ao umbigo, cotovelos próximos ao corpo. Esprema as escápulas juntas no topo. Não balance o tronco — o movimento é só dos braços."},
+  {nome:"Remada Cavalinho (Baixa no Cabo)", sets:"3 séries × 15 reps · Costas baixas", tip:"Sentada no banco baixo, pés apoiados, segure o triângulo do cabo. Puxe em direção ao abdômen mantendo as costas eretas. Cotovelos passam do tronco para trás. Pausa de 1 segundo. Estende os braços controlando."},
+  {nome:"Rosca Direta com Barra", sets:"3 séries × 12 reps · Bíceps", tip:"Em pé, cotovelos fixos ao lado do corpo. Suba a barra dobrando os cotovelos, sem balançar o tronco. Contraia o bíceps no topo por 1 segundo. Desce devagar (conta até 3 na descida)."},
+  {nome:"Rosca Martelo", sets:"3 séries × 12 reps · Bíceps + braquial", tip:"Segure os halteres com as palmas voltadas uma para a outra (posição neutra, como se segurasse um martelo). Suba um halter de cada vez ou os dois juntos. Não rotacione o pulso. Esse movimento define o músculo do lado do braço."},
+  {nome:"Bird Dog", sets:"3 séries × 8 reps cada lado · A partir da semana 2", safe:true, tip:"De quatro apoios, mãos sob os ombros e joelhos sob o quadril. Estenda o braço direito à frente e a perna esquerda para trás ao mesmo tempo, mantendo a coluna neutra (sem arquear a lombar). Segure 2 segundos contraindo o core. Volta controlada e troca de lado. Trabalha estabilidade lombar sem pressionar a linha média — seguro para diástase."}
+ ],
+ cardio:{titulo:"🏃 Esteira HIIT — 25 minutos", linhas:[["0–5 min","Caminhada inclinação 5%, velocidade 5–6 km/h"],["5–20 min","1 min corrida (8–10 km/h) + 1 min caminhada (5 km/h). Repete 7–8×"],["20–25 min","Caminhada leve, inclinação 3%, voltando ao normal"]]}
+},
+{id:"qua", emoji:"🦵", nome:"Quarta-feira", foco:"Quadríceps + Panturrilha + Glúteo bônus",
+ cardioBanner:"Novidade: Adicionamos 2 exercícios de glúteo no final — você não perde nenhum dia de estimulação do músculo foco!",
+ exercicios:[
+  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8–10 respirações lentas", safe:true, tip:"Mesmo protocolo de segunda-feira: inspire expandindo as costelas, expire puxando o umbigo em direção à coluna, segure 3–5 segundos. A ativação prévia melhora a estabilidade da lombar no leg press e no agachamento sumô."},
+  {nome:"Leg Press 45°", sets:"4 séries × 15 reps · Pés médios", tip:"Sente no leg press, pés na plataforma na altura dos ombros. Solte as travas e desça controlado até o joelho fazer ~90°. Não deixe o joelho entrar para dentro. Empurre de volta sem travar o joelho no topo."},
+  {nome:"Cadeira Extensora", sets:"4 séries × 15 reps · Quadríceps isolado", tip:"Sente na máquina, joelhos na borda, rolo sobre os tornozelos. Estenda as pernas até ficarem retas, contraindo forte a coxa no topo por 1 segundo. Desce devagar. Atenção: se tiver dor no joelho, reduza a carga e o alcance do movimento."},
+  {nome:"Agachamento Sumô", sets:"3 séries × 12 reps · Pés bem abertos", tip:"Pés bem afastados (além da largura dos ombros), dedos apontando para fora ~45°. Desça mantendo o tronco ereto, joelhos alinhados com os dedos dos pés. Ativa muito adutores e glúteo. Segure um halter no centro se quiser carga."},
+  {nome:"Panturrilha em Pé", sets:"4 séries × 20 reps · Na máquina ou livre", tip:"Em pé na máquina ou no degrau, sobe na ponta do pé o mais alto possível. Segura 1 segundo no topo. Desce até sentir alongamento no calcanhar. Movimento lento e controlado. Para mais intensidade: faça com uma perna de cada vez."},
+  {nome:"Ponte de Glúteo com Peso", sets:"3 séries × 20 reps · Rápido mas controlado", tip:"Deitada no chão, joelhos dobrados, pés apoiados. Coloque um halter ou anilha no quadril. Eleve o quadril contraindo o glúteo forte. Mantenha 1 segundo no topo. Desce sem tocar o chão entre as reps."},
+  {nome:"Cadeira Flexora", sets:"3 séries × 15 reps · Posterior complementar", tip:"Mesmo exercício da segunda-feira. Puxe os calcanhares em direção às nádegas com contração no topo por 1 segundo. Desce devagar. Aqui a carga pode ser um pouco menor que na segunda — o músculo já está mais fatigado da semana."}
+ ],
+ cardio:{titulo:"🚶 Caminhada Inclinada — 15 minutos", linhas:[["15 min","Esteira inclinação 8–10%, velocidade 5–6 km/h. Sem correr — pernas já foram muito exigidas. Queima gordura sem catabolismo muscular."]]}
+},
+{id:"qui", emoji:"✨", nome:"Quinta-feira", foco:"Ombro + Tríceps + Core (diastase-seguro)",
+ cardioBanner:"Core adaptado pós-parto: substituímos abdominal infra tradicional por exercícios diastase-seguros. Se já tiver avaliação médica confirmando fechamento, pode voltar ao original.",
+ exercicios:[
+  {nome:"Desenvolvimento com Halteres", sets:"3 séries × 12 reps · Ombro redondo", tip:"Sentada ou em pé, halteres na altura dos ombros com cotovelos dobrados. Empurre para cima até os braços quase esticarem. Não arquee as costas. Desce devagar até a altura dos ombros. Mantém o core contraído durante todo o movimento."},
+  {nome:"Elevação Lateral", sets:"3 séries × 15 reps · Ombros definidos", tip:"Em pé, halteres ao lado do corpo. Eleve os braços lateralmente até a altura dos ombros, cotovelos levemente dobrados. Imagine despejar água de uma jarra — polegar levemente abaixado. Desce devagar. Não balance o tronco."},
+  {nome:"Tríceps Corda no Cabo", sets:"3 séries × 15 reps · Braços sem flacidez", tip:"De frente para o cabo alto, segure a corda com os dois lados. Cotovelos fixos ao lado do corpo. Puxe a corda para baixo abrindo as pontas para os lados no final. Espreme o tríceps no fundo por 1 segundo. Sobe devagar."},
+  {nome:"Tríceps Francês (Testa) com Halteres", sets:"3 séries × 15 reps · Alonga e define", tip:"Deitada ou sentada, halteres acima da cabeça com os braços estendidos. Dobre apenas os cotovelos, descendo os halteres atrás da cabeça, mantendo os braços fixos. Estenda de volta contraindo o tríceps no topo. Alonga bem a cabeça longa do tríceps — a parte de trás do braço que mais incomoda com flacidez — trazendo mais definição do que movimentos que só empurram para baixo."},
+  {nome:"Dead Bug", sets:"3 séries × 10 reps cada lado · Lento", safe:true, tip:"Deitada de costas, braços esticados para cima, joelhos dobrados a 90° no ar. Expire e abaixe o braço direito e a perna esquerda simultaneamente, mantendo a lombar colada no chão. Se a lombar levantar, pare ali. Volta e troca. Trabalha core profundo sem pressionar a diastase."},
+  {nome:"Prancha Frontal", sets:"3 séries × 30–45 segundos", safe:true, tip:"Apoiada nos antebraços e pontas dos pés. Corpo em linha reta da cabeça aos calcanhares. Puxe o umbigo em direção à coluna (vacuum) durante a prancha — isso ativa o core profundo e é seguro para diastase. Respire normalmente. Não deixe o quadril cair."},
+  {nome:"Pallof Press", sets:"3 séries × 10 reps cada lado · A partir da semana 3", safe:true, tip:"De pé, de lado para o cabo ou elástico preso na altura do peito. Segure com as duas mãos perto do esterno e empurre os braços para a frente, resistindo à rotação do tronco — o corpo fica parado, sem girar. Segure 2 segundos estendida e volte. Fortalece o core de forma isométrica, sem criar volume na cintura — ideal para afinar sem alargar."},
+  {nome:"Vacuum Abdominal", sets:"3 × 30 segundos · Em pé ou de joelhos", safe:true, tip:"Expire todo o ar dos pulmões. Puxe o umbigo em direção à coluna e para cima. Segure sem prender a respiração (respire suavemente pelo nariz). Solte e repita. Esse exercício fecha a diastase e afina a cintura. Faça até no trabalho!"}
+ ],
+ cardio:{titulo:"🏃 Escada ou Esteira HIIT — 20 min", linhas:[["20 min","Protocolo da segunda-feira (escada) ou da terça (esteira). Quinta é dia de membros superiores — cardio pesado aqui não atrapalha a recuperação de pernas."]]}
+},
+{id:"sex", emoji:"🍑", nome:"Sexta-feira", foco:"Glúteo B + Adutores · Volume e altura",
+ exercicios:[
+  {nome:"Glúteo 4 Apoios — Cabo ou Elástico", sets:"4 séries × 15 reps cada perna · Glúteo alto!", tip:"De quatro apoios no chão (joelhos e mãos), tornozeira no cabo ou elástico no tornozelo. Chute a perna para trás e para cima, mantendo o joelho dobrado a 90°. Leve o calcanhar para o teto. Contraia o glúteo no topo por 1 segundo. Não balance o quadril."},
+  {nome:"Ponte de Glúteo com Carga", sets:"4 séries × 20 reps · Halter ou barra no quadril", tip:"Deitada, coloque um halter ou anilha sobre o quadril (segure com as mãos). Pés apoiados, joelhos dobrados. Eleve o quadril contraindo forte o glúteo. No topo: corpo forma linha reta do ombro ao joelho. 1 segundo. Desce sem tocar o chão entre as reps."},
+  {nome:"Adutora na Máquina", sets:"3 séries × 20 reps · Parte interna da coxa", tip:"Sentada na máquina, almofadas na parte interna das coxas, pernas abertas. Feche as pernas trazendo os joelhos juntos com força. Contraia no fechamento por 1 segundo. Abre devagar (fase excêntrica importante). Não deixe as pernas baterem."},
+  {nome:"Passada Lateral com Halteres", sets:"3 séries × 12 reps cada lado", tip:"Em pé com halteres. Dê um passo largo para o lado, dobrando o joelho da perna que foi para o lado enquanto a outra fica reta. Quadril vai para trás como um mini agachamento lateral. Empurre o chão para voltar à posição inicial. Alterna os lados."},
+  {nome:"Glúteo no Cabo (Donkey Kick)", sets:"3 séries × 15 reps cada perna · Glúteo alto e arredondado", tip:"Prenda a tornozeleira no cabo baixo da polia. Fique de quatro apoios de frente para a máquina, com o cabo preso no tornozelo. Empurre a perna para trás e para cima, como um chute, mantendo o joelho dobrado a 90°. Contraia o glúteo no topo por 1 segundo. Sem cabo, use um elástico de resistência preso em algo firme e baixo."},
+  {nome:"Farmer Walk", sets:"3 séries × 20–30 metros · A partir da semana 4", tip:"Segure um halter pesado em cada mão, braços ao lado do corpo. Caminhe em ritmo controlado mantendo a postura ereta, ombros para trás e abdômen levemente contraído — sem deixar o tronco balançar. Finalizador funcional: integra postura, ativação de core e glúteo treinados na semana num movimento real."}
+ ],
+ cardio:{titulo:"🚶 Escada Leve — 10 minutos", linhas:[["10 min","Escada em ritmo confortável. Sem HIIT — glúteo e pernas estão muito trabalhados. O objetivo é manter o fluxo sanguíneo e auxiliar a recuperação."]]}
+},
+{id:"sab", emoji:"🔥", nome:"Sábado", foco:"Full Body Leve ou Pilates / Spinning", isSabado:true,
+ opcoes:[
+  ["Opção A","Full Body Leve — 1 exercício de cada grupo muscular, cargas mais leves (60% do normal). Foco em técnica e ativação. Ótimo para semanas de alta demanda."],
+  ["Opção B","Pilates / Spinning — Pilates GAP 3× por semana se possível aqui. Ótimo para core, postura e diastase. Spinning se quiser queima calórica leve."],
+  ["Opção C","Descanso ativo — Caminhada ao ar livre 30–40 min, natação ou alongamento. O corpo precisa de recuperação para crescer."]
+ ]
+}
+];
+
+/* ============================================================
+   LOCAL STORAGE HELPERS (dados ficam salvos neste navegador/aparelho)
+   ============================================================ */
+function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function fmtDate(s){ const [y,m,d]=s.split("-"); return d+"/"+m+"/"+y; }
+function toast(msg, isErr){ const t=document.getElementById("toast"); t.textContent=msg; t.className="toast show"+(isErr?" err":""); setTimeout(()=>t.classList.remove("show"),2200); }
+
+function loadKey(key, fallback){
+  try{
+    const v = localStorage.getItem("soa_"+key);
+    return v !== null ? JSON.parse(v) : fallback;
+  }catch(e){
+    return fallback;
+  }
+}
+function saveKey(key, val){
+  try{
+    localStorage.setItem("soa_"+key, JSON.stringify(val));
+    return true;
+  }catch(e){
+    toast("Não foi possível salvar. O armazenamento do navegador pode estar cheio.", true);
+    return false;
+  }
+}
+
+/* ============================================================
+   STATE (loaded once at startup, kept in memory, persisted on change)
+   ============================================================ */
+let rotina = {}, diario = {}, energia = [], cardapio = null, reposicao = [], freezer = [], geladeira = [], afirmacoes = [];
+let treinoCargas = {}, treinoNotas = {}, treinoSummary = {}, treinoSemanal = [];
+let planejamento = [];
+let treinoActiveDay = "seg";
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+    if(btn.dataset.tab === "resumo") renderResumo();
+    if(btn.dataset.tab === "hoje") renderHistorico();
+  });
+});
+
+/* ============================================================
+   HOJE — checklists
+   ============================================================ */
+function ensureToday(){
+  const t = todayStr();
+  if(!rotina[t]) rotina[t] = {manha:[], noite:[], fechamento:[], texto:""};
+  return rotina[t];
+}
+function renderChecklist(ulId, progId, items, key){
+  const ul = document.getElementById(ulId);
+  const state = ensureToday();
+  ul.innerHTML = "";
+  items.forEach((label,i)=>{
+    const li = document.createElement("li");
+    const checked = !!state[key][i];
+    if(checked) li.classList.add("done");
+    const id = ulId+"-"+i;
+    li.innerHTML = `<input type="checkbox" id="${id}" ${checked?"checked":""}><label for="${id}">${label}</label>`;
+    li.querySelector("input").addEventListener("change",(e)=>{
+      state[key][i] = e.target.checked;
+      saveKey("rotina", rotina);
+      li.classList.toggle("done", e.target.checked);
+      updateProgress(progId, items, state[key]);
+    });
+    ul.appendChild(li);
+  });
+  updateProgress(progId, items, state[key]);
+}
+function updateProgress(progId, items, arr){
+  const done = items.reduce((n,_,i)=> n + (arr[i]?1:0), 0);
+  document.getElementById(progId).textContent = `${done} de ${items.length} concluídos hoje`;
+}
+function renderHoje(){
+  const state = ensureToday();
+  renderChecklist("cl-manha","prog-manha",CL_MANHA,"manha");
+  renderChecklist("cl-noite","prog-noite",CL_NOITE,"noite");
+  renderChecklist("cl-fechamento","prog-fechamento",CL_FECHAMENTO,"fechamento");
+  document.getElementById("fechamentoTexto").value = state.texto || "";
+  renderHistorico();
+}
+function lastNDates(n){
+  const out = [];
+  const d = new Date();
+  for(let i=0;i<n;i++){
+    out.push(d.toISOString().slice(0,10));
+    d.setDate(d.getDate()-1);
+  }
+  return out; // today first, going backward
+}
+function renderHistorico(){
+  const box = document.getElementById("historicoFechamentos");
+  if(!box) return;
+  const dates = lastNDates(14).filter(d=> d!==todayStr());
+  const withText = dates
+    .map(d=> ({date:d, texto: rotina[d] && rotina[d].texto ? rotina[d].texto : ""}))
+    .filter(e=> e.texto.trim() !== "");
+  if(withText.length===0){
+    box.innerHTML = `<div class="histempty">Ainda não há fechamentos de dias anteriores. O que você registrar hoje vai aparecer aqui a partir de amanhã.</div>`;
+    return;
+  }
+  box.innerHTML = withText.map(e=> `<div class="histitem"><span class="date">${fmtDate(e.date)}</span><span class="txt">${e.texto}</span></div>`).join("");
+}
+document.getElementById("btnSalvarFechamento").addEventListener("click", async ()=>{
+  const btn = document.getElementById("btnSalvarFechamento");
+  btn.disabled = true;
+  const state = ensureToday();
+  state.texto = document.getElementById("fechamentoTexto").value;
+  const ok = await saveKey("rotina", rotina);
+  btn.disabled = false;
+  if(ok){
+    document.getElementById("fechamentoSalvo").textContent = "Salvo às " + new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    toast("Fechamento salvo");
+  }
+});
+
+/* ============================================================
+   DIARIO
+   ============================================================ */
+function blocoAnsweredCount(code, qs){
+  return qs.filter((_,i)=> (diario[code+"-"+i]||[]).length>0 ).length;
+}
+function diarioContainer(){
+  const root = document.getElementById("diarioBlocos");
+  root.innerHTML = "";
+  let qn = 1;
+  BLOCOS.forEach(([code,title,qs])=>{
+    const det = document.createElement("details");
+    det.className = "bloco";
+    det.id = "bloco-"+code;
+    const answered = blocoAnsweredCount(code, qs);
+    det.innerHTML = `<summary>${code} · ${title} <span class="count" id="count-${code}">${answered}/${qs.length} respondidas</span></summary>`;
+    const body = document.createElement("div");
+    body.className = "bloco-body";
+    qs.forEach((q,i)=>{
+      const qid = code+"-"+i;
+      const wrap = document.createElement("div");
+      wrap.className = "question";
+      wrap.innerHTML = `
+        <div class="qtext"><b>${qn}.</b>${q}</div>
+        <textarea rows="3" placeholder="Escreva sua resposta…" data-qid="${qid}"></textarea>
+        <div class="qactions"><button class="btn primary btnSave" data-qid="${qid}" data-code="${code}" data-total="${qs.length}">Salvar resposta datada</button></div>
+        <div class="entries" data-qid="${qid}"></div>
+      `;
+      body.appendChild(wrap);
+      qn++;
+    });
+    det.appendChild(body);
+    root.appendChild(det);
+  });
+  root.querySelectorAll(".btnSave").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const qid = btn.dataset.qid;
+      const ta = root.querySelector(`textarea[data-qid="${qid}"]`);
+      const text = ta.value.trim();
+      if(!text) return;
+      btn.disabled = true;
+      if(!diario[qid]) diario[qid] = [];
+      diario[qid].unshift({date: todayStr(), text});
+      const ok = await saveKey("diario", diario);
+      btn.disabled = false;
+      if(!ok){ diario[qid].shift(); return; }
+      ta.value = "";
+      renderEntries(qid);
+      const countEl = document.getElementById("count-"+btn.dataset.code);
+      if(countEl) countEl.textContent = blocoAnsweredCount(btn.dataset.code, BLOCOS.find(b=>b[0]===btn.dataset.code)[2]) + "/" + btn.dataset.total + " respondidas";
+      toast("Resposta salva");
+    });
+  });
+  root.querySelectorAll(".entries").forEach(box=> renderEntries(box.dataset.qid));
+}
+function renderEntries(qid){
+  const box = document.querySelector(`.entries[data-qid="${qid}"]`);
+  if(!box) return;
+  const entries = diario[qid] || [];
+  box.innerHTML = entries.map((e,idx)=>`
+    <div class="entry">
+      <span class="del" data-qid="${qid}" data-idx="${idx}">excluir</span>
+      <span class="date">${fmtDate(e.date)}</span>${e.text}
+    </div>`).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const removed = diario[d.dataset.qid].splice(+d.dataset.idx,1);
+      const ok = await saveKey("diario", diario);
+      if(!ok){ diario[d.dataset.qid].splice(+d.dataset.idx,0,removed[0]); }
+      renderEntries(d.dataset.qid);
+    });
+  });
+}
+
+/* ============================================================
+   ENERGIA
+   ============================================================ */
+document.getElementById("btnSalvarEnergia").addEventListener("click", async ()=>{
+  const btn = document.getElementById("btnSalvarEnergia");
+  btn.disabled = true;
+  const t = todayStr();
+  const entry = {
+    date: t,
+    sono: document.getElementById("e-sono").value,
+    energia: document.getElementById("e-energia").value,
+    humor: document.getElementById("e-humor").value,
+    foco: document.getElementById("e-foco").value,
+    fome: document.getElementById("e-fome").value,
+    compulsao: document.getElementById("e-compulsao").value,
+    agua: document.getElementById("e-agua").value,
+    treino: document.getElementById("e-treino").value,
+    estudo: document.getElementById("e-estudo").value,
+  };
+  const existing = energia.findIndex(e=>e.date===t);
+  const prevSnapshot = energia.slice();
+  if(existing>=0) energia[existing] = entry; else energia.unshift(entry);
+  energia.sort((a,b)=> a.date < b.date ? 1 : -1);
+  const ok = await saveKey("energia", energia);
+  btn.disabled = false;
+  if(!ok){ energia = prevSnapshot; return; }
+  document.getElementById("energiaSalvo").textContent = "Registrado";
+  toast("Energia de hoje registrada");
+  renderEnergia();
+});
+function renderEnergia(){
+  const last14 = energia.slice(0,14);
+  const bars = document.getElementById("energiaBars");
+  bars.innerHTML = last14.slice().reverse().map(e=>{
+    const v = Math.max(0, Math.min(10, Number(e.energia) || 0));
+    return `<div class="bar" style="height:${v*8}%"><span>${v||"–"}</span></div>`;
+  }).join("");
+  const table = document.getElementById("energiaTable");
+  table.innerHTML = `<tr><th>Data</th><th>Sono</th><th>Energia</th><th>Humor</th><th>Foco</th><th>Fome</th><th>Compulsão</th><th>Água</th><th>Treino</th><th>Estudo</th><th></th></tr>` +
+    energia.map((e,idx)=>`<tr>
+      <td>${fmtDate(e.date)}</td><td>${e.sono||""}</td><td>${e.energia||""}</td><td>${e.humor||""}</td>
+      <td>${e.foco||""}</td><td>${e.fome||""}</td><td>${e.compulsao||""}</td><td>${e.agua||""}</td>
+      <td>${e.treino||""}</td><td>${e.estudo||""}</td>
+      <td class="del" data-idx="${idx}">✕</td></tr>`).join("");
+  table.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const removed = energia.splice(+d.dataset.idx,1);
+      const ok = await saveKey("energia", energia);
+      if(!ok){ energia.splice(+d.dataset.idx,0,removed[0]); }
+      renderEnergia();
+    });
+  });
+}
+
+/* ============================================================
+   BIBLIOTECA DE REFEIÇÕES
+   ============================================================ */
+const REFEICAO_CATS = [
+ {id:"cafe", nome:"Café da manhã", emoji:"☀️"},
+ {id:"pretreino", nome:"Pré-treino", emoji:"⚡"},
+ {id:"postreino", nome:"Pós-treino", emoji:"💪"},
+ {id:"almoco", nome:"Almoço", emoji:"🍽️"},
+ {id:"jantar", nome:"Jantar", emoji:"🌙"},
+ {id:"lanches", nome:"Lanches", emoji:"🥪"},
+ {id:"rapidas", nome:"Rápidas (10 min)", emoji:"⏱️"},
+ {id:"congelaveis", nome:"Congeláveis", emoji:"❄️"},
+ {id:"levar", nome:"Para levar", emoji:"🥡"},
+ {id:"emergencia", nome:"Emergência", emoji:"🆘"}
+];
+function defaultBiblioteca(){
+  return {
+    cafe:[
+      {nome:"Ovos mexidos + aveia com fruta", proteina:28, carbo:35, kcal:380, tempo:10, congela:false},
+      {nome:"Iogurte proteico + aveia + fruta", proteina:25, carbo:30, kcal:320, tempo:5, congela:false}
+    ],
+    pretreino:[
+      {nome:"Banana + whey", proteina:25, carbo:30, kcal:250, tempo:3, congela:false},
+      {nome:"Pão integral + ovo", proteina:15, carbo:25, kcal:250, tempo:8, congela:false}
+    ],
+    postreino:[
+      {nome:"Whey + fruta", proteina:25, carbo:25, kcal:220, tempo:3, congela:false},
+      {nome:"Frango + batata-doce + salada", proteina:35, carbo:35, kcal:400, tempo:20, congela:true}
+    ],
+    almoco:[
+      {nome:"Patinho moído + arroz + feijão + salada", proteina:35, carbo:45, kcal:480, tempo:25, congela:true},
+      {nome:"Frango grelhado + batata + legumes", proteina:35, carbo:35, kcal:420, tempo:20, congela:true}
+    ],
+    jantar:[
+      {nome:"Peixe assado + legumes + arroz", proteina:30, carbo:30, kcal:380, tempo:20, congela:true},
+      {nome:"Omelete de claras + vegetais", proteina:25, carbo:8, kcal:230, tempo:10, congela:false}
+    ],
+    lanches:[
+      {nome:"Iogurte + granola", proteina:15, carbo:20, kcal:220, tempo:2, congela:false},
+      {nome:"Atum + torradas integrais", proteina:20, carbo:20, kcal:250, tempo:5, congela:false}
+    ],
+    rapidas:[
+      {nome:"Ovos mexidos + pão integral", proteina:20, carbo:20, kcal:280, tempo:8, congela:false}
+    ],
+    congelaveis:[
+      {nome:"Marmita de frango + arroz + brócolis", proteina:35, carbo:40, kcal:420, tempo:0, congela:true},
+      {nome:"Marmita de patinho + batata-doce + vagem", proteina:35, carbo:35, kcal:400, tempo:0, congela:true}
+    ],
+    levar:[
+      {nome:"Marmita pronta do freezer", proteina:35, carbo:35, kcal:420, tempo:2, congela:true}
+    ],
+    emergencia:[
+      {nome:"Whey + fruta", proteina:25, carbo:25, kcal:220, tempo:3, congela:false},
+      {nome:"Atum de lata + torrada", proteina:20, carbo:15, kcal:220, tempo:3, congela:false}
+    ]
+  };
+}
+let biblioteca = defaultBiblioteca();
+let refeicaoActiveCat = "cafe";
+
+function renderRefeicoesSubnav(){
+  const nav = document.getElementById("refeicoesSubnav");
+  nav.innerHTML = REFEICAO_CATS.map(c=>
+    `<button class="subtab${c.id===refeicaoActiveCat?" active":""}" data-cat="${c.id}">${c.emoji} ${c.nome}</button>`
+  ).join("");
+  nav.querySelectorAll(".subtab").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      refeicaoActiveCat = btn.dataset.cat;
+      nav.querySelectorAll(".subtab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".catpanel").forEach(p=>p.classList.remove("active"));
+      document.getElementById("catpanel-"+refeicaoActiveCat).classList.add("active");
+    });
+  });
+}
+
+function mealCardHtml(cat, meal, idx){
+  return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <b style="font-size:14.5px;color:var(--ink);">${meal.nome}</b>
+        <span class="del" data-idx="${idx}" style="cursor:pointer;color:var(--muted);font-size:11px;white-space:nowrap;">remover</span>
+      </div>
+      <div style="margin-top:8px;">
+        <span class="macro-pill">${meal.proteina}g proteína</span>
+        <span class="macro-pill">${meal.carbo}g carbo</span>
+        <span class="macro-pill">${meal.kcal} kcal</span>
+        <span class="macro-pill">${meal.tempo} min</span>
+        ${meal.congela ? '<span class="freeze-pill">❄️ Congela</span>' : ''}
+      </div>
+    </div>`;
+}
+
+function catPanelHtml(cat){
+  const meals = biblioteca[cat] || [];
+  const empty = meals.length===0 ? '<div class="histempty">Nenhuma refeição aqui ainda — adicione abaixo.</div>' : '';
+  return `
+    ${empty}
+    ${meals.map((m,i)=> mealCardHtml(cat,m,i)).join("")}
+    <div class="card" style="background:var(--pale);">
+      <div class="grid3">
+        <div class="field"><label class="field-label">Nome da refeição</label><input type="text" class="rf-nome" placeholder="Ex: Frango + arroz + salada"></div>
+        <div class="field"><label class="field-label">Tempo de preparo (min)</label><input type="text" inputmode="numeric" class="rf-tempo" placeholder="20"></div>
+        <div class="field"><label class="field-label">Proteína (g)</label><input type="text" inputmode="numeric" class="rf-proteina" placeholder="35"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label class="field-label">Carboidrato (g)</label><input type="text" inputmode="numeric" class="rf-carbo" placeholder="35"></div>
+        <div class="field"><label class="field-label">Calorias (kcal)</label><input type="text" inputmode="numeric" class="rf-kcal" placeholder="420"></div>
+        <div class="field" style="display:flex;align-items:flex-end;padding-bottom:12px;"><label style="font-size:13px;"><input type="checkbox" class="rf-congela"> Pode congelar</label></div>
+      </div>
+      <button class="btn primary rf-add">+ Adicionar refeição</button>
+    </div>`;
+}
+
+function wireCatPanelEvents(cat, panelEl){
+  panelEl.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const removed = biblioteca[cat].splice(+d.dataset.idx,1);
+      const ok = await saveKey("biblioteca", biblioteca);
+      if(!ok) biblioteca[cat].splice(+d.dataset.idx,0,removed[0]);
+      renderCatPanel(cat);
+    });
+  });
+  const addBtn = panelEl.querySelector(".rf-add");
+  addBtn.addEventListener("click", async ()=>{
+    const nome = panelEl.querySelector(".rf-nome").value.trim();
+    if(!nome) return;
+    const meal = {
+      nome,
+      proteina: +panelEl.querySelector(".rf-proteina").value || 0,
+      carbo: +panelEl.querySelector(".rf-carbo").value || 0,
+      kcal: +panelEl.querySelector(".rf-kcal").value || 0,
+      tempo: +panelEl.querySelector(".rf-tempo").value || 0,
+      congela: panelEl.querySelector(".rf-congela").checked
+    };
+    if(!biblioteca[cat]) biblioteca[cat] = [];
+    biblioteca[cat].push(meal);
+    const ok = await saveKey("biblioteca", biblioteca);
+    if(!ok){ biblioteca[cat].pop(); return; }
+    renderCatPanel(cat);
+    toast("Refeição adicionada");
+  });
+}
+
+function renderCatPanel(cat){
+  const panelEl = document.getElementById("catpanel-"+cat);
+  panelEl.innerHTML = catPanelHtml(cat);
+  wireCatPanelEvents(cat, panelEl);
+}
+
+function renderRefeicoes(){
+  renderRefeicoesSubnav();
+  const root = document.getElementById("refeicoesPanels");
+  root.innerHTML = REFEICAO_CATS.map(c=> `<div class="catpanel${c.id===refeicaoActiveCat?" active":""}" id="catpanel-${c.id}"></div>`).join("");
+  REFEICAO_CATS.forEach(c=> renderCatPanel(c.id));
+}
+
+/* ============================================================
+   HIDRATAÇÃO
+   ============================================================ */
+let hidratacao = {};
+function renderHidratacao(){
+  const t = todayStr();
+  const ml = hidratacao[t] || 0;
+  const goalMax = 4000;
+  const pct = Math.max(0, Math.min(100, Math.round(ml/goalMax*100)));
+  document.getElementById("hydroFill").style.width = pct+"%";
+  document.getElementById("hydroLabel").textContent = `${ml.toLocaleString('pt-BR')} ml de 3.500–4.000 ml`;
+}
+function adjustHidratacao(delta){
+  const t = todayStr();
+  const cur = hidratacao[t] || 0;
+  hidratacao[t] = Math.max(0, cur + delta);
+  renderHidratacao();
+  saveKey("hidratacao", hidratacao);
+}
+document.getElementById("hydroPlus").addEventListener("click",()=> adjustHidratacao(250));
+document.getElementById("hydroMinus").addEventListener("click",()=> adjustHidratacao(-250));
+
+/* ============================================================
+   TREINO
+   ============================================================ */
+function treinoKey(dayId, exIdx){ return dayId+"-"+exIdx; }
+
+function renderTreinoSubnav(){
+  const nav = document.getElementById("treinoSubnav");
+  nav.innerHTML = TREINO_DIAS.map(d=>
+    `<button class="subtab${d.id===treinoActiveDay?" active":""}" data-day="${d.id}">${d.emoji} ${d.nome.slice(0,3).toUpperCase()}</button>`
+  ).join("");
+  nav.querySelectorAll(".subtab").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      treinoActiveDay = btn.dataset.day;
+      nav.querySelectorAll(".subtab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".daypanel").forEach(p=>p.classList.remove("active"));
+      document.getElementById("daypanel-"+treinoActiveDay).classList.add("active");
+    });
+  });
+}
+
+function exerciseCardHtml(day, ex, idx){
+  const key = treinoKey(day.id, idx);
+  const cargas = treinoCargas[key] || ["","","",""];
+  const nota = treinoNotas[key] || "";
+  return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div>
+          <b style="font-size:14.5px;color:var(--ink);">${idx}. ${ex.nome}</b>
+          ${ex.safe ? '<span class="safe-pill">✓ SEGURO PÓS-PARTO</span>' : ""}
+          <div class="ex-sets-line">${ex.sets}</div>
+        </div>
+      </div>
+      <p class="desc" style="margin-bottom:0;"><b style="color:var(--accent-dark);font-weight:700;">Como fazer:</b> ${ex.tip}</p>
+      <div class="load-grid">
+        ${[0,1,2,3].map(w=>`
+          <div class="load-box">
+            <label>Semana ${w+1}</label>
+            <input type="text" inputmode="decimal" placeholder="— kg" data-key="${key}" data-week="${w}" value="${(cargas[w]||"").toString().replace(/"/g,'&quot;')}">
+          </div>`).join("")}
+      </div>
+      <div class="field exnote">
+        <label class="field-label">Observações</label>
+        <textarea rows="2" placeholder="Execução, sensações, ajustes…" data-notekey="${key}">${nota}</textarea>
+      </div>
+    </div>`;
+}
+
+function dayPanelHtml(day){
+  if(day.isSabado){
+    return `
+      <div class="day-focus-line">${day.foco}</div>
+      ${day.opcoes.map(([t,d])=>`<div class="opt-card"><b>${t}</b> — ${d}</div>`).join("")}
+      <h3 class="h3">Anotações da semana</h3>
+      <div class="card">
+        <div class="grid3">
+          <div class="field"><label class="field-label">Peso atual (kg)</label><input type="text" id="treinoPeso"></div>
+          <div class="field"><label class="field-label">Treinos feitos (de 6)</label><input type="text" id="treinoFeitos"></div>
+          <div class="field"><label class="field-label">Semana nº do bloco</label><input type="text" id="treinoNumSemana"></div>
+        </div>
+        <div class="field">
+          <label class="field-label">Como foi a semana</label>
+          <textarea rows="3" id="treinoSemanaTexto" placeholder="Evolução, pesos que aumentou, dificuldades, conquistas…"></textarea>
+        </div>
+        <button class="btn primary" id="btnSalvarSemanaTreino">Salvar nota da semana</button>
+        <div class="entries" id="treinoSemanalList" style="margin-top:14px;"></div>
+      </div>`;
+  }
+  let html = `<div class="day-focus-line">${day.foco}</div>`;
+  if(day.cardioBanner){
+    html += `<div class="callout" style="margin-top:0;"><p>${day.cardioBanner}</p></div>`;
+  }
+  html += day.exercicios.map((ex,i)=> exerciseCardHtml(day, ex, i+1)).join("");
+  if(day.cardio){
+    html += `<div class="cardio-card"><div class="ctitle">${day.cardio.titulo}</div>` +
+      day.cardio.linhas.map(([t,d])=>`<div class="cardio-line"><span class="ctime">${t}</span><span>${d}</span></div>`).join("") +
+      `</div>`;
+  }
+  return html;
+}
+
+function wireDayPanelEvents(day, panelEl){
+  if(day.isSabado){
+    panelEl.querySelector("#treinoPeso").value = treinoSummary.peso || "";
+    panelEl.querySelector("#treinoFeitos").value = treinoSummary.treinos || "";
+    panelEl.querySelector("#treinoNumSemana").value = treinoSummary.semana || "";
+    let debounce;
+    ["treinoPeso","treinoFeitos","treinoNumSemana"].forEach(id=>{
+      const field = id==="treinoPeso"?"peso":id==="treinoFeitos"?"treinos":"semana";
+      panelEl.querySelector("#"+id).addEventListener("input",(e)=>{
+        treinoSummary[field] = e.target.value;
+        clearTimeout(debounce);
+        debounce = setTimeout(()=> saveKey("treino_summary", treinoSummary), 500);
+      });
+    });
+    panelEl.querySelector("#btnSalvarSemanaTreino").addEventListener("click",()=>{
+      const ta = panelEl.querySelector("#treinoSemanaTexto");
+      const text = ta.value.trim();
+      if(!text) return;
+      treinoSemanal.unshift({date: todayStr(), text});
+      const ok = saveKey("treino_semanal", treinoSemanal);
+      if(!ok){ treinoSemanal.shift(); return; }
+      ta.value = "";
+      renderTreinoSemanalList(panelEl);
+      toast("Nota da semana salva");
+    });
+    renderTreinoSemanalList(panelEl);
+    return;
+  }
+  let debounceLoad, debounceNote;
+  panelEl.querySelectorAll(".load-box input").forEach(inp=>{
+    inp.addEventListener("input",()=>{
+      const key = inp.dataset.key, w = +inp.dataset.week;
+      if(!treinoCargas[key]) treinoCargas[key] = ["","","",""];
+      treinoCargas[key][w] = inp.value;
+      clearTimeout(debounceLoad);
+      debounceLoad = setTimeout(()=> saveKey("treino_cargas", treinoCargas), 500);
+    });
+  });
+  panelEl.querySelectorAll("textarea[data-notekey]").forEach(ta=>{
+    ta.addEventListener("input",()=>{
+      treinoNotas[ta.dataset.notekey] = ta.value;
+      clearTimeout(debounceNote);
+      debounceNote = setTimeout(()=> saveKey("treino_notas", treinoNotas), 500);
+    });
+  });
+}
+function renderTreinoSemanalList(panelEl){
+  const box = panelEl.querySelector("#treinoSemanalList");
+  if(!box) return;
+  if(treinoSemanal.length===0){
+    box.innerHTML = `<div class="histempty">Suas notas semanais vão aparecer aqui.</div>`;
+    return;
+  }
+  box.innerHTML = treinoSemanal.map((e,idx)=>`
+    <div class="entry">
+      <span class="del" data-idx="${idx}">excluir</span>
+      <span class="date">${fmtDate(e.date)}</span>${e.text}
+    </div>`).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click",()=>{
+      treinoSemanal.splice(+d.dataset.idx,1);
+      saveKey("treino_semanal", treinoSemanal);
+      renderTreinoSemanalList(panelEl);
+    });
+  });
+}
+
+function renderTreino(){
+  renderTreinoSubnav();
+  const root = document.getElementById("treinoDayPanels");
+  root.innerHTML = TREINO_DIAS.map(d=> `<div class="daypanel${d.id===treinoActiveDay?" active":""}" id="daypanel-${d.id}"></div>`).join("");
+  TREINO_DIAS.forEach(day=>{
+    const panelEl = document.getElementById("daypanel-"+day.id);
+    panelEl.innerHTML = dayPanelHtml(day);
+    wireDayPanelEvents(day, panelEl);
+  });
+}
+
+/* ============================================================
+   COZINHA — cardápio
+   ============================================================ */
+function renderMenu(){
+  const table = document.getElementById("menuTable");
+  let html = "<tr><th>Dia</th>" + REFEICOES.map(r=>`<th>${r}</th>`).join("") + "</tr>";
+  DIAS.forEach((dia,di)=>{
+    html += `<tr><td style="font-weight:600;padding:7px;white-space:nowrap;">${dia}</td>`;
+    REFEICOES.forEach((_,ri)=>{
+      html += `<td><input type="text" data-di="${di}" data-ri="${ri}" value="${(cardapio[di][ri]||"").replace(/"/g,'&quot;')}"></td>`;
+    });
+    html += "</tr>";
+  });
+  table.innerHTML = html;
+  let debounceTimer;
+  table.querySelectorAll("input").forEach(inp=>{
+    inp.addEventListener("input",()=>{
+      cardapio[inp.dataset.di][inp.dataset.ri] = inp.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(()=> saveKey("cardapio", cardapio), 500);
+    });
+  });
+}
+
+/* ============================================================
+   COZINHA — listas (reposição / freezer / geladeira)
+   ============================================================ */
+function makeListBox(containerId, storeKey, placeholder, withCheck, itemsRef){
+  const box = document.getElementById(containerId);
+  function render(){
+    box.innerHTML = `<ul></ul><div class="addrow"><input type="text" placeholder="${placeholder}"><button class="btn">+ adicionar</button></div>`;
+    const ul = box.querySelector("ul");
+    itemsRef.forEach((it,idx)=>{
+      const li = document.createElement("li");
+      const text = typeof it === "string" ? it : it.text;
+      const doneAttr = (typeof it === "object" && it.done) ? "checked" : "";
+      li.innerHTML = withCheck
+        ? `<span><input type="checkbox" ${doneAttr} style="margin-right:8px;">${text}</span><span class="del">remover</span>`
+        : `<span>${text}</span><span class="del">remover</span>`;
+      if(withCheck){
+        li.querySelector('input[type=checkbox]').addEventListener("change",(e)=>{
+          itemsRef[idx].done = e.target.checked;
+          saveKey(storeKey, itemsRef);
+        });
+      }
+      li.querySelector(".del").addEventListener("click", async ()=>{
+        const removed = itemsRef.splice(idx,1);
+        const ok = await saveKey(storeKey, itemsRef);
+        if(!ok) itemsRef.splice(idx,0,removed[0]);
+        render();
+      });
+      ul.appendChild(li);
+    });
+    const input = box.querySelector(".addrow input");
+    const addBtn = box.querySelector(".addrow button");
+    async function add(){
+      const v = input.value.trim();
+      if(!v) return;
+      itemsRef.push(withCheck ? {text:v, done:false} : v);
+      input.value = "";
+      render();
+      await saveKey(storeKey, itemsRef);
+    }
+    addBtn.addEventListener("click", add);
+    input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") add(); });
+  }
+  render();
+}
+
+/* ============================================================
+   ESPIRITUALIDADE — afirmações
+   ============================================================ */
+document.getElementById("btnSalvarAfirmacao").addEventListener("click",()=>{
+  const ta = document.getElementById("afirmacaoTexto");
+  const text = ta.value.trim();
+  if(!text) return;
+  afirmacoes.unshift({date: todayStr(), text});
+  const ok = saveKey("afirmacoes", afirmacoes);
+  if(!ok){ afirmacoes.shift(); return; }
+  ta.value = "";
+  renderAfirmacoes();
+  toast("Afirmação salva");
+});
+function renderAfirmacoes(){
+  const box = document.getElementById("afirmacoesList");
+  if(!box) return;
+  if(afirmacoes.length===0){
+    box.innerHTML = `<div class="histempty">Suas afirmações salvas vão aparecer aqui.</div>`;
+    return;
+  }
+  box.innerHTML = afirmacoes.map((e,idx)=>`
+    <div class="entry">
+      <span class="del" data-idx="${idx}">excluir</span>
+      <span class="date">${fmtDate(e.date)}</span>${e.text}
+    </div>`).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click",()=>{
+      afirmacoes.splice(+d.dataset.idx,1);
+      saveKey("afirmacoes", afirmacoes);
+      renderAfirmacoes();
+    });
+  });
+}
+
+/* ============================================================
+   EXPORT / IMPORT (seu backup manual — use para manter PC e celular iguais)
+   ============================================================ */
+function downloadBlob(filename, content, type){
+  const blob = new Blob([content], {type});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+document.getElementById("btnExportJson").addEventListener("click",()=>{
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, biblioteca, hidratacao,
+    treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
+    _exportedAt: new Date().toISOString()};
+  downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
+  toast("Backup exportado");
+});
+document.getElementById("btnImportJson").addEventListener("click",()=> document.getElementById("fileImport").click());
+document.getElementById("fileImport").addEventListener("change",(e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      const ops = [];
+      if(data.rotina!==undefined){ rotina = data.rotina; ops.push(saveKey("rotina", rotina)); }
+      if(data.diario!==undefined){ diario = data.diario; ops.push(saveKey("diario", diario)); }
+      if(data.energia!==undefined){ energia = data.energia; ops.push(saveKey("energia", energia)); }
+      if(data.cardapio!==undefined){ cardapio = data.cardapio; ops.push(saveKey("cardapio", cardapio)); }
+      if(data.reposicao!==undefined){ reposicao = data.reposicao; ops.push(saveKey("reposicao", reposicao)); }
+      if(data.freezer!==undefined){ freezer = data.freezer; ops.push(saveKey("freezer", freezer)); }
+      if(data.geladeira!==undefined){ geladeira = data.geladeira; ops.push(saveKey("geladeira", geladeira)); }
+      if(data.afirmacoes!==undefined){ afirmacoes = data.afirmacoes; ops.push(saveKey("afirmacoes", afirmacoes)); }
+      if(data.treino_cargas!==undefined){ treinoCargas = data.treino_cargas; ops.push(saveKey("treino_cargas", treinoCargas)); }
+      if(data.treino_notas!==undefined){ treinoNotas = data.treino_notas; ops.push(saveKey("treino_notas", treinoNotas)); }
+      if(data.treino_summary!==undefined){ treinoSummary = data.treino_summary; ops.push(saveKey("treino_summary", treinoSummary)); }
+      if(data.treino_semanal!==undefined){ treinoSemanal = data.treino_semanal; ops.push(saveKey("treino_semanal", treinoSemanal)); }
+      if(data.planejamento!==undefined){ planejamento = data.planejamento; ops.push(saveKey("planejamento", planejamento)); }
+      if(data.biblioteca!==undefined){ biblioteca = data.biblioteca; ops.push(saveKey("biblioteca", biblioteca)); }
+      if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
+      await Promise.all(ops);
+      toast("Backup importado");
+      renderAll();
+    }catch(err){
+      alert("Não foi possível ler este arquivo de backup.");
+    }
+  };
+  reader.readAsText(file);
+});
+document.getElementById("btnExportDiario").addEventListener("click",()=>{
+  let out = "SISTEMA OPERACIONAL DA ANA — CADERNO DE DESCOBERTA\nExportado em " + fmtDate(todayStr()) + "\n\n";
+  let qn = 1;
+  BLOCOS.forEach(([code,title,qs])=>{
+    out += "\n" + code + " — " + title + "\n" + "-".repeat(40) + "\n";
+    qs.forEach((q,i)=>{
+      const qid = code+"-"+i;
+      const entries = diario[qid] || [];
+      out += "\n" + qn + ". " + q + "\n";
+      if(entries.length===0){ out += "   (sem resposta ainda)\n"; }
+      else entries.slice().reverse().forEach(e=> out += "   [" + fmtDate(e.date) + "] " + e.text + "\n");
+      qn++;
+    });
+  });
+  downloadBlob(`diario-ana-${todayStr()}.txt`, out, "text/plain");
+  toast("Diário exportado em texto");
+});
+
+/* ============================================================
+   RESUMO / PROGRESSO
+   ============================================================ */
+function pctFor(checklistKey, totalLen, days){
+  let sum = 0, counted = 0;
+  days.forEach(d=>{
+    const day = rotina[d];
+    if(!day) { counted++; return; } // no data = 0% that day, but still counts toward the average
+    const arr = day[checklistKey] || [];
+    const done = arr.reduce((n,v)=> n + (v?1:0), 0);
+    sum += done / totalLen;
+    counted++;
+  });
+  return counted ? Math.round((sum/counted)*100) : 0;
+}
+function setBar(fillId, pctId, pct, pctLabel){
+  const fill = document.getElementById(fillId);
+  const lbl = document.getElementById(pctId);
+  if(fill) fill.style.width = pct + "%";
+  if(lbl) lbl.textContent = pctLabel !== undefined ? pctLabel : pct + "%";
+}
+function computeStreak(){
+  let streak = 0;
+  const d = new Date();
+  while(true){
+    const key = d.toISOString().slice(0,10);
+    const day = rotina[key];
+    if(day && day.texto && day.texto.trim() !== ""){
+      streak++;
+      d.setDate(d.getDate()-1);
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+function renderResumo(){
+  const days7 = lastNDates(7);
+
+  const pManha = pctFor("manha", CL_MANHA.length, days7);
+  const pNoite = pctFor("noite", CL_NOITE.length, days7);
+  const pFech = pctFor("fechamento", CL_FECHAMENTO.length, days7);
+  setBar("fillManha","pctManha",pManha);
+  setBar("fillNoite","pctNoite",pNoite);
+  setBar("fillFechamento","pctFechamento",pFech);
+
+  const constancia = Math.round((pManha+pNoite+pFech)/3);
+  document.getElementById("donutConstanciaNum").textContent = constancia + "%";
+  document.getElementById("donutConstancia").style.background =
+    `conic-gradient(var(--accent) ${constancia}%, var(--line) 0)`;
+
+  const streak = computeStreak();
+  document.getElementById("streakNum").textContent = streak;
+  document.getElementById("streakLbl").textContent = streak === 1
+    ? "dia seguido com fechamento diário registrado"
+    : "dias seguidos com fechamento diário registrado";
+
+  // diário
+  let totalQ = 0, answeredQ = 0;
+  const minibarsHtml = [];
+  BLOCOS.forEach(([code,title,qs])=>{
+    totalQ += qs.length;
+    const ans = blocoAnsweredCount(code, qs);
+    answeredQ += ans;
+    const pct = qs.length ? Math.round((ans/qs.length)*100) : 0;
+    minibarsHtml.push(`<div class="minirow"><span class="code">${code}</span><span class="title">${title}</span><span class="track"><span class="fill" style="width:${pct}%"></span></span><span class="pct">${ans}/${qs.length}</span></div>`);
+  });
+  setBar("fillDiario","pctDiario", totalQ ? Math.round((answeredQ/totalQ)*100) : 0, answeredQ + "/" + totalQ);
+  document.getElementById("minibarsDiario").innerHTML = minibarsHtml.join("");
+
+  // energia médias últimos 7 dias com dados
+  const last7Energia = energia.slice(0,7);
+  const fields = [["sono","Sono"],["energia","Energia"],["humor","Humor"],["foco","Foco"],["fome","Fome"]];
+  const medBox = document.getElementById("energiaMedias");
+  if(last7Energia.length === 0){
+    medBox.innerHTML = `<div class="histempty" style="grid-column:1/-1;">Ainda sem registros de energia nos últimos 7 dias.</div>`;
+  } else {
+    medBox.innerHTML = fields.map(([f,label])=>{
+      const vals = last7Energia.map(e=> Number(e[f])).filter(v=> !isNaN(v));
+      const avg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "–";
+      return `<div class="field"><label class="field-label">${label}</label><div style="font-family:var(--serif);font-size:22px;color:var(--accent-dark);">${avg}</div></div>`;
+    }).join("");
+  }
+
+  // cardápio
+  let filled = 0;
+  const totalCells = DIAS.length * REFEICOES.length;
+  if(cardapio){
+    cardapio.forEach(row=> row.forEach(cell=>{ if(cell && cell.trim() !== "") filled++; }));
+  }
+  setBar("fillCardapio","pctCardapio", totalCells ? Math.round((filled/totalCells)*100) : 0, filled + "/" + totalCells);
+
+  // treino
+  let totalEx = 0, exComCarga = 0;
+  TREINO_DIAS.forEach(day=>{
+    if(day.isSabado) return;
+    day.exercicios.forEach((ex,i)=>{
+      totalEx++;
+      const cargas = treinoCargas[treinoKey(day.id, i+1)];
+      if(cargas && cargas.some(v=> v && v.toString().trim() !== "")) exComCarga++;
+    });
+  });
+  setBar("fillTreino","pctTreino", totalEx ? Math.round((exComCarga/totalEx)*100) : 0, exComCarga + "/" + totalEx);
+  const tSummaryEl = document.getElementById("treinoSemanaResumo");
+  if(tSummaryEl){
+    if(treinoSummary.treinos || treinoSummary.peso || treinoSummary.semana){
+      tSummaryEl.textContent = `Última semana registrada: ${treinoSummary.treinos||"–"} treinos de 6 · peso ${treinoSummary.peso||"–"}kg · semana ${treinoSummary.semana||"–"} do bloco.`;
+    } else {
+      tSummaryEl.textContent = "Ainda sem resumo semanal registrado na aba Treino (Sábado).";
+    }
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function renderAll(){
+  renderHoje();
+  diarioContainer();
+  renderEnergia();
+  renderMenu();
+  renderRefeicoes();
+  renderHidratacao();
+  makeListBox("box-reposicao","reposicao","novo item da lista de compras…", true, reposicao);
+  makeListBox("box-freezer","freezer","novo item no freezer…", false, freezer);
+  makeListBox("box-geladeira","geladeira","novo item na geladeira…", false, geladeira);
+  makeListBox("box-planejamento","planejamento","nova tarefa para amanhã…", true, planejamento);
+  renderAfirmacoes();
+  renderTreino();
+  renderResumo();
+}
+function init(){
+  rotina = loadKey("rotina", {});
+  diario = loadKey("diario", {});
+  energia = loadKey("energia", []);
+  cardapio = loadKey("cardapio", DIAS.map(()=> REFEICOES.map(()=> "")));
+  reposicao = loadKey("reposicao", []);
+  freezer = loadKey("freezer", []);
+  geladeira = loadKey("geladeira", []);
+  afirmacoes = loadKey("afirmacoes", []);
+  treinoCargas = loadKey("treino_cargas", {});
+  treinoNotas = loadKey("treino_notas", {});
+  treinoSummary = loadKey("treino_summary", {});
+  treinoSemanal = loadKey("treino_semanal", []);
+  planejamento = loadKey("planejamento", []);
+  biblioteca = loadKey("biblioteca", defaultBiblioteca());
+  hidratacao = loadKey("hidratacao", {});
+  renderAll();
+}
+init();
+</script>
+</body>
+</html>
