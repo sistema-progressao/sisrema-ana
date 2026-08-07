@@ -859,7 +859,13 @@ const TREINO_DIAS = [
 /* ============================================================
    LOCAL STORAGE HELPERS (dados ficam salvos neste navegador/aparelho)
    ============================================================ */
-function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function dateStr(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function todayStr(){ return dateStr(new Date()); }
 function fmtDate(s){ const [y,m,d]=s.split("-"); return d+"/"+m+"/"+y; }
 function toast(msg, isErr){ const t=document.getElementById("toast"); t.textContent=msg; t.className="toast show"+(isErr?" err":""); setTimeout(()=>t.classList.remove("show"),2200); }
 
@@ -887,6 +893,7 @@ function saveKey(key, val){
 let rotina = {}, diario = {}, energia = [], cardapio = null, reposicao = [], freezer = [], geladeira = [], afirmacoes = [];
 let treinoCargas = {}, treinoNotas = {}, treinoSummary = {}, treinoSemanal = [];
 let planejamento = [];
+let planejamentoMeta = {lastReset: null};
 let treinoActiveDay = "seg";
 
 /* ============================================================
@@ -947,7 +954,7 @@ function lastNDates(n){
   const out = [];
   const d = new Date();
   for(let i=0;i<n;i++){
-    out.push(d.toISOString().slice(0,10));
+    out.push(dateStr(d));
     d.setDate(d.getDate()-1);
   }
   return out; // today first, going backward
@@ -1966,7 +1973,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -1994,6 +2001,7 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.treino_summary!==undefined){ treinoSummary = data.treino_summary; ops.push(saveKey("treino_summary", treinoSummary)); }
       if(data.treino_semanal!==undefined){ treinoSemanal = data.treino_semanal; ops.push(saveKey("treino_semanal", treinoSemanal)); }
       if(data.planejamento!==undefined){ planejamento = data.planejamento; ops.push(saveKey("planejamento", planejamento)); }
+      if(data.planejamento_meta!==undefined){ planejamentoMeta = data.planejamento_meta; ops.push(saveKey("planejamento_meta", planejamentoMeta)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -2050,7 +2058,7 @@ function computeStreak(){
   let streak = 0;
   const d = new Date();
   while(true){
-    const key = d.toISOString().slice(0,10);
+    const key = dateStr(d);
     const day = rotina[key];
     if(day && day.texto && day.texto.trim() !== ""){
       streak++;
@@ -2171,6 +2179,13 @@ function init(){
   treinoSummary = loadKey("treino_summary", {});
   treinoSemanal = loadKey("treino_semanal", []);
   planejamento = loadKey("planejamento", []);
+  planejamentoMeta = loadKey("planejamento_meta", {lastReset: null});
+  if(planejamentoMeta.lastReset !== todayStr()){
+    planejamento = [];
+    planejamentoMeta = {lastReset: todayStr()};
+    saveKey("planejamento", planejamento);
+    saveKey("planejamento_meta", planejamentoMeta);
+  }
   amState = loadKey("alimentacao_state", amDefaultState());
   hidratacao = loadKey("hidratacao", {});
   visao = loadKey("visao", {});
