@@ -342,6 +342,14 @@
     width:100%;border:1px solid var(--mu-line);border-radius:10px;padding:9px 11px;
     font-family:inherit;font-size:14px;color:var(--mu-ink);background:var(--mu-bg);resize:vertical;
   }
+  .mu-scope input[type=file]{
+    display:block;width:100%;border:1.5px dashed var(--mu-rose);border-radius:10px;
+    padding:12px 11px;font-family:inherit;font-size:13px;color:var(--mu-ink-soft);background:var(--mu-bg);
+  }
+  .mu-scope input[type=file]::-webkit-file-upload-button{
+    background:var(--mu-rose);color:#fff;border:none;border-radius:20px;padding:8px 14px;
+    font-family:inherit;font-size:12.5px;font-weight:600;margin-right:10px;
+  }
   .mu-btn-primary{background:var(--mu-rose);color:#fff;border:none;border-radius:20px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
   .mu-btn-primary:hover{background:var(--mu-rose-deep);}
   .mu-btn-ghost{background:transparent;border:1px solid var(--mu-line);color:var(--mu-ink-soft);border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;}
@@ -372,6 +380,32 @@
   .mu-insp-thumb img{width:100%;height:110px;object-fit:cover;border-radius:12px;}
   .mu-insp-thumb select{margin-top:6px;font-size:11px;}
   .mu-insp-thumb .mu-del{position:static;display:inline-block;margin-top:4px;}
+  .mu-modal-bg{display:none;position:fixed;inset:0;background:rgba(74,59,63,.5);z-index:300;align-items:center;justify-content:center;padding:16px;}
+  .mu-modal-bg.open{display:flex;}
+  .mu-modal{background:var(--mu-bg);border-radius:22px;max-width:520px;width:100%;padding:26px;max-height:88vh;overflow-y:auto;}
+  .mu-modal-close{float:right;border:none;background:var(--mu-paper);width:30px;height:30px;border-radius:50%;font-size:14px;color:var(--mu-ink-soft);cursor:pointer;}
+  .mu-modal h2{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--mu-ink);margin:6px 0 4px;}
+  .mu-star-toggle{cursor:pointer;font-size:20px;background:none;border:none;line-height:1;}
+  .mu-featured{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px;-webkit-overflow-scrolling:touch;}
+  .mu-featured-card{flex:0 0 auto;width:150px;background:var(--mu-paper);border:1px solid var(--mu-line);border-radius:14px;padding:10px;cursor:pointer;}
+  .mu-featured-card img{width:100%;height:90px;object-fit:cover;border-radius:10px;}
+  .mu-featured-card .mu-ftitle{font-family:var(--serif);font-size:13px;color:var(--mu-ink);margin-top:6px;}
+  .mu-realizado-card{background:linear-gradient(135deg,#FFF9F0,var(--mu-paper));border:1px solid var(--mu-gold);}
+  .mu-realizado-card .mu-trophy{font-size:22px;}
+  .mu-realizado-dates{font-size:10.5px;color:var(--mu-ink-soft);margin-top:4px;}
+  .mu-vision-btn{background:linear-gradient(135deg,var(--mu-rose),var(--mu-gold));color:#fff;border:none;border-radius:20px;padding:12px 22px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;margin-bottom:16px;}
+  .mu-vision-overlay{display:none;position:fixed;inset:0;background:var(--mu-bg);z-index:400;overflow-y:auto;padding:20px 14px 60px;}
+  .mu-vision-overlay.open{display:block;}
+  .mu-vision-close{position:fixed;top:16px;right:16px;z-index:401;background:var(--mu-paper);border:none;width:38px;height:38px;border-radius:50%;font-size:16px;color:var(--mu-ink);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .mu-vision-grid{columns:2;column-gap:12px;margin-top:50px;}
+  @media(min-width:640px){ .mu-vision-grid{columns:3;} }
+  .mu-vision-item{break-inside:avoid;margin-bottom:12px;position:relative;border-radius:16px;overflow:hidden;background:var(--mu-paper);}
+  .mu-vision-item img{width:100%;display:block;}
+  .mu-vision-caption{padding:10px 12px 12px;}
+  .mu-vision-caption h4{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--mu-ink);margin:0 0 3px;}
+  .mu-vision-caption p{font-size:11.5px;color:var(--mu-ink-soft);font-style:italic;margin:0;}
+  .mu-vision-nofoto{padding:26px 14px;text-align:center;}
+  .mu-vision-nofoto .mu-emoji{font-size:30px;}
 </style>
 </head>
 <body>
@@ -782,6 +816,11 @@
     <div class="callout"><p>Não é lista de tarefas — é o mapa da vida que você está construindo. Registre o que você quer viver, sem pressa e sem cobrança.</p></div>
 
     <div class="mu-scope">
+      <button type="button" class="mu-vision-btn" id="btnVisionBoard">✨ Ver meu Vision Board</button>
+
+      <h2 class="h2" style="color:var(--mu-rose-deep);" id="muralPrincipaisTitulo" style="display:none;">⭐ Meus Sonhos Principais</h2>
+      <div class="mu-featured" id="muralPrincipais"></div>
+
       <div class="mu-filtros" id="muralFiltroStatus"></div>
       <div class="mu-filtros" id="muralFiltroCategoria"></div>
 
@@ -802,11 +841,23 @@
 
       <div id="muralGrid" class="mu-grid"></div>
 
+      <h2 class="h2" style="color:var(--mu-gold);" id="muralRealizadosTitulo" style="display:none;">🏆 Sonhos Realizados</h2>
+      <div class="mu-grid" id="muralRealizados"></div>
+
       <h2 class="h2" style="color:var(--mu-rose-deep);">📸 Minhas Inspirações</h2>
       <div class="mu-card">
         <p class="desc" style="margin:0 0 10px;">Fotos soltas que você gostou, mesmo sem sonho definido ainda. Depois é só associar a um sonho.</p>
         <input type="file" id="inspiracaoInput" accept="image/*" multiple>
         <div class="mu-grid" id="inspiracoesGrid" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="mu-modal-bg" id="muModalBg">
+        <div class="mu-modal" id="muModalContent"></div>
+      </div>
+
+      <div class="mu-vision-overlay" id="muVisionOverlay">
+        <button type="button" class="mu-vision-close" id="btnFecharVision">✕</button>
+        <div class="mu-vision-grid" id="muVisionGrid"></div>
       </div>
     </div>
   </section>
@@ -2500,7 +2551,11 @@ document.getElementById("btnSalvarSonho").addEventListener("click", async ()=>{
     status: "sonhando",
     criadoEm: todayStr(),
     imagens,
-    capaId: imagens.length ? imagens[0].id : null
+    capaId: imagens.length ? imagens[0].id : null,
+    fraseDoSonho: "",
+    euVivendoIsso: "",
+    prazo: "",
+    prioritario: false
   };
   sonhos.unshift(sonho);
   const ok = await saveKey("sonhos", sonhos);
@@ -2536,38 +2591,19 @@ function sonhoCardHtml(s){
   const excerpt = s.oQueQuero ? (s.oQueQuero.length>90 ? s.oQueQuero.slice(0,90)+"…" : s.oQueQuero) : "";
   const imagens = s.imagens || [];
   const capa = imagens.find(img=> img.id === s.capaId) || imagens[0];
-  const thumbsHtml = imagens.map(img=>`
-    <div class="mu-thumb-wrap${img.id===s.capaId?" is-capa":""}">
-      <img src="${img.dataUrl}">
-      <div class="mu-thumb-actions">
-        <button type="button" class="mu-set-capa" data-sonho="${s.id}" data-img="${img.id}">★</button>
-        <button type="button" class="mu-rm-img" data-sonho="${s.id}" data-img="${img.id}">✕</button>
-      </div>
-    </div>`).join("");
   return `
     <div class="mu-card mu-dream-card" data-id="${s.id}">
       <span class="mu-del" data-id="${s.id}">excluir</span>
       ${capa ? `<img class="mu-cover" src="${capa.dataUrl}">` : ""}
       <span class="mu-emoji">${cat.emoji}</span>
+      <button type="button" class="mu-star-toggle mu-star-card" data-id="${s.id}" style="float:right;">${s.prioritario ? "★" : "☆"}</button>
       <div class="mu-cat">${cat.label}</div>
       <h3>${s.titulo}</h3>
       <span class="mu-status-pill mu-status-${s.status}">${st.emoji} ${st.label}</span>
-      ${excerpt ? `<p class="mu-excerpt">"${excerpt}"</p>` : ""}
+      ${s.fraseDoSonho ? `<p class="mu-excerpt">"${s.fraseDoSonho}"</p>` : (excerpt ? `<p class="mu-excerpt">"${excerpt}"</p>` : "")}
       ${s.sentimentos.length ? s.sentimentos.map(f=>`<span class="mu-feel-tag">${f}</span>`).join("") : ""}
       <div>
         <span class="mu-more" data-id="${s.id}">ver detalhes</span>
-      </div>
-      <div class="mu-full" id="mu-full-${s.id}" style="display:none;">
-        ${s.oQueQuero ? `<p><b>O que eu quero:</b> ${s.oQueQuero}</p>` : ""}
-        ${s.comoImagino ? `<p><b>Como eu imagino:</b> ${s.comoImagino}</p>` : ""}
-        ${s.porQueImporta ? `<p><b>Por que importa:</b> ${s.porQueImporta}</p>` : ""}
-        <label class="mu-label" style="margin-top:10px;">Imagens</label>
-        <div class="mu-thumbs">${thumbsHtml}</div>
-        <input type="file" class="mu-add-img" data-sonho="${s.id}" accept="image/*" multiple>
-        <label class="mu-label" style="margin-top:10px;">Mudar status</label>
-        <select class="mu-status-select" data-id="${s.id}">
-          ${MURAL_STATUS.map(opt=>`<option value="${opt.id}" ${opt.id===s.status?"selected":""}>${opt.emoji} ${opt.label}</option>`).join("")}
-        </select>
       </div>
     </div>`;
 }
@@ -2596,68 +2632,251 @@ function renderMuralGrid(){
     });
   });
   grid.querySelectorAll(".mu-more").forEach(el=>{
-    el.addEventListener("click",()=>{
-      const box = document.getElementById("mu-full-"+el.dataset.id);
-      const showing = box.style.display !== "none";
-      box.style.display = showing ? "none" : "block";
-      el.textContent = showing ? "ver detalhes" : "ver menos";
-    });
+    el.addEventListener("click",()=> muOpenDetail(el.dataset.id));
   });
-  grid.querySelectorAll(".mu-status-select").forEach(sel=>{
-    sel.addEventListener("change", async ()=>{
-      const s = sonhos.find(x=> x.id === sel.dataset.id);
+  grid.querySelectorAll(".mu-dream-card .mu-cover, .mu-dream-card h3").forEach(el=>{
+    const card = el.closest(".mu-dream-card");
+    if(card){ el.style.cursor = "pointer"; el.addEventListener("click",()=> muOpenDetail(card.dataset.id)); }
+  });
+  grid.querySelectorAll(".mu-star-card").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      const s = sonhos.find(x=> x.id === btn.dataset.id);
       if(!s) return;
-      s.status = sel.value;
+      s.prioritario = !s.prioritario;
       await saveKey("sonhos", sonhos);
-      renderMuralGrid();
-      toast("Status atualizado");
+      renderMural();
     });
   });
-  grid.querySelectorAll(".mu-set-capa").forEach(btn=>{
+}
+
+function muCloseModal(){ document.getElementById("muModalBg").classList.remove("open"); }
+
+function muOpenDetail(sonhoId){
+  const s = sonhos.find(x=> x.id === sonhoId);
+  if(!s) return;
+  const cat = muralCatInfo(s.categoria);
+  const imagens = s.imagens || [];
+  const thumbsHtml = imagens.map(img=>`
+    <div class="mu-thumb-wrap${img.id===s.capaId?" is-capa":""}">
+      <img src="${img.dataUrl}">
+      <div class="mu-thumb-actions">
+        <button type="button" class="mu-set-capa" data-sonho="${s.id}" data-img="${img.id}">★</button>
+        <button type="button" class="mu-rm-img" data-sonho="${s.id}" data-img="${img.id}">✕</button>
+      </div>
+    </div>`).join("");
+  const m = document.getElementById("muModalContent");
+  m.innerHTML = `
+    <button class="mu-modal-close" id="muCloseModalBtn">✕</button>
+    <button type="button" class="mu-star-toggle" id="muStarModal" data-id="${s.id}" style="float:right;margin-right:36px;">${s.prioritario?"★":"☆"}</button>
+    <span class="mu-cat">${cat.emoji} ${cat.label}</span>
+    <h2>${s.titulo}</h2>
+    <select class="mu-status-select" data-id="${s.id}">
+      ${MURAL_STATUS.map(opt=>`<option value="${opt.id}" ${opt.id===s.status?"selected":""}>${opt.emoji} ${opt.label}</option>`).join("")}
+    </select>
+
+    <label class="mu-label" style="margin-top:14px;">Imagens</label>
+    <div class="mu-thumbs">${thumbsHtml}</div>
+    <input type="file" class="mu-add-img" data-sonho="${s.id}" accept="image/*" multiple>
+
+    <label class="mu-label" style="margin-top:14px;">Frase do sonho (opcional)</label>
+    <input type="text" class="mu-edit" data-id="${s.id}" data-field="fraseDoSonho" value="${(s.fraseDoSonho||"").replace(/"/g,'&quot;')}" placeholder='"Nosso lar é exatamente como sonhamos."'>
+
+    <label class="mu-label" style="margin-top:14px;">O que eu quero</label>
+    <textarea class="mu-edit" data-id="${s.id}" data-field="oQueQuero" rows="2">${s.oQueQuero||""}</textarea>
+
+    <label class="mu-label" style="margin-top:14px;">Como eu imagino isso</label>
+    <textarea class="mu-edit" data-id="${s.id}" data-field="comoImagino" rows="2">${s.comoImagino||""}</textarea>
+
+    <label class="mu-label" style="margin-top:14px;">Por que isso importa pra mim</label>
+    <textarea class="mu-edit" data-id="${s.id}" data-field="porQueImporta" rows="2">${s.porQueImporta||""}</textarea>
+
+    <label class="mu-label" style="margin-top:14px;">Como quero me sentir (separe por vírgula)</label>
+    <input type="text" class="mu-edit" data-id="${s.id}" data-field="sentimentosTxt" value="${(s.sentimentos||[]).join(", ")}">
+
+    <label class="mu-label" style="margin-top:14px;">✨ Eu vivendo isso</label>
+    <textarea class="mu-edit" data-id="${s.id}" data-field="euVivendoIsso" rows="4" placeholder="Descreva como se fosse uma cena da sua vida…">${s.euVivendoIsso||""}</textarea>
+
+    <label class="mu-label" style="margin-top:14px;">📅 Prazo (opcional)</label>
+    <input type="text" class="mu-edit" data-id="${s.id}" data-field="prazo" value="${s.prazo||""}" placeholder="Ex: até dezembro de 2027, ou deixe em branco">
+
+    ${s.status==="realizado" ? `
+    <div class="mu-realizado-dates" style="margin-top:14px;">🏆 Sonhado em ${fmtDate(s.criadoEm)} · Realizado em ${fmtDate(s.dataRealizado || s.criadoEm)}</div>
+    <label class="mu-label" style="margin-top:10px;">Como foi realizar isso?</label>
+    <textarea class="mu-edit" data-id="${s.id}" data-field="comoFoiRealizar" rows="3" placeholder="Registre como foi essa experiência…">${s.comoFoiRealizar||""}</textarea>
+    ` : ""}
+  `;
+  document.getElementById("muModalBg").classList.add("open");
+  document.getElementById("muCloseModalBtn").onclick = muCloseModal;
+  document.getElementById("muStarModal").addEventListener("click", async ()=>{
+    s.prioritario = !s.prioritario;
+    await saveKey("sonhos", sonhos);
+    muOpenDetail(sonhoId);
+    renderMuralGrid();
+    muRenderPrincipais();
+  });
+  m.querySelector(".mu-status-select").addEventListener("change", async (e)=>{
+    s.status = e.target.value;
+    if(s.status==="realizado" && !s.dataRealizado) s.dataRealizado = todayStr();
+    await saveKey("sonhos", sonhos);
+    muOpenDetail(sonhoId);
+    renderMuralGrid();
+    renderSonhosRealizados();
+    toast(s.status==="realizado" ? "Parabéns por realizar esse sonho! 🏆" : "Status atualizado");
+  });
+  m.querySelectorAll(".mu-edit").forEach(el=>{
+    let debounce;
+    el.addEventListener("input", ()=>{
+      clearTimeout(debounce);
+      debounce = setTimeout(async ()=>{
+        const field = el.dataset.field;
+        if(field==="sentimentosTxt"){
+          s.sentimentos = el.value.split(",").map(x=>x.trim()).filter(Boolean);
+        } else {
+          s[field] = el.value;
+        }
+        await saveKey("sonhos", sonhos);
+        if(field==="fraseDoSonho" || field==="sentimentosTxt") renderMuralGrid();
+      }, 800);
+    });
+  });
+  m.querySelectorAll(".mu-set-capa").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const s = sonhos.find(x=> x.id === btn.dataset.sonho);
-      if(!s) return;
       s.capaId = btn.dataset.img;
       await saveKey("sonhos", sonhos);
+      muOpenDetail(sonhoId);
       renderMuralGrid();
     });
   });
-  grid.querySelectorAll(".mu-rm-img").forEach(btn=>{
+  m.querySelectorAll(".mu-rm-img").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const s = sonhos.find(x=> x.id === btn.dataset.sonho);
-      if(!s) return;
       const idx = (s.imagens||[]).findIndex(i=> i.id === btn.dataset.img);
       if(idx<0) return;
       const removed = s.imagens.splice(idx,1)[0];
       if(s.capaId === removed.id) s.capaId = s.imagens.length ? s.imagens[0].id : null;
       const ok = await saveKey("sonhos", sonhos);
       if(!ok){ s.imagens.splice(idx,0,removed); return; }
+      muOpenDetail(sonhoId);
       renderMuralGrid();
     });
   });
-  grid.querySelectorAll(".mu-add-img").forEach(input=>{
-    input.addEventListener("change", async ()=>{
-      if(!input.files.length) return;
-      const s = sonhos.find(x=> x.id === input.dataset.sonho);
-      if(!s) return;
-      const compressed = await compressFileList(input.files);
-      const novas = compressed.map((dataUrl,i)=> ({id:"img_"+Date.now()+"_"+i, dataUrl}));
-      if(!s.imagens) s.imagens = [];
-      s.imagens.push(...novas);
-      if(!s.capaId && novas.length) s.capaId = novas[0].id;
-      const ok = await saveKey("sonhos", sonhos);
-      if(!ok){ toast("Não deu pra salvar — tente com menos imagens", true); return; }
-      renderMuralGrid();
-      toast("Imagem adicionada");
-    });
+  const addImgInput = m.querySelector(".mu-add-img");
+  addImgInput.addEventListener("change", async ()=>{
+    if(!addImgInput.files.length) return;
+    const compressed = await compressFileList(addImgInput.files);
+    const novas = compressed.map((dataUrl,i)=> ({id:"img_"+Date.now()+"_"+i, dataUrl}));
+    if(!s.imagens) s.imagens = [];
+    s.imagens.push(...novas);
+    if(!s.capaId && novas.length) s.capaId = novas[0].id;
+    const ok = await saveKey("sonhos", sonhos);
+    if(!ok){ toast("Não deu pra salvar — tente com menos imagens", true); return; }
+    muOpenDetail(sonhoId);
+    renderMuralGrid();
+    toast("Imagem adicionada");
   });
 }
+document.getElementById("muModalBg").addEventListener("click", e=>{ if(e.target.id==="muModalBg") muCloseModal(); });
+
+function muRenderPrincipais(){
+  const box = document.getElementById("muralPrincipais");
+  const titulo = document.getElementById("muralPrincipaisTitulo");
+  if(!box) return;
+  const principais = sonhos.filter(s=> s.prioritario).slice(0,5);
+  if(principais.length===0){
+    box.innerHTML = "";
+    if(titulo) titulo.style.display = "none";
+    return;
+  }
+  if(titulo) titulo.style.display = "";
+  box.innerHTML = principais.map(s=>{
+    const cat = muralCatInfo(s.categoria);
+    const imagens = s.imagens || [];
+    const capa = imagens.find(img=> img.id === s.capaId) || imagens[0];
+    return `<div class="mu-featured-card" data-id="${s.id}">
+      ${capa ? `<img src="${capa.dataUrl}">` : `<div style="font-size:28px;text-align:center;padding:20px 0;">${cat.emoji}</div>`}
+      <div class="mu-ftitle">${s.titulo}</div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".mu-featured-card").forEach(card=>{
+    card.addEventListener("click",()=> muOpenDetail(card.dataset.id));
+  });
+}
+
+function renderSonhosRealizados(){
+  const box = document.getElementById("muralRealizados");
+  const titulo = document.getElementById("muralRealizadosTitulo");
+  if(!box) return;
+  const realizados = sonhos.filter(s=> s.status==="realizado");
+  if(realizados.length===0){
+    box.innerHTML = "";
+    if(titulo) titulo.style.display = "none";
+    return;
+  }
+  if(titulo) titulo.style.display = "";
+  box.innerHTML = realizados.map(s=>{
+    const cat = muralCatInfo(s.categoria);
+    const imagens = s.imagens || [];
+    const capa = imagens.find(img=> img.id === s.capaId) || imagens[0];
+    return `<div class="mu-card mu-dream-card mu-realizado-card" data-id="${s.id}">
+      ${capa ? `<img class="mu-cover" src="${capa.dataUrl}">` : ""}
+      <span class="mu-trophy">🏆</span>
+      <div class="mu-cat">${cat.label}</div>
+      <h3>${s.titulo}</h3>
+      ${s.fraseDoSonho ? `<p class="mu-excerpt">"${s.fraseDoSonho}"</p>` : ""}
+      <div class="mu-realizado-dates">Sonhado em ${fmtDate(s.criadoEm)} · Realizado em ${fmtDate(s.dataRealizado || s.criadoEm)}</div>
+      <div><span class="mu-more" data-id="${s.id}">ver detalhes</span></div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".mu-more, .mu-cover, h3").forEach(el=>{
+    const card = el.closest(".mu-dream-card");
+    if(card){ el.style.cursor = "pointer"; el.addEventListener("click",()=> muOpenDetail(card.dataset.id)); }
+  });
+}
+
+function muOpenVisionBoard(){
+  const grid = document.getElementById("muVisionGrid");
+  const comImagem = sonhos.filter(s=> (s.imagens||[]).length > 0);
+  const semImagem = sonhos.filter(s=> !(s.imagens||[]).length);
+  let html = comImagem.map(s=>{
+    const capa = (s.imagens||[]).find(img=> img.id === s.capaId) || s.imagens[0];
+    return `<div class="mu-vision-item">
+      <img src="${capa.dataUrl}">
+      <div class="mu-vision-caption">
+        <h4>${s.titulo}</h4>
+        ${s.fraseDoSonho ? `<p>"${s.fraseDoSonho}"</p>` : ""}
+        ${s.sentimentos && s.sentimentos.length ? `<p>${s.sentimentos.join(" • ")}</p>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+  if(semImagem.length){
+    html += semImagem.map(s=>{
+      const cat = muralCatInfo(s.categoria);
+      return `<div class="mu-vision-item">
+        <div class="mu-vision-nofoto"><span class="mu-emoji">${cat.emoji}</span></div>
+        <div class="mu-vision-caption">
+          <h4>${s.titulo}</h4>
+          ${s.fraseDoSonho ? `<p>"${s.fraseDoSonho}"</p>` : ""}
+        </div>
+      </div>`;
+    }).join("");
+  }
+  grid.innerHTML = html || `<div class="histempty">Adicione sonhos ao mural pra ver seu Vision Board.</div>`;
+  document.getElementById("muVisionOverlay").classList.add("open");
+}
+document.getElementById("btnVisionBoard").addEventListener("click", muOpenVisionBoard);
+document.getElementById("btnFecharVision").addEventListener("click",()=>{
+  document.getElementById("muVisionOverlay").classList.remove("open");
+});
 
 function renderMural(){
   renderMuralFiltros();
   renderMuralGrid();
   renderInspiracoes();
+  muRenderPrincipais();
+  renderSonhosRealizados();
 }
+
+
 
 /* ============================================================
    GALERIA DE INSPIRAÇÕES
