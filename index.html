@@ -161,6 +161,26 @@
   .hydro-controls button{flex:1;}
   .diario-chip{display:inline-block;border:1px solid var(--line);background:var(--pale);border-radius:20px;padding:8px 14px;font-size:12.5px;color:var(--muted);margin:0 6px 6px 0;cursor:pointer;font-family:inherit;}
   .diario-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .scale-picker{display:flex;gap:6px;}
+  .scale-picker button{flex:1;border:1px solid var(--line);background:var(--pale);border-radius:8px;padding:9px 0;font-size:13px;color:var(--muted);cursor:pointer;font-family:inherit;}
+  .scale-picker button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .toggle-simnao{display:flex;gap:6px;}
+  .toggle-simnao button{flex:1;border:1px solid var(--line);background:var(--pale);border-radius:8px;padding:8px 0;font-size:12.5px;color:var(--muted);cursor:pointer;font-family:inherit;}
+  .toggle-simnao button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .sintoma-chip-wrap{display:inline-flex;align-items:center;gap:4px;margin:0 6px 8px 0;}
+  .sintoma-chip{border:1px solid var(--line);background:var(--pale);border-radius:20px;padding:7px 12px;font-size:12px;color:var(--muted);cursor:pointer;font-family:inherit;}
+  .sintoma-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .sintoma-intensidade{display:flex;gap:2px;margin-left:2px;}
+  .sintoma-intensidade button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:10px;color:var(--muted);cursor:pointer;padding:0;}
+  .sintoma-intensidade button.active{background:var(--accent-dark);color:#fff;border-color:var(--accent-dark);}
+  .estimativa-tag{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);background:var(--pale);border-radius:20px;padding:2px 8px;margin-left:6px;}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+  .cal-cell{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;padding:3px 2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:pointer;overflow:hidden;background:var(--pale);}
+  .cal-cell.empty{border:none;background:transparent;cursor:default;}
+  .cal-cell.today{border-color:var(--accent);border-width:2px;}
+  .cal-daynum{font-size:10.5px;color:var(--muted);font-weight:600;}
+  .cal-icons{font-size:9px;line-height:1.15;text-align:center;word-break:break-all;}
   .ex-note-history{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);}
   .ex-note-history div{font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5;}
   .ex-note-history .date{font-weight:700;color:var(--accent-dark);margin-right:6px;}
@@ -504,7 +524,56 @@
   </section>
 
   <section class="panel" id="panel-energia">
-    <h2 class="h2">Registro de hoje</h2>
+    <h2 class="h2">✨ Minha Energia Hoje</h2>
+    <div class="card" id="energiaResumoHoje"></div>
+
+    <h2 class="h2">🌙 Meu Ciclo</h2>
+    <div class="card" id="cicloResumo"></div>
+    <div class="card">
+      <div class="field"><label class="field-label">Registrar início de menstruação</label><input type="date" id="cicloNovaData"></div>
+      <button class="btn primary" id="btnAddCiclo">+ Registrar</button>
+      <div id="cicloHistoricoList" style="margin-top:14px;"></div>
+    </div>
+
+    <h2 class="h2">📅 Calendário do Ciclo</h2>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <button type="button" class="btn" id="btnMesAnterior">‹</button>
+        <b id="calendarioMesLabel" style="font-family:var(--serif);color:var(--ink);"></b>
+        <button type="button" class="btn" id="btnMesSeguinte">›</button>
+      </div>
+      <div class="cal-weekdays">
+        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+      </div>
+      <div class="cal-grid" id="calendarioCicloGrid"></div>
+      <p class="desc" style="margin-top:12px;">🩸 menstruação · 🌸 janela fértil · ⭐ ovulação · ❤️ sexo · 💧 corrimento · 🔥 libido alta · ⚡ energia alta · 🪫 energia baixa · 😣 cólica · 😡 irritabilidade · 😢 tristeza · 🍫 compulsão · 😰 ansiedade</p>
+      <p class="desc">Toque em qualquer dia pra ver ou editar o registro.</p>
+    </div>
+
+    <button class="btn primary" id="btnAbrirCheckin" style="width:100%;">+ Registrar como estou hoje</button>
+
+    <div class="card" id="checkinForm" style="display:none;margin-top:14px;">
+      <div id="checkinEditLabel" style="font-size:11.5px;color:var(--muted);margin-bottom:10px;"></div>
+      <div class="field"><label class="field-label">Energia</label><div class="scale-picker" id="sp-energiaNota"></div></div>
+      <div class="field"><label class="field-label">Humor geral</label><div class="scale-picker" id="sp-humorGeral"></div></div>
+      <div class="field"><label class="field-label">Libido</label><div class="scale-picker" id="sp-libido"></div></div>
+      <div class="field"><label class="field-label">Foco / cérebro</label><div class="scale-picker" id="sp-focoCerebro"></div></div>
+
+      <div class="grid3">
+        <div class="field"><label class="field-label">Menstruação</label><div class="toggle-simnao" id="tg-menstruacao"></div></div>
+        <div class="field"><label class="field-label">Sexo</label><div class="toggle-simnao" id="tg-sexoHoje"></div></div>
+        <div class="field"><label class="field-label">Corrimento/secreção</label><div class="toggle-simnao" id="tg-corrimento"></div></div>
+      </div>
+
+      <label class="field-label" style="margin-top:6px;display:block;">O que apareceu hoje?</label>
+      <div id="sintomasChips" style="margin-bottom:10px;"></div>
+
+      <div class="field"><label class="field-label">Algo diferente hoje? (opcional)</label><textarea id="checkinNotaLivre" rows="2" placeholder="Escreva livremente…"></textarea></div>
+
+      <button class="btn primary" id="btnSalvarCheckin">Salvar registro de hoje</button>
+    </div>
+
+    <h2 class="h2">Registro complementar</h2>
     <div class="card">
       <div class="grid3">
         <div class="field"><label class="field-label">Sono (0–10)</label><input type="number" min="0" max="10" id="e-sono"></div>
@@ -1355,6 +1424,361 @@ function renderEntries(qid){
 }
 
 /* ============================================================
+   MEU CICLO
+   ============================================================ */
+let ciclos = [];
+function daysBetween(d1,d2){
+  const a = new Date(d1+"T00:00:00"), b = new Date(d2+"T00:00:00");
+  return Math.round((b-a)/86400000);
+}
+function addDays(baseStr, n){
+  const d = new Date(baseStr+"T00:00:00");
+  d.setDate(d.getDate()+n);
+  return dateStr(d);
+}
+function cicloOrdenados(){ return ciclos.slice().sort((a,b)=> a.inicio < b.inicio ? -1 : 1); }
+function ciclosDuracoes(){
+  const ord = cicloOrdenados();
+  const out = [];
+  for(let i=1;i<ord.length;i++){
+    const d = daysBetween(ord[i-1].inicio, ord[i].inicio);
+    if(d>0 && d<90) out.push(d);
+  }
+  return out;
+}
+function cicloMediaDuracao(){
+  const durs = ciclosDuracoes().slice(-6);
+  if(durs.length===0) return null;
+  return Math.round(durs.reduce((a,b)=>a+b,0)/durs.length);
+}
+function menstruacaoMediaDuracao(){
+  const durs = ciclos.filter(c=>c.fim).map(c=> daysBetween(c.inicio,c.fim)+1);
+  if(durs.length===0) return null;
+  return Math.round(durs.reduce((a,b)=>a+b,0)/durs.length);
+}
+function ultimoCiclo(){
+  const ord = cicloOrdenados();
+  return ord.length ? ord[ord.length-1] : null;
+}
+function diaDoCicloHoje(){
+  const ult = ultimoCiclo();
+  if(!ult) return null;
+  return daysBetween(ult.inicio, todayStr()) + 1;
+}
+function faseAtualEstimada(){
+  const dia = diaDoCicloHoje();
+  if(dia===null) return null;
+  const duracaoCiclo = cicloMediaDuracao() || 28;
+  const duracaoMenstrual = menstruacaoMediaDuracao() || 5;
+  const ovulacaoDia = duracaoCiclo - 14;
+  const d = ((dia-1) % duracaoCiclo) + 1;
+  if(d <= duracaoMenstrual) return {fase:"Menstrual", emoji:"🩸"};
+  if(d >= ovulacaoDia-1 && d <= ovulacaoDia+1) return {fase:"Ovulatória", emoji:"🌸"};
+  if(d < ovulacaoDia-1) return {fase:"Folicular", emoji:"🌱"};
+  return {fase:"Lútea", emoji:"🌙"};
+}
+function renderCiclo(){
+  const box = document.getElementById("cicloResumo");
+  if(!box) return;
+  const ult = ultimoCiclo();
+  if(!ult){
+    box.innerHTML = `<p class="desc" style="margin:0;">Registre o início da sua última menstruação pra começar a acompanhar seu ciclo.</p>`;
+    return;
+  }
+  const dia = diaDoCicloHoje();
+  const duracaoCiclo = cicloMediaDuracao();
+  const fase = faseAtualEstimada();
+  const nCiclos = ciclosDuracoes().length;
+  const duracaoUsada = duracaoCiclo || 28;
+  const proximaMenstruacao = addDays(ult.inicio, duracaoUsada);
+  const ovulacaoDia = duracaoUsada - 14;
+  const ovulacaoData = addDays(ult.inicio, ovulacaoDia);
+  const fertilInicio = addDays(ult.inicio, ovulacaoDia-5);
+  const fertilFim = addDays(ult.inicio, ovulacaoDia+1);
+  function linha(label, val, estimativa){
+    return `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13.5px;margin-bottom:6px;"><span>${label}</span><b style="color:var(--accent-dark);text-align:right;">${val}${estimativa?'<span class="estimativa-tag">estimativa</span>':''}</b></div>`;
+  }
+  box.innerHTML = `
+    ${linha("🌙 Dia do ciclo", dia, false)}
+    ${linha(fase.emoji+" Fase atual", fase.fase, true)}
+    ${linha("🩸 Próxima menstruação", fmtDate(proximaMenstruacao), true)}
+    ${linha("🌸 Janela fértil", fmtDate(fertilInicio)+"–"+fmtDate(fertilFim), true)}
+    ${linha("⭐ Ovulação", fmtDate(ovulacaoData), true)}
+    ${linha("Duração média do ciclo", duracaoCiclo ? duracaoCiclo+" dias" : "sem dados suficientes ainda", false)}
+    <p class="desc" style="margin:10px 0 0;">Baseado em ${nCiclos} ciclo${nCiclos===1?"":"s"} registrado${nCiclos===1?"":"s"}.</p>
+  `;
+}
+function renderCicloHistorico(){
+  const box = document.getElementById("cicloHistoricoList");
+  if(!box) return;
+  const ord = cicloOrdenados().slice().reverse();
+  if(ord.length===0){ box.innerHTML = `<div class="histempty">Nenhum ciclo registrado ainda.</div>`; return; }
+  box.innerHTML = ord.map(c=>{
+    const duracao = c.fim ? daysBetween(c.inicio,c.fim)+1 : null;
+    return `<div class="entry">
+      <span class="del" data-id="${c.id}">excluir</span>
+      <b>${fmtDate(c.inicio)}</b> até <input type="date" class="ciclo-fim" data-id="${c.id}" value="${c.fim||""}" style="display:inline-block;width:auto;">
+      ${duracao ? ` · ${duracao} dias de menstruação` : " · em andamento"}
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const idx = ciclos.findIndex(c=>c.id===d.dataset.id);
+      if(idx<0) return;
+      const removed = ciclos.splice(idx,1);
+      const ok = await saveKey("ciclos", ciclos);
+      if(!ok) ciclos.splice(idx,0,removed[0]);
+      renderCiclo(); renderCicloHistorico();
+    });
+  });
+  box.querySelectorAll(".ciclo-fim").forEach(inp=>{
+    inp.addEventListener("change", async ()=>{
+      const c = ciclos.find(x=>x.id===inp.dataset.id);
+      if(!c) return;
+      c.fim = inp.value || null;
+      await saveKey("ciclos", ciclos);
+      renderCiclo(); renderCicloHistorico();
+    });
+  });
+}
+document.getElementById("btnAddCiclo").addEventListener("click", async ()=>{
+  const inp = document.getElementById("cicloNovaData");
+  const data = inp.value || todayStr();
+  if(ciclos.find(c=>c.inicio===data)){ toast("Já existe um registro nessa data", true); return; }
+  ciclos.push({id:"ciclo_"+Date.now(), inicio:data, fim:null});
+  const ok = await saveKey("ciclos", ciclos);
+  if(!ok){ ciclos.pop(); return; }
+  inp.value = "";
+  renderCiclo(); renderCicloHistorico();
+  toast("Ciclo registrado");
+});
+
+/* ============================================================
+   CALENDÁRIO DO CICLO
+   ============================================================ */
+let calendarioMes = new Date();
+function renderCalendarioCiclo(){
+  const box = document.getElementById("calendarioCicloGrid");
+  const label = document.getElementById("calendarioMesLabel");
+  if(!box) return;
+  const ano = calendarioMes.getFullYear(), mes = calendarioMes.getMonth();
+  const nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  if(label) label.textContent = nomesMeses[mes] + " de " + ano;
+  const primeiroDia = new Date(ano, mes, 1);
+  const diasNoMes = new Date(ano, mes+1, 0).getDate();
+  const offsetSemana = primeiroDia.getDay();
+
+  const ult = ultimoCiclo();
+  const duracaoCiclo = cicloMediaDuracao() || 28;
+  const duracaoMenstrual = menstruacaoMediaDuracao() || 5;
+  const previstas = [], fertilRanges = [], ovulacoes = [];
+  if(ult){
+    for(let i=-1;i<8;i++){
+      const inicio = addDays(ult.inicio, duracaoCiclo*i);
+      previstas.push({inicio, fim: addDays(inicio, duracaoMenstrual-1)});
+      const ovDia = duracaoCiclo - 14;
+      ovulacoes.push(addDays(inicio, ovDia));
+      fertilRanges.push({inicio: addDays(inicio, ovDia-5), fim: addDays(inicio, ovDia+1)});
+    }
+  }
+  function dentro(dStr, range){ return dStr >= range.inicio && dStr <= range.fim; }
+
+  let html = "";
+  for(let i=0;i<offsetSemana;i++) html += `<div class="cal-cell empty"></div>`;
+  for(let dia=1; dia<=diasNoMes; dia++){
+    const dStr = dateStr(new Date(ano, mes, dia));
+    const icones = [];
+    const registrado = ciclos.some(c=> dStr >= c.inicio && (c.fim ? dStr <= c.fim : dStr===c.inicio));
+    if(registrado) icones.push("🩸");
+    else if(previstas.some(p=> dentro(dStr,p))) icones.push("🩸");
+    if(fertilRanges.some(f=> dentro(dStr,f))) icones.push("🌸");
+    if(ovulacoes.includes(dStr)) icones.push("⭐");
+    const e = energia.find(x=>x.date===dStr);
+    if(e){
+      if(e.sexoHoje) icones.push("❤️");
+      if(e.corrimento) icones.push("💧");
+      if(e.libido>=4) icones.push("🔥");
+      if(e.energiaNota>=4) icones.push("⚡");
+      if(e.energiaNota!=null && e.energiaNota<=1) icones.push("🪫");
+      if(e.sintomas){
+        if(e.sintomas["Cólica"]!==undefined) icones.push("😣");
+        if(e.sintomas["Irritabilidade"]!==undefined) icones.push("😡");
+        if(e.sintomas["Tristeza"]!==undefined) icones.push("😢");
+        if(e.sintomas["Compulsão"]!==undefined) icones.push("🍫");
+        if(e.sintomas["Ansiedade"]!==undefined) icones.push("😰");
+      }
+    }
+    const isToday = dStr === todayStr();
+    html += `<div class="cal-cell${isToday?' today':''}" data-date="${dStr}">
+      <span class="cal-daynum">${dia}</span>
+      <span class="cal-icons">${icones.slice(0,4).join("")}</span>
+    </div>`;
+  }
+  box.innerHTML = html;
+  box.querySelectorAll(".cal-cell[data-date]").forEach(cell=>{
+    cell.addEventListener("click",()=> abrirCheckinParaData(cell.dataset.date));
+  });
+}
+document.getElementById("btnMesAnterior").addEventListener("click",()=>{
+  calendarioMes.setMonth(calendarioMes.getMonth()-1);
+  renderCalendarioCiclo();
+});
+document.getElementById("btnMesSeguinte").addEventListener("click",()=>{
+  calendarioMes.setMonth(calendarioMes.getMonth()+1);
+  renderCalendarioCiclo();
+});
+
+/* ============================================================
+   MINHA ENERGIA HOJE — check-in rápido
+   ============================================================ */
+const SINTOMAS_LISTA = ["TPM","Cólica","Compulsão","Fome aumentada","Vontade de doce","Raiva","Irritabilidade","Tristeza","Melancolia","Choro sem motivo aparente","Sensibilidade","Drama","Ansiedade","Lerdeza","Cérebro não funciona","Procrastinação","Pula-pula de tarefa","Começo tudo e termino nada","Esquecimento","Distração","Confusão mental","Sono","Cansaço","Inchaço","Energia altíssima","Foco excelente","Criatividade","Produtividade alta","Sociabilidade","Autoconfiança"];
+let checkinState = {energiaNota:null, humorGeral:null, libido:null, focoCerebro:null, menstruacao:false, sexoHoje:false, corrimento:false, sintomas:{}, notaLivre:""};
+let checkinEditDate = null;
+
+function loadCheckinForDate(dStr){
+  const e = energia.find(x=>x.date===dStr);
+  checkinState = {
+    energiaNota: e && e.energiaNota!=null ? e.energiaNota : null,
+    humorGeral: e && e.humorGeral!=null ? e.humorGeral : null,
+    libido: e && e.libido!=null ? e.libido : null,
+    focoCerebro: e && e.focoCerebro!=null ? e.focoCerebro : null,
+    menstruacao: e ? !!e.menstruacao : false,
+    sexoHoje: e ? !!e.sexoHoje : false,
+    corrimento: e ? !!e.corrimento : false,
+    sintomas: e && e.sintomas ? Object.assign({}, e.sintomas) : {},
+    notaLivre: e && e.notaLivre ? e.notaLivre : ""
+  };
+}
+function renderScalePicker(containerId, field){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = [0,1,2,3,4,5].map(n=> `<button type="button" data-n="${n}" class="${checkinState[field]===n?"active":""}">${n}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      checkinState[field] = +btn.dataset.n;
+      renderScalePicker(containerId, field);
+    });
+  });
+}
+function renderToggleSimNao(containerId, field){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = `
+    <button type="button" data-v="1" class="${checkinState[field]?"active":""}">Sim</button>
+    <button type="button" data-v="0" class="${!checkinState[field]?"active":""}">Não</button>`;
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      checkinState[field] = btn.dataset.v==="1";
+      renderToggleSimNao(containerId, field);
+    });
+  });
+}
+function renderSintomasChips(){
+  const box = document.getElementById("sintomasChips");
+  if(!box) return;
+  box.innerHTML = SINTOMAS_LISTA.map(s=>{
+    const selected = checkinState.sintomas[s]!==undefined;
+    const intensidade = selected ? checkinState.sintomas[s] : null;
+    return `<span class="sintoma-chip-wrap">
+      <button type="button" class="sintoma-chip${selected?" active":""}" data-s="${s}">${s}</button>
+      ${selected ? `<span class="sintoma-intensidade" data-s="${s}">${[0,1,2,3,4,5].map(n=>`<button type="button" data-n="${n}" class="${intensidade===n?"active":""}">${n}</button>`).join("")}</span>` : ""}
+    </span>`;
+  }).join("");
+  box.querySelectorAll(".sintoma-chip").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const s = btn.dataset.s;
+      if(checkinState.sintomas[s]!==undefined) delete checkinState.sintomas[s];
+      else checkinState.sintomas[s] = 3;
+      renderSintomasChips();
+    });
+  });
+  box.querySelectorAll(".sintoma-intensidade button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const s = btn.parentElement.dataset.s;
+      checkinState.sintomas[s] = +btn.dataset.n;
+      renderSintomasChips();
+    });
+  });
+}
+function abrirCheckinParaData(dStr){
+  checkinEditDate = dStr;
+  loadCheckinForDate(dStr);
+  renderScalePicker("sp-energiaNota","energiaNota");
+  renderScalePicker("sp-humorGeral","humorGeral");
+  renderScalePicker("sp-libido","libido");
+  renderScalePicker("sp-focoCerebro","focoCerebro");
+  renderToggleSimNao("tg-menstruacao","menstruacao");
+  renderToggleSimNao("tg-sexoHoje","sexoHoje");
+  renderToggleSimNao("tg-corrimento","corrimento");
+  renderSintomasChips();
+  document.getElementById("checkinNotaLivre").value = checkinState.notaLivre;
+  const label = document.getElementById("checkinEditLabel");
+  if(label) label.textContent = dStr===todayStr() ? "" : "Editando registro de " + fmtDate(dStr);
+  const form = document.getElementById("checkinForm");
+  form.style.display = "block";
+  form.scrollIntoView({behavior:"smooth", block:"start"});
+}
+document.getElementById("btnAbrirCheckin").addEventListener("click",()=>{
+  const form = document.getElementById("checkinForm");
+  const opening = form.style.display === "none";
+  if(opening) abrirCheckinParaData(todayStr());
+  else form.style.display = "none";
+});
+document.getElementById("btnSalvarCheckin").addEventListener("click", async ()=>{
+  const btn = document.getElementById("btnSalvarCheckin");
+  btn.disabled = true;
+  const t = todayStr();
+  checkinState.notaLivre = document.getElementById("checkinNotaLivre").value;
+  const existing = energia.findIndex(e=>e.date===t);
+  const prevSnapshot = energia.slice();
+  const base = existing>=0 ? energia[existing] : {date:t};
+  const merged = Object.assign({}, base, {
+    date:t,
+    energiaNota: checkinState.energiaNota,
+    humorGeral: checkinState.humorGeral,
+    libido: checkinState.libido,
+    focoCerebro: checkinState.focoCerebro,
+    menstruacao: checkinState.menstruacao,
+    sexoHoje: checkinState.sexoHoje,
+    corrimento: checkinState.corrimento,
+    sintomas: checkinState.sintomas,
+    notaLivre: checkinState.notaLivre
+  });
+  if(existing>=0) energia[existing] = merged; else energia.unshift(merged);
+  energia.sort((a,b)=> a.date < b.date ? 1 : -1);
+  const ok = await saveKey("energia", energia);
+  btn.disabled = false;
+  if(!ok){ energia = prevSnapshot; toast("Não deu pra salvar", true); return; }
+  document.getElementById("checkinForm").style.display = "none";
+  toast("Registro de hoje salvo");
+  renderEnergia();
+});
+function sexoCountSince(dateFromStr){
+  return energia.filter(e=> e.sexoHoje && e.date >= dateFromStr).length;
+}
+function renderEnergiaResumoHoje(){
+  const box = document.getElementById("energiaResumoHoje");
+  if(!box) return;
+  const t = todayStr();
+  const e = energia.find(x=>x.date===t);
+  const weekAgo = dateStr((()=>{ const d=new Date(); d.setDate(d.getDate()-6); return d; })());
+  const monthStr = t.slice(0,7);
+  const sexoSemana = sexoCountSince(weekAgo);
+  const sexoMes = energia.filter(x=> x.sexoHoje && x.date.slice(0,7)===monthStr).length;
+  function linha(label, val){
+    return `<div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px;color:var(--ink);"><span>${label}</span><b style="${val==null?'color:var(--muted);font-weight:400;':'color:var(--accent-dark);'}">${val==null?"ainda não registrado":val}</b></div>`;
+  }
+  box.innerHTML = `
+    ${linha("⚡ Energia", e && e.energiaNota!=null ? e.energiaNota+"/5" : null)}
+    ${linha("😊 Humor", e && e.humorGeral!=null ? e.humorGeral+"/5" : null)}
+    ${linha("🔥 Libido", e && e.libido!=null ? e.libido+"/5" : null)}
+    ${linha("🧠 Foco", e && e.focoCerebro!=null ? e.focoCerebro+"/5" : null)}
+    <div style="display:flex;justify-content:space-between;font-size:13.5px;margin:10px 0 6px;padding-top:8px;border-top:1px dashed var(--line);color:var(--ink);"><span>❤️ Sexo esta semana</span><b style="color:var(--accent-dark);">${sexoSemana}x</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink);"><span>❤️ Sexo este mês</span><b style="color:var(--accent-dark);">${sexoMes}x</b></div>
+  `;
+}
+
+/* ============================================================
    ENERGIA
    ============================================================ */
 document.getElementById("btnSalvarEnergia").addEventListener("click", async ()=>{
@@ -1385,6 +1809,10 @@ document.getElementById("btnSalvarEnergia").addEventListener("click", async ()=>
   renderEnergia();
 });
 function renderEnergia(){
+  renderEnergiaResumoHoje();
+  renderCiclo();
+  renderCicloHistorico();
+  renderCalendarioCiclo();
   const last14 = energia.slice(0,14);
   const bars = document.getElementById("energiaBars");
   bars.innerHTML = last14.slice().reverse().map(e=>{
@@ -2555,6 +2983,7 @@ document.getElementById("btnSalvarSonho").addEventListener("click", async ()=>{
     fraseDoSonho: "",
     euVivendoIsso: "",
     prazo: "",
+    conexoes: "",
     prioritario: false
   };
   sonhos.unshift(sonho);
@@ -2696,6 +3125,9 @@ function muOpenDetail(sonhoId){
 
     <label class="mu-label" style="margin-top:14px;">✨ Eu vivendo isso</label>
     <textarea class="mu-edit" data-id="${s.id}" data-field="euVivendoIsso" rows="4" placeholder="Descreva como se fosse uma cena da sua vida…">${s.euVivendoIsso||""}</textarea>
+
+    <label class="mu-label" style="margin-top:14px;">🔗 Conecta com outras áreas do sistema (opcional)</label>
+    <input type="text" class="mu-edit" data-id="${s.id}" data-field="conexoes" value="${(s.conexoes||"").replace(/"/g,'&quot;')}" placeholder="Ex: Metas, Estudos, Financeiro, Planejamento…">
 
     <label class="mu-label" style="margin-top:14px;">📅 Prazo (opcional)</label>
     <input type="text" class="mu-edit" data-id="${s.id}" data-field="prazo" value="${s.prazo||""}" placeholder="Ex: até dezembro de 2027, ou deixe em branco">
@@ -3433,7 +3865,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -3481,6 +3913,7 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.sonhos!==undefined){ sonhos = data.sonhos; ops.push(saveKey("sonhos", sonhos)); }
       if(data.sonhos_categorias!==undefined){ sonhosCategoriasCustom = data.sonhos_categorias; ops.push(saveKey("sonhos_categorias", sonhosCategoriasCustom)); }
       if(data.inspiracoes!==undefined){ inspiracoes = data.inspiracoes; ops.push(saveKey("inspiracoes", inspiracoes)); }
+      if(data.ciclos!==undefined){ ciclos = data.ciclos; ops.push(saveKey("ciclos", ciclos)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -3695,6 +4128,7 @@ function init(){
   sonhos = loadKey("sonhos", []);
   sonhosCategoriasCustom = loadKey("sonhos_categorias", []);
   inspiracoes = loadKey("inspiracoes", []);
+  ciclos = loadKey("ciclos", []);
   if(planejamentoMeta.lastReset !== todayStr()){
     planejamento = [];
     planejamentoMeta = {lastReset: todayStr()};
