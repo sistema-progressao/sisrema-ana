@@ -181,6 +181,11 @@
   .cal-cell.today{border-color:var(--accent);border-width:2px;}
   .cal-daynum{font-size:10.5px;color:var(--muted);font-weight:600;}
   .cal-icons{font-size:9px;line-height:1.15;text-align:center;word-break:break-all;}
+  .alan-periodo-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin:18px 0 8px;}
+  .sk-scope{ --accent:#D98C93; --accent-dark:#B8666F; --pale:#FBF0EE; --pale2:#F6E4E1; }
+  .sk-scope .card.sk-done{background:var(--pale);}
+  .sk-scope .card.sk-done b{color:var(--muted);text-decoration:line-through;}
+  .sk-scope .sk-check{width:22px;height:22px;flex-shrink:0;margin-top:2px;}
   .ex-note-history{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);}
   .ex-note-history div{font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5;}
   .ex-note-history .date{font-weight:700;color:var(--accent-dark);margin-right:6px;}
@@ -446,6 +451,8 @@
       <button data-tab="insights">Insights</button>
       <button data-tab="casa">Casa</button>
       <button data-tab="mural">Mural dos Sonhos</button>
+      <button data-tab="alan">Alan</button>
+      <button data-tab="skincare">Skincare</button>
       <button data-tab="espiritualidade">Espiritualidade</button>
       <button data-tab="resumo">Resumo</button>
     </nav>
@@ -527,6 +534,9 @@
     <h2 class="h2">✨ Minha Energia Hoje</h2>
     <div class="card" id="energiaResumoHoje"></div>
 
+    <h2 class="h2">🔥 Libido — últimos 14 dias</h2>
+    <div class="card"><div class="bars" id="libidoBars"></div></div>
+
     <h2 class="h2">🌙 Meu Ciclo</h2>
     <div class="card" id="cicloResumo"></div>
     <div class="card">
@@ -565,12 +575,67 @@
         <div class="field"><label class="field-label">Corrimento/secreção</label><div class="toggle-simnao" id="tg-corrimento"></div></div>
       </div>
 
+      <div class="card" id="detalheMenstruacao" style="display:none;background:var(--pale);">
+        <label class="field-label">Fluxo</label>
+        <div class="toggle-simnao" id="sel-fluxo" style="flex-wrap:wrap;"></div>
+        <label class="field-label" style="margin-top:10px;">Cólica</label>
+        <div class="scale-picker" id="sp-colica"></div>
+        <label class="field-label" style="margin-top:10px;">Coágulos</label>
+        <div class="toggle-simnao" id="tg-coagulos"></div>
+        <div class="field" style="margin-top:10px;"><label class="field-label">Observações</label><textarea id="obsMenstruacao" rows="2"></textarea></div>
+      </div>
+
+      <div class="card" id="detalheCorrimento" style="display:none;background:var(--pale);">
+        <label class="field-label">Quantidade</label>
+        <div class="toggle-simnao" id="sel-corrimentoQtd" style="flex-wrap:wrap;"></div>
+        <label class="field-label" style="margin-top:10px;">Característica</label>
+        <div class="toggle-simnao" id="sel-corrimentoCaracteristica" style="flex-wrap:wrap;"></div>
+        <label class="field-label" style="margin-top:10px;">Sintomas associados</label>
+        <div id="chips-corrimentoSintomas"></div>
+        <div class="field" style="margin-top:10px;"><label class="field-label">Observações</label><textarea id="obsCorrimento" rows="2"></textarea></div>
+        <div id="corrimentoEducativo" style="margin-top:10px;font-size:12.5px;color:var(--muted);font-style:italic;"></div>
+        <div id="corrimentoAviso" style="margin-top:8px;"></div>
+      </div>
+
+      <div class="card" id="detalheSexo" style="display:none;background:var(--pale);">
+        <label class="field-label">Quantas vezes hoje?</label>
+        <div class="toggle-simnao" id="sel-sexoVezes"></div>
+        <label class="field-label" style="margin-top:10px;">Proteção</label>
+        <div class="toggle-simnao" id="sel-protecao"></div>
+        <label class="field-label" style="margin-top:10px;">Desejo antes</label>
+        <div class="scale-picker" id="sp-desejoAntes"></div>
+        <label class="field-label" style="margin-top:10px;">Satisfação (opcional)</label>
+        <div class="scale-picker" id="sp-satisfacao"></div>
+        <div class="field" style="margin-top:10px;"><label class="field-label">Observações</label><textarea id="obsSexo" rows="2"></textarea></div>
+      </div>
+
       <label class="field-label" style="margin-top:6px;display:block;">O que apareceu hoje?</label>
       <div id="sintomasChips" style="margin-bottom:10px;"></div>
 
       <div class="field"><label class="field-label">Algo diferente hoje? (opcional)</label><textarea id="checkinNotaLivre" rows="2" placeholder="Escreva livremente…"></textarea></div>
 
       <button class="btn primary" id="btnSalvarCheckin">Salvar registro de hoje</button>
+    </div>
+
+    <h2 class="h2">🌙 Entenda sua fase</h2>
+    <div class="card" id="entendaFaseCard"></div>
+
+    <h2 class="h2">🔎 Meu Padrão</h2>
+    <div class="card" id="meuPadraoCard"></div>
+
+    <h2 class="h2">📊 Ver meus padrões</h2>
+    <div class="card">
+      <div id="seletorIndicador" style="margin-bottom:10px;"></div>
+      <div id="graficoIndicador"></div>
+    </div>
+
+    <h2 class="h2">🌙 Meu Pré-Menstrual</h2>
+    <div class="card" id="preMenstrualCard"></div>
+
+    <h2 class="h2">Comparar meus ciclos</h2>
+    <div class="card">
+      <div id="compararCiclosFiltro" style="margin-bottom:10px;"></div>
+      <div id="compararCiclosTable"></div>
     </div>
 
     <h2 class="h2">Registro complementar</h2>
@@ -627,6 +692,7 @@
 
     <h2 class="h2">Diário Alimentar</h2>
     <div class="callout"><p>Não é pra contar caloria — é pra você enxergar o padrão. Registre como foi cada refeição ou o dia inteiro, e use o resumo da semana/mês pra se guiar: "essa semana comi bem, hoje posso soltar a mão" ou "hoje já puxei pra besteira, vou segurar à noite".</p></div>
+    <div class="card" id="cozinhaCicloInsight" style="display:none;"></div>
     <div class="card" id="diarioAlimentarResumo"></div>
     <div class="card">
       <div class="field">
@@ -771,6 +837,7 @@
 
   <section class="panel" id="panel-treino">
     <div class="callout"><span class="eyebrow">Seu treino</span><p>6× por semana · Foco em glúteo &amp; definição · Registro de evolução por 4 semanas. Regra geral de progressão: quando completar todas as reps com folga, suba cerca de +2kg.</p></div>
+    <div class="card" id="treinoEnergiaInsight" style="display:none;"></div>
     <div class="subnav" id="treinoSubnav"></div>
     <div id="treinoDayPanels"></div>
   </section>
@@ -927,6 +994,152 @@
       <div class="mu-vision-overlay" id="muVisionOverlay">
         <button type="button" class="mu-vision-close" id="btnFecharVision">✕</button>
         <div class="mu-vision-grid" id="muVisionGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-alan">
+    <div class="callout"><p>Diário de saúde e medicações do Alan. Organiza e registra o que já foi prescrito — nunca prescreve, altera dose ou decide sozinho.</p></div>
+
+    <h2 class="h2">💊 Medicações de hoje</h2>
+    <div class="card" id="alanResumoHoje"></div>
+
+    <div class="alan-periodo-label">MANHÃ</div>
+    <div id="alanRotinaManha"></div>
+    <div class="alan-periodo-label">DURANTE O DIA</div>
+    <div id="alanRotinaDia"></div>
+    <div class="alan-periodo-label">NOITE</div>
+    <div id="alanRotinaNoite"></div>
+
+    <h2 class="h2">🩺 Se necessário</h2>
+
+    <div class="card">
+      <b style="color:var(--ink);">Aerolin — 4 puffs</b>
+      <p class="desc" style="margin:4px 0 8px;">Quando houver tosse.</p>
+      <button class="btn primary" id="btnAerolin">+ Registrar Aerolin</button>
+      <div id="alanContadoresAerolin" style="margin-top:10px;"></div>
+      <div id="alanListaAerolin" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="card">
+      <b style="color:var(--ink);">Esalerg — 16 gotas</b>
+      <p class="desc" style="margin:4px 0 8px;">À noite, quando nariz escorrendo/sintomas.</p>
+      <div id="esalergMotivoChips" style="margin-bottom:8px;"></div>
+      <button class="btn primary" id="btnEsalerg">+ Registrar Esalerg</button>
+      <div id="alanContadoresEsalerg" style="margin-top:10px;"></div>
+      <div id="alanListaEsalerg" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="card">
+      <b style="color:var(--ink);">Luftal — 10 gotas</b>
+      <p class="desc" style="margin:4px 0 8px;">Quando houver gases.</p>
+      <button class="btn primary" id="btnLuftal">+ Registrar Luftal</button>
+      <div id="alanContadoresLuftal" style="margin-top:10px;"></div>
+      <div id="alanListaLuftal" style="margin-top:8px;"></div>
+    </div>
+
+    <h2 class="h2">📅 Esta Semana</h2>
+    <div class="card" id="alanSemanaCard"></div>
+
+    <h2 class="h2">📊 Este Mês</h2>
+    <div class="card" id="alanMesCard"></div>
+
+    <h2 class="h2">📅 Calendário de Medicações</h2>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <button type="button" class="btn" id="alanBtnMesAnterior">‹</button>
+        <b id="alanCalendarioMesLabel" style="font-family:var(--serif);color:var(--ink);"></b>
+        <button type="button" class="btn" id="alanBtnMesSeguinte">›</button>
+      </div>
+      <div class="cal-weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+      <div class="cal-grid" id="alanCalendarioGrid"></div>
+      <p class="desc" style="margin-top:12px;">✅ tudo administrado · ◐ parcial · 🩺 teve registro de "se necessário" · toque no dia pra ver o detalhe</p>
+    </div>
+
+    <div class="mu-modal-bg" id="alanDiaModalBg">
+      <div class="mu-modal" id="alanDiaModalContent"></div>
+    </div>
+
+    <h2 class="h2">➕ Medicamentos eventuais</h2>
+    <div class="card">
+      <button class="btn primary" id="btnNovoMedEventual">+ Adicionar medicamento</button>
+      <div id="medEventualForm" style="display:none;margin-top:14px;">
+        <div class="field"><label class="field-label">Nome</label><input type="text" id="me-nome"></div>
+        <div class="grid2">
+          <div class="field"><label class="field-label">Dose</label><input type="text" id="me-dose"></div>
+          <div class="field"><label class="field-label">Unidade</label><select id="me-unidade">
+            <option>gotas</option><option>ml</option><option>puff</option><option>comprimido</option><option>aplicação</option><option>outro</option>
+          </select></div>
+        </div>
+        <div class="field"><label class="field-label">Tipo de uso</label><select id="me-tipouso">
+          <option>Todos os dias</option><option>X vezes ao dia</option><option>Manhã</option><option>Tarde</option><option>Noite</option>
+          <option>Manhã e noite</option><option>Em horários determinados</option><option>A cada X horas</option>
+          <option>Dias específicos da semana</option><option>Quando necessário</option><option>Durante determinado período</option><option>Personalizado</option>
+        </select></div>
+        <div class="grid2">
+          <div class="field"><label class="field-label">Data de início</label><input type="date" id="me-inicio"></div>
+          <div class="field"><label class="field-label">Data de término (opcional)</label><input type="date" id="me-fim"></div>
+        </div>
+        <div class="field"><label class="field-label">Orientações</label><textarea id="me-orientacoes" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Relação com alimentação (opcional)</label><input type="text" id="me-relacaoalimentacao"></div>
+        <div class="field"><label class="field-label">Observações</label><textarea id="me-obs" rows="2"></textarea></div>
+        <button class="btn primary" id="btnSalvarMedEventual">Salvar medicamento</button>
+      </div>
+    </div>
+
+    <div id="medEventuaisAtivos"></div>
+
+    <div class="card">
+      <button class="btn" id="btnToggleMedHistorico">Ver histórico (pausados/encerrados)</button>
+      <div id="medEventuaisHistorico" style="display:none;margin-top:10px;"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-skincare">
+    <div class="sk-scope">
+      <div class="callout"><p>Não é rotina pra decorar — é pra abrir e saber na hora o que passar na pele.</p></div>
+
+      <h2 class="h2">🧴 Skincare de hoje — <span id="skDataHoje"></span></h2>
+
+      <div id="skMensagemConcluido" class="card" style="display:none;background:var(--pale);text-align:center;">
+        <p style="margin:0;font-family:var(--serif);color:var(--accent-dark);">✨ Skincare concluído! Consistência também é autocuidado.</p>
+      </div>
+
+      <h2 class="h2">☀️ Rotina da manhã</h2>
+      <div class="progress" id="skManhaProgresso" style="margin-bottom:8px;"></div>
+      <div id="skManhaLista"></div>
+
+      <h2 class="h2">🔄 Reaplicar protetor a cada 2 horas</h2>
+      <div class="card">
+        <button class="btn primary" id="btnReaplicarProtetor">+ Registrar reaplicação</button>
+        <div id="skReaplicacoesLista" style="margin-top:10px;"></div>
+      </div>
+
+      <h2 class="h2">🌙 Rotina da noite</h2>
+      <div class="progress" id="skNoiteProgresso" style="margin-bottom:8px;"></div>
+      <div id="skNoiteLista"></div>
+
+      <h2 class="h2">📅 Calendário Semanal Automático</h2>
+      <div class="card" id="skCalendarioSemanal"></div>
+
+      <h2 class="h2">📊 Controle de Consistência</h2>
+      <div class="card">
+        <label class="field-label">Hoje</label>
+        <div id="skConsistenciaHoje" style="margin-top:6px;"></div>
+      </div>
+      <div class="card">
+        <label class="field-label">Esta semana</label>
+        <div id="skConsistenciaSemana" style="margin-top:6px;"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <button type="button" class="btn" id="skHabitBtnMesAnterior">‹</button>
+          <b id="skHabitTrackerMesLabel" style="font-family:var(--serif);color:var(--ink);"></b>
+          <button type="button" class="btn" id="skHabitBtnMesSeguinte">›</button>
+        </div>
+        <div class="cal-weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+        <div class="cal-grid" id="skHabitTrackerGrid"></div>
+        <p class="desc" style="margin-top:12px;">🟢 rotina completa · 🟡 parcial · ⚪ não registrada. O objetivo é consistência, não perfeição — sem cobrança por dias perdidos.</p>
       </div>
     </div>
   </section>
@@ -1505,6 +1718,7 @@ function renderCiclo(){
     ${linha("🌸 Janela fértil", fmtDate(fertilInicio)+"–"+fmtDate(fertilFim), true)}
     ${linha("⭐ Ovulação", fmtDate(ovulacaoData), true)}
     ${linha("Duração média do ciclo", duracaoCiclo ? duracaoCiclo+" dias" : "sem dados suficientes ainda", false)}
+    ${(()=>{ const durs = ciclosDuracoes(); if(durs.length<2) return ""; const menor=Math.min(...durs), maior=Math.max(...durs); return linha("Menor / maior ciclo", menor+" / "+maior+" dias", false) + linha("Variação entre ciclos", (maior-menor)+" dias", false); })()}
     <p class="desc" style="margin:10px 0 0;">Baseado em ${nCiclos} ciclo${nCiclos===1?"":"s"} registrado${nCiclos===1?"":"s"}.</p>
   `;
 }
@@ -1629,10 +1843,456 @@ document.getElementById("btnMesSeguinte").addEventListener("click",()=>{
 });
 
 /* ============================================================
+   DETALHAMENTO — Menstruação, Corrimento, Sexo
+   ============================================================ */
+const FLUXO_OPCOES = [{value:"escape",label:"Escape"},{value:"leve",label:"Leve"},{value:"moderado",label:"Moderado"},{value:"intenso",label:"Intenso"}];
+const CORRIMENTO_QTD_OPCOES = [{value:"pouca",label:"Pouca"},{value:"media",label:"Média"},{value:"muita",label:"Muita"}];
+const CORRIMENTO_CARACTERISTICA_OPCOES = [{value:"seco",label:"Seco/ausente"},{value:"pegajoso",label:"Pegajoso"},{value:"cremoso",label:"Cremoso"},{value:"aquoso",label:"Aquoso"},{value:"transparente",label:"Transparente"},{value:"escorregadio",label:"Escorregadio"},{value:"elastico",label:"Elástico"},{value:"clara_ovo",label:"Tipo clara de ovo"},{value:"branco",label:"Branco"},{value:"amarelado",label:"Amarelado"},{value:"outro",label:"Outro"}];
+const CORRIMENTO_SINTOMAS_LISTA = ["Nenhum","Odor diferente","Coceira","Ardência","Desconforto","Dor","Outro"];
+const CORRIMENTO_EDUCATIVO = {
+  "Menstrual": "Durante a menstruação, o sangramento substitui temporariamente a percepção do muco cervical.",
+  "Folicular": "No início do ciclo, é comum a secreção ser mais seca ou pegajosa, ficando gradualmente mais úmida conforme o estrogênio sobe.",
+  "Ovulatória": "O aumento do estrogênio pode fazer com que o muco cervical fique mais abundante, transparente, escorregadio e elástico, frequentemente descrito como semelhante à clara de ovo.",
+  "Lútea": "Depois da ovulação, a progesterona costuma deixar a secreção mais espessa, cremosa ou reduzida."
+};
+const SEXO_VEZES_OPCOES = [{value:"1",label:"1"},{value:"2",label:"2"},{value:"3",label:"3"},{value:"+",label:"+"}];
+const PROTECAO_OPCOES = [{value:"com",label:"Com proteção"},{value:"sem",label:"Sem proteção"}];
+
+function renderOptionPicker(containerId, field, options){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = options.map(o=> `<button type="button" data-v="${o.value}" class="${checkinState[field]===o.value?"active":""}">${o.label}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      checkinState[field] = checkinState[field]===btn.dataset.v ? null : btn.dataset.v;
+      renderOptionPicker(containerId, field, options);
+    });
+  });
+}
+function renderCorrimentoSintomasChips(){
+  const box = document.getElementById("chips-corrimentoSintomas");
+  if(!box) return;
+  box.innerHTML = CORRIMENTO_SINTOMAS_LISTA.map(s=>{
+    const active = (checkinState.corrimentoSintomas||[]).includes(s);
+    return `<button type="button" class="diario-chip${active?" active":""}" data-s="${s}">${s}</button>`;
+  }).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const s = btn.dataset.s;
+      if(!checkinState.corrimentoSintomas) checkinState.corrimentoSintomas = [];
+      const idx = checkinState.corrimentoSintomas.indexOf(s);
+      if(idx>=0) checkinState.corrimentoSintomas.splice(idx,1); else checkinState.corrimentoSintomas.push(s);
+      renderCorrimentoSintomasChips();
+      renderCorrimentoAviso();
+    });
+  });
+}
+function renderCorrimentoEducativo(){
+  const box = document.getElementById("corrimentoEducativo");
+  if(!box) return;
+  const fase = faseAtualEstimada();
+  box.textContent = fase ? (CORRIMENTO_EDUCATIVO[fase.fase] || "") : "";
+}
+function renderCorrimentoAviso(){
+  const box = document.getElementById("corrimentoAviso");
+  if(!box) return;
+  const preocupantes = ["Odor diferente","Coceira","Ardência","Desconforto","Dor"];
+  const atual = (checkinState.corrimentoSintomas||[]).filter(s=> preocupantes.includes(s));
+  if(atual.length===0){ box.innerHTML=""; return; }
+  const recentes = energia.filter(e=> e.corrimento && e.corrimentoSintomas && e.corrimentoSintomas.some(s=>preocupantes.includes(s))).slice(0,5);
+  if(recentes.length>=2){
+    box.innerHTML = `<p class="desc" style="margin:0;color:var(--accent-dark);">Você registrou mudanças parecidas (${atual.join(", ").toLowerCase()}) em outros dias recentes. Não é um diagnóstico — mas se persistir, pode valer conversar com um profissional.</p>`;
+  } else {
+    box.innerHTML = "";
+  }
+}
+function toggleDetailVisibility(){
+  const dm = document.getElementById("detalheMenstruacao");
+  const dc = document.getElementById("detalheCorrimento");
+  const ds = document.getElementById("detalheSexo");
+  if(dm) dm.style.display = checkinState.menstruacao ? "block" : "none";
+  if(dc) dc.style.display = checkinState.corrimento ? "block" : "none";
+  if(ds) ds.style.display = checkinState.sexoHoje ? "block" : "none";
+}
+function renderDetalhesCondicionais(){
+  toggleDetailVisibility();
+  renderOptionPicker("sel-fluxo","fluxo",FLUXO_OPCOES);
+  renderScalePicker("sp-colica","colicaIntensidade");
+  renderToggleSimNao("tg-coagulos","coagulos");
+  document.getElementById("obsMenstruacao").value = checkinState.obsMenstruacao || "";
+
+  renderOptionPicker("sel-corrimentoQtd","corrimentoQtd",CORRIMENTO_QTD_OPCOES);
+  renderOptionPicker("sel-corrimentoCaracteristica","corrimentoCaracteristica",CORRIMENTO_CARACTERISTICA_OPCOES);
+  renderCorrimentoSintomasChips();
+  document.getElementById("obsCorrimento").value = checkinState.obsCorrimento || "";
+  renderCorrimentoEducativo();
+  renderCorrimentoAviso();
+
+  renderOptionPicker("sel-sexoVezes","sexoVezes",SEXO_VEZES_OPCOES);
+  renderOptionPicker("sel-protecao","protecao",PROTECAO_OPCOES);
+  renderScalePicker("sp-desejoAntes","desejoAntes");
+  renderScalePicker("sp-satisfacao","satisfacao");
+  document.getElementById("obsSexo").value = checkinState.obsSexo || "";
+}
+function syncCicloFromMenstruacao(dStr){
+  let alvo = ciclos.find(c=> dStr >= c.inicio && daysBetween(c.inicio, dStr) <= 15 && daysBetween(c.inicio,dStr) >= 0);
+  if(!alvo){
+    // aceita também datas ligeiramente anteriores ao início registrado (edição retroativa)
+    alvo = ciclos.find(c=> c.inicio >= dStr && daysBetween(dStr, c.inicio) <= 3);
+  }
+  if(alvo){
+    if(!alvo.fim || dStr > alvo.fim) alvo.fim = dStr;
+    if(dStr < alvo.inicio) alvo.inicio = dStr;
+  } else {
+    ciclos.push({id:"ciclo_"+Date.now(), inicio:dStr, fim:dStr});
+  }
+  saveKey("ciclos", ciclos);
+}
+function renderLibidoBars(){
+  const box = document.getElementById("libidoBars");
+  if(!box) return;
+  const last14 = energia.slice(0,14);
+  box.innerHTML = last14.slice().reverse().map(e=>{
+    const v = e.libido!=null ? Math.max(0, Math.min(5, Number(e.libido))) : 0;
+    return `<div class="bar" style="height:${v*16}%"><span>${e.libido!=null ? e.libido : "–"}</span></div>`;
+  }).join("");
+}
+
+/* ============================================================
+   ENTENDA SUA FASE + MEU PADRÃO
+   ============================================================ */
+const FASE_EDUCATIVO = {
+  "Menstrual": "O revestimento uterino é eliminado. Os níveis de estrogênio e progesterona estão baixos, o que pode vir acompanhado de menos energia e mais vontade de descansar.",
+  "Folicular": "O estrogênio começa a subir enquanto os folículos se desenvolvem. É comum sentir a energia e a disposição aumentando ao longo dessa fase.",
+  "Ovulatória": "O pico de estrogênio (com um pico curto de LH) desencadeia a ovulação. Muitas pessoas relatam mais energia, libido e sociabilidade nesse período.",
+  "Lútea": "A progesterona sobe depois da ovulação e cai perto do fim do ciclo. É comum surgirem sintomas de TPM, mais sensibilidade e vontade de doce nos últimos dias dessa fase."
+};
+function faseParaDataEDuracao(diaCiclo, duracaoCiclo, duracaoMenstrual){
+  const ovulacaoDia = duracaoCiclo - 14;
+  const d = ((diaCiclo-1) % duracaoCiclo) + 1;
+  if(d <= duracaoMenstrual) return "Menstrual";
+  if(d >= ovulacaoDia-1 && d <= ovulacaoDia+1) return "Ovulatória";
+  if(d < ovulacaoDia-1) return "Folicular";
+  return "Lútea";
+}
+function classificarTodosRegistros(){
+  const ord = cicloOrdenados();
+  if(ord.length===0) return [];
+  const duracaoMenstrualMedia = menstruacaoMediaDuracao() || 5;
+  const duracaoMedia = cicloMediaDuracao() || 28;
+  const out = [];
+  energia.forEach(e=>{
+    let idx = -1;
+    for(let i=0;i<ord.length;i++){ if(ord[i].inicio <= e.date) idx = i; else break; }
+    if(idx<0) return;
+    const cicloInicio = ord[idx].inicio;
+    const proximoInicio = idx+1 < ord.length ? ord[idx+1].inicio : null;
+    const duracaoReal = proximoInicio ? daysBetween(cicloInicio, proximoInicio) : duracaoMedia;
+    const diaCiclo = daysBetween(cicloInicio, e.date) + 1;
+    if(diaCiclo < 1 || diaCiclo > duracaoReal + 5) return;
+    const fase = faseParaDataEDuracao(diaCiclo, duracaoReal, duracaoMenstrualMedia);
+    out.push({date:e.date, fase, entry:e, cicloIdx:idx});
+  });
+  return out;
+}
+function mediaPorFase(faseNome, campo){
+  const classificados = classificarTodosRegistros().filter(c=> c.fase===faseNome && c.entry[campo]!=null);
+  if(classificados.length===0) return null;
+  const soma = classificados.reduce((a,c)=> a + Number(c.entry[campo]), 0);
+  return Math.round((soma/classificados.length)*10)/10;
+}
+function ciclosComDadosNaFase(faseNome){
+  const classificados = classificarTodosRegistros().filter(c=> c.fase===faseNome);
+  return new Set(classificados.map(c=>c.cicloIdx)).size;
+}
+function renderEntendaFase(){
+  const box = document.getElementById("entendaFaseCard");
+  if(!box) return;
+  const fase = faseAtualEstimada();
+  const dia = diaDoCicloHoje();
+  if(!fase){ box.innerHTML = `<p class="desc" style="margin:0;">Registre sua última menstruação em "Meu Ciclo" pra começar a entender sua fase.</p>`; return; }
+  const educativo = FASE_EDUCATIVO[fase.fase] || "";
+  const nCiclosFase = ciclosComDadosNaFase(fase.fase);
+  let vocePart;
+  if(nCiclosFase>=2){
+    const campos = [["⚡ energia média","energiaNota"],["🔥 libido média","libido"],["🧠 foco médio","focoCerebro"],["😊 humor médio","humorGeral"]];
+    const linhas = campos.map(([label,campo])=>{
+      const m = mediaPorFase(fase.fase, campo);
+      return m!=null ? `<div style="font-size:13px;margin-bottom:4px;">${label}: <b style="color:var(--accent-dark);">${m}/5</b></div>` : "";
+    }).filter(Boolean).join("");
+    vocePart = `<div style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);"><label class="field-label">🔎 O que acontece com você</label><p class="desc" style="margin:4px 0 8px;">Baseado nos seus últimos ${nCiclosFase} ciclos com dados nessa fase:</p>${linhas}</div>`;
+  } else {
+    vocePart = `<div style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);"><label class="field-label">🔎 O que acontece com você</label><p class="desc" style="margin:4px 0;">Ainda não há ciclos suficientes registrados nessa fase pra mostrar seu padrão pessoal.</p></div>`;
+  }
+  box.innerHTML = `
+    <div style="font-family:var(--serif);font-size:18px;color:var(--ink);">${fase.emoji} FASE ${fase.fase.toUpperCase()} <span class="estimativa-tag">estimativa</span></div>
+    <p class="desc" style="margin:4px 0 12px;">Dia ${dia} do ciclo.</p>
+    <label class="field-label">📚 O que pode acontecer nessa fase</label>
+    <p class="desc" style="margin:4px 0;">${educativo}</p>
+    ${vocePart}
+  `;
+}
+function padraoQuedaEnergia(transicoes){
+  const vals = energia.filter(e=>e.energiaNota!=null).map(e=>Number(e.energiaNota));
+  if(vals.length<8) return null;
+  const mediaGeral = vals.reduce((a,b)=>a+b,0)/vals.length;
+  const diasEncontrados = [];
+  transicoes.forEach(fim=>{
+    for(let d=1; d<=10; d++){
+      const e = energia.find(x=>x.date===addDays(fim,-d));
+      if(e && e.energiaNota!=null && Number(e.energiaNota) <= mediaGeral-1){ diasEncontrados.push(d); break; }
+    }
+  });
+  if(diasEncontrados.length>=3 && diasEncontrados.length>=Math.ceil(transicoes.length*0.6)){
+    const media = Math.round(diasEncontrados.reduce((a,b)=>a+b,0)/diasEncontrados.length);
+    return `Você costuma apresentar queda de energia aproximadamente <b>${media} dias antes</b> da menstruação.`;
+  }
+  return null;
+}
+function padroesSintomasDiasAntes(transicoes){
+  const alvos = ["Compulsão","Ansiedade","Irritabilidade","Tristeza","Procrastinação","Esquecimento","Vontade de doce"];
+  const resultados = [];
+  alvos.forEach(sintomaNome=>{
+    const diasEncontrados = [];
+    transicoes.forEach(fim=>{
+      for(let d=1; d<=10; d++){
+        const e = energia.find(x=>x.date===addDays(fim,-d));
+        if(e && e.sintomas && e.sintomas[sintomaNome]!==undefined){ diasEncontrados.push(d); break; }
+      }
+    });
+    if(diasEncontrados.length>=3 && diasEncontrados.length>=Math.ceil(transicoes.length*0.6)){
+      const media = Math.round(diasEncontrados.reduce((a,b)=>a+b,0)/diasEncontrados.length);
+      resultados.push(`Sua/seu <b>${sintomaNome.toLowerCase()}</b> costuma aparecer aproximadamente <b>${media} dias antes</b> da menstruação.`);
+    }
+  });
+  return resultados;
+}
+function padraoFaseDominante(campo, label){
+  const fases = ["Menstrual","Folicular","Ovulatória","Lútea"];
+  const medias = fases.map(f=> ({fase:f, media: mediaPorFase(f,campo)})).filter(x=>x.media!=null);
+  if(medias.length<2) return null;
+  medias.sort((a,b)=> b.media-a.media);
+  if(medias[0].media - medias[1].media >= 0.5){
+    return `Seu maior nível de <b>${label}</b> apareceu predominantemente na fase <b>${medias[0].fase.toLowerCase()}</b>.`;
+  }
+  return null;
+}
+function renderMeuPadrao(){
+  const box = document.getElementById("meuPadraoCard");
+  if(!box) return;
+  const ord = cicloOrdenados();
+  const nCiclos = ciclosDuracoes().length;
+  if(nCiclos<3){
+    box.innerHTML = `<p class="desc" style="margin:0;">Ainda estou aprendendo seu padrão — preciso de pelo menos 3 ciclos registrados pra começar a mostrar tendências. Você tem ${nCiclos} até agora.</p>`;
+    return;
+  }
+  const transicoes = [];
+  for(let i=0;i<ord.length-1;i++) transicoes.push(ord[i+1].inicio);
+  const frases = [];
+  const quedaEnergia = padraoQuedaEnergia(transicoes);
+  if(quedaEnergia) frases.push(quedaEnergia);
+  frases.push(...padroesSintomasDiasAntes(transicoes));
+  [["energiaNota","energia"],["libido","libido"],["focoCerebro","foco"],["humorGeral","humor"]].forEach(([campo,label])=>{
+    const p = padraoFaseDominante(campo,label);
+    if(p) frases.push(p);
+  });
+  if(frases.length===0){
+    box.innerHTML = `<p class="desc" style="margin:0;">Ainda não encontrei um padrão consistente o suficiente nos seus registros. Continue registrando — quanto mais dados, mais claro isso fica.</p><p class="desc" style="margin:8px 0 0;color:var(--muted);">Baseado em ${nCiclos} ciclos analisados.</p>`;
+    return;
+  }
+  box.innerHTML = frases.map(f=> `<p class="desc" style="margin:0 0 8px;">• ${f}</p>`).join("") + `<p class="desc" style="margin:10px 0 0;color:var(--muted);">Baseado em ${nCiclos} ciclos analisados.</p>`;
+}
+
+/* ============================================================
+   VER MEUS PADRÕES — gráficos por indicador
+   ============================================================ */
+const INDICADORES_GRAFICO = [
+  {id:"energia", label:"Energia", tipo:"campo", campo:"energiaNota"},
+  {id:"humor", label:"Humor", tipo:"campo", campo:"humorGeral"},
+  {id:"libido", label:"Libido", tipo:"campo", campo:"libido"},
+  {id:"foco", label:"Foco", tipo:"campo", campo:"focoCerebro"},
+  {id:"ansiedade", label:"Ansiedade", tipo:"sintoma", sintoma:"Ansiedade"},
+  {id:"compulsao", label:"Compulsão", tipo:"sintoma", sintoma:"Compulsão"},
+  {id:"procrastinacao", label:"Procrastinação", tipo:"sintoma", sintoma:"Procrastinação"},
+  {id:"sexomes", label:"Sexo por mês", tipo:"sexomes"},
+  {id:"sexofase", label:"Sexo por fase", tipo:"sexofase"}
+];
+let indicadorAtivo = "energia";
+function renderSeletorIndicador(){
+  const box = document.getElementById("seletorIndicador");
+  if(!box) return;
+  box.innerHTML = INDICADORES_GRAFICO.map(i=>
+    `<button type="button" class="diario-chip${i.id===indicadorAtivo?" active":""}" data-i="${i.id}">${i.label}</button>`
+  ).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{ indicadorAtivo = btn.dataset.i; renderSeletorIndicador(); renderGraficoIndicador(); });
+  });
+}
+function renderGraficoIndicador(){
+  const box = document.getElementById("graficoIndicador");
+  if(!box) return;
+  const ind = INDICADORES_GRAFICO.find(i=>i.id===indicadorAtivo);
+  if(ind.tipo==="campo" || ind.tipo==="sintoma"){
+    const classificados = classificarTodosRegistros();
+    const ordCiclos = cicloOrdenados();
+    const duracaoMedia = cicloMediaDuracao() || 28;
+    const buckets = {};
+    classificados.forEach(c=>{
+      const cicloInicio = ordCiclos[c.cicloIdx].inicio;
+      const diaCiclo = daysBetween(cicloInicio, c.date)+1;
+      if(diaCiclo<1 || diaCiclo>duracaoMedia+3) return;
+      let valor = null;
+      if(ind.tipo==="campo") valor = c.entry[ind.campo]!=null ? Number(c.entry[ind.campo]) : null;
+      else valor = c.entry.sintomas && c.entry.sintomas[ind.sintoma]!==undefined ? Number(c.entry.sintomas[ind.sintoma]) : null;
+      if(valor==null) return;
+      if(!buckets[diaCiclo]) buckets[diaCiclo] = [];
+      buckets[diaCiclo].push(valor);
+    });
+    const dias = Object.keys(buckets).map(Number);
+    if(dias.length===0){ box.innerHTML = `<div class="histempty">Ainda sem registros suficientes desse indicador.</div>`; return; }
+    const maxDia = Math.max(...dias);
+    let html = `<div class="bars" style="height:100px;">`;
+    for(let d=1; d<=maxDia; d++){
+      const vals = buckets[d];
+      const media = vals && vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+      const h = Math.max(2, Math.round((media/5)*100));
+      html += `<div class="bar" style="height:${h}%;${!vals?'opacity:.15;':''}"><span>${vals ? media.toFixed(1) : ""}</span></div>`;
+    }
+    html += `</div><p class="desc" style="margin-top:10px;">Média de ${ind.label.toLowerCase()} por dia do ciclo (dia 1 ao ${maxDia}).</p>`;
+    box.innerHTML = html;
+  } else if(ind.tipo==="sexomes"){
+    const meses = {};
+    energia.filter(e=>e.sexoHoje).forEach(e=>{ const m = e.date.slice(0,7); meses[m] = (meses[m]||0)+1; });
+    const chaves = Object.keys(meses).sort().slice(-6);
+    if(chaves.length===0){ box.innerHTML = `<div class="histempty">Ainda sem registros de sexo.</div>`; return; }
+    const max = Math.max(...chaves.map(k=>meses[k]),1);
+    let html = `<div class="bars" style="height:100px;">`;
+    chaves.forEach(k=>{ html += `<div class="bar" style="height:${Math.round((meses[k]/max)*100)}%;"><span>${meses[k]}</span></div>`; });
+    html += `</div><p class="desc" style="margin-top:10px;">${chaves.map(k=>{const [a,m]=k.split("-");return m+"/"+a.slice(2);}).join(" · ")}</p>`;
+    box.innerHTML = html;
+  } else if(ind.tipo==="sexofase"){
+    const fases = ["Menstrual","Folicular","Ovulatória","Lútea"];
+    const classificados = classificarTodosRegistros();
+    const contagens = fases.map(f=> classificados.filter(c=>c.fase===f && c.entry.sexoHoje).length);
+    if(contagens.every(c=>c===0)){ box.innerHTML = `<div class="histempty">Ainda sem registros de sexo.</div>`; return; }
+    const max = Math.max(...contagens,1);
+    let html = `<div class="bars" style="height:100px;">`;
+    fases.forEach((f,i)=>{ html += `<div class="bar" style="height:${Math.round((contagens[i]/max)*100)}%;"><span>${contagens[i]}</span></div>`; });
+    html += `</div><p class="desc" style="margin-top:10px;">${fases.join(" · ")}</p>`;
+    box.innerHTML = html;
+  }
+}
+
+/* ============================================================
+   MEU PRÉ-MENSTRUAL
+   ============================================================ */
+function renderPreMenstrual(){
+  const box = document.getElementById("preMenstrualCard");
+  if(!box) return;
+  const ord = cicloOrdenados();
+  const transicoes = [];
+  for(let i=0;i<ord.length-1;i++) transicoes.push(ord[i+1].inicio);
+  if(transicoes.length<3){
+    box.innerHTML = `<p class="desc" style="margin:0;">Preciso de pelo menos 3 ciclos completos registrados pra mostrar seu padrão pré-menstrual. Você tem ${transicoes.length} até agora.</p>`;
+    return;
+  }
+  const alvos = [
+    {nome:"Ansiedade", tipo:"sintoma", texto:"ansiedade começa a subir"},
+    {nome:"Vontade de doce", tipo:"sintoma", texto:"vontade de doce aumenta"},
+    {nome:"Procrastinação", tipo:"sintoma", texto:"procrastinação aumenta"},
+    {nome:"Irritabilidade", tipo:"sintoma", texto:"irritabilidade aumenta"},
+    {nome:"Sensibilidade", tipo:"sintoma", texto:"maior sensibilidade emocional"},
+    {nome:"Compulsão", tipo:"sintoma", texto:"compulsão alimentar aumenta"},
+    {nome:"Tristeza", tipo:"sintoma", texto:"tristeza aparece"},
+    {nome:"energiabaixa", tipo:"energiabaixa", texto:"energia cai"}
+  ];
+  const linhasPorDia = {};
+  alvos.forEach(alvo=>{
+    const diasEncontrados = [];
+    transicoes.forEach(fim=>{
+      for(let d=10; d>=1; d--){
+        const e = energia.find(x=>x.date===addDays(fim,-d));
+        let bate = false;
+        if(alvo.tipo==="sintoma") bate = !!(e && e.sintomas && e.sintomas[alvo.nome]!==undefined);
+        else if(alvo.tipo==="energiabaixa") bate = !!(e && e.energiaNota!=null && Number(e.energiaNota)<=2);
+        if(bate){ diasEncontrados.push(d); break; }
+      }
+    });
+    if(diasEncontrados.length>=3 && diasEncontrados.length>=Math.ceil(transicoes.length*0.6)){
+      const media = Math.round(diasEncontrados.reduce((a,b)=>a+b,0)/diasEncontrados.length);
+      if(!linhasPorDia[media]) linhasPorDia[media] = [];
+      linhasPorDia[media].push(alvo.texto);
+    }
+  });
+  const diasOrdenados = Object.keys(linhasPorDia).map(Number).sort((a,b)=>b-a);
+  if(diasOrdenados.length===0){
+    box.innerHTML = `<p class="desc" style="margin:0;">Ainda não encontrei um padrão pré-menstrual consistente nos seus registros.</p><p class="desc" style="margin:8px 0 0;color:var(--muted);">Baseado em ${transicoes.length} ciclos analisados.</p>`;
+    return;
+  }
+  box.innerHTML = diasOrdenados.map(d=> `<p class="desc" style="margin:0 0 6px;"><b style="color:var(--accent-dark);">D-${d}:</b> ${linhasPorDia[d].join(", ")}</p>`).join("") + `<p class="desc" style="margin:10px 0 0;color:var(--muted);">Baseado em ${transicoes.length} ciclos analisados.</p>`;
+}
+
+/* ============================================================
+   COMPARAR MEUS CICLOS
+   ============================================================ */
+let compararFiltro = "atual";
+function cicloStats(cicloIdx){
+  const ord = cicloOrdenados();
+  const c = ord[cicloIdx];
+  const proximo = ord[cicloIdx+1];
+  const duracao = proximo ? daysBetween(c.inicio, proximo.inicio) : null;
+  const fim = proximo ? addDays(proximo.inicio,-1) : todayStr();
+  const entradas = energia.filter(e=> e.date>=c.inicio && e.date<=fim);
+  function media(campo){
+    const vals = entradas.filter(e=>e[campo]!=null).map(e=>Number(e[campo]));
+    return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "—";
+  }
+  function mediaSintoma(nome){
+    const vals = entradas.filter(e=>e.sintomas && e.sintomas[nome]!==undefined).map(e=>Number(e.sintomas[nome]));
+    return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "—";
+  }
+  return {
+    inicio: c.inicio,
+    duracao: duracao!=null ? duracao+" dias" : "em andamento",
+    energia: media("energiaNota"), humor: media("humorGeral"), libido: media("libido"), foco: media("focoCerebro"),
+    sexo: entradas.filter(e=>e.sexoHoje).length,
+    ansiedade: mediaSintoma("Ansiedade"), tristeza: mediaSintoma("Tristeza"), irritabilidade: mediaSintoma("Irritabilidade"),
+    compulsao: mediaSintoma("Compulsão"), procrastinacao: mediaSintoma("Procrastinação"), esquecimento: mediaSintoma("Esquecimento"),
+    corrimento: entradas.filter(e=>e.corrimento).length, colica: mediaSintoma("Cólica")
+  };
+}
+function renderCompararCiclos(){
+  const box = document.getElementById("compararCiclosTable");
+  const chips = document.getElementById("compararCiclosFiltro");
+  if(!box) return;
+  const ord = cicloOrdenados();
+  if(chips){
+    const opts = [["atual","Ciclo atual"],["anterior","Anterior"],["3","Últimos 3"],["6","Últimos 6"],["12","Últimos 12"]];
+    chips.innerHTML = opts.map(([v,l])=> `<button type="button" class="diario-chip${compararFiltro===v?" active":""}" data-v="${v}">${l}</button>`).join("");
+    chips.querySelectorAll("button").forEach(btn=>{
+      btn.addEventListener("click",()=>{ compararFiltro = btn.dataset.v; renderCompararCiclos(); });
+    });
+  }
+  let indices;
+  if(compararFiltro==="atual") indices = ord.length ? [ord.length-1] : [];
+  else if(compararFiltro==="anterior") indices = ord.length>=2 ? [ord.length-2] : [];
+  else { const n = +compararFiltro; indices = ord.map((_,i)=>i).slice(-n); }
+  if(indices.length===0){ box.innerHTML = `<div class="histempty">Sem ciclos suficientes pra essa comparação.</div>`; return; }
+  const linhas = indices.map(i=> cicloStats(i));
+  box.innerHTML = `<div style="overflow-x:auto;"><table class="hist" style="min-width:680px;">
+    <tr><th>Início</th><th>Duração</th><th>Energia</th><th>Humor</th><th>Libido</th><th>Foco</th><th>Sexo</th><th>Ansied.</th><th>Tristeza</th><th>Irrit.</th><th>Compuls.</th><th>Procrast.</th><th>Esquec.</th><th>Corrim.</th><th>Cólica</th></tr>
+    ${linhas.map(l=> `<tr><td>${fmtDate(l.inicio)}</td><td>${l.duracao}</td><td>${l.energia}</td><td>${l.humor}</td><td>${l.libido}</td><td>${l.foco}</td><td>${l.sexo}x</td><td>${l.ansiedade}</td><td>${l.tristeza}</td><td>${l.irritabilidade}</td><td>${l.compulsao}</td><td>${l.procrastinacao}</td><td>${l.esquecimento}</td><td>${l.corrimento}x</td><td>${l.colica}</td></tr>`).join("")}
+  </table></div>`;
+}
+
+/* ============================================================
    MINHA ENERGIA HOJE — check-in rápido
    ============================================================ */
 const SINTOMAS_LISTA = ["TPM","Cólica","Compulsão","Fome aumentada","Vontade de doce","Raiva","Irritabilidade","Tristeza","Melancolia","Choro sem motivo aparente","Sensibilidade","Drama","Ansiedade","Lerdeza","Cérebro não funciona","Procrastinação","Pula-pula de tarefa","Começo tudo e termino nada","Esquecimento","Distração","Confusão mental","Sono","Cansaço","Inchaço","Energia altíssima","Foco excelente","Criatividade","Produtividade alta","Sociabilidade","Autoconfiança"];
-let checkinState = {energiaNota:null, humorGeral:null, libido:null, focoCerebro:null, menstruacao:false, sexoHoje:false, corrimento:false, sintomas:{}, notaLivre:""};
+let checkinState = {energiaNota:null, humorGeral:null, libido:null, focoCerebro:null, menstruacao:false, sexoHoje:false, corrimento:false, sintomas:{}, notaLivre:"",
+  fluxo:null, colicaIntensidade:null, coagulos:false, obsMenstruacao:"",
+  corrimentoQtd:null, corrimentoCaracteristica:null, corrimentoSintomas:[], obsCorrimento:"",
+  sexoVezes:null, protecao:null, desejoAntes:null, satisfacao:null, obsSexo:""};
 let checkinEditDate = null;
 
 function loadCheckinForDate(dStr){
@@ -1646,7 +2306,20 @@ function loadCheckinForDate(dStr){
     sexoHoje: e ? !!e.sexoHoje : false,
     corrimento: e ? !!e.corrimento : false,
     sintomas: e && e.sintomas ? Object.assign({}, e.sintomas) : {},
-    notaLivre: e && e.notaLivre ? e.notaLivre : ""
+    notaLivre: e && e.notaLivre ? e.notaLivre : "",
+    fluxo: e && e.fluxo ? e.fluxo : null,
+    colicaIntensidade: e && e.sintomas && e.sintomas["Cólica"]!==undefined ? e.sintomas["Cólica"] : null,
+    coagulos: e ? !!e.coagulos : false,
+    obsMenstruacao: e && e.obsMenstruacao ? e.obsMenstruacao : "",
+    corrimentoQtd: e && e.corrimentoQtd ? e.corrimentoQtd : null,
+    corrimentoCaracteristica: e && e.corrimentoCaracteristica ? e.corrimentoCaracteristica : null,
+    corrimentoSintomas: e && e.corrimentoSintomas ? e.corrimentoSintomas.slice() : [],
+    obsCorrimento: e && e.obsCorrimento ? e.obsCorrimento : "",
+    sexoVezes: e && e.sexoVezes ? e.sexoVezes : null,
+    protecao: e && e.protecao ? e.protecao : null,
+    desejoAntes: e && e.desejoAntes!=null ? e.desejoAntes : null,
+    satisfacao: e && e.satisfacao!=null ? e.satisfacao : null,
+    obsSexo: e && e.obsSexo ? e.obsSexo : ""
   };
 }
 function renderScalePicker(containerId, field){
@@ -1670,6 +2343,7 @@ function renderToggleSimNao(containerId, field){
     btn.addEventListener("click",()=>{
       checkinState[field] = btn.dataset.v==="1";
       renderToggleSimNao(containerId, field);
+      if(typeof toggleDetailVisibility==="function") toggleDetailVisibility();
     });
   });
 }
@@ -1711,6 +2385,7 @@ function abrirCheckinParaData(dStr){
   renderToggleSimNao("tg-sexoHoje","sexoHoje");
   renderToggleSimNao("tg-corrimento","corrimento");
   renderSintomasChips();
+  renderDetalhesCondicionais();
   document.getElementById("checkinNotaLivre").value = checkinState.notaLivre;
   const label = document.getElementById("checkinEditLabel");
   if(label) label.textContent = dStr===todayStr() ? "" : "Editando registro de " + fmtDate(dStr);
@@ -1727,10 +2402,18 @@ document.getElementById("btnAbrirCheckin").addEventListener("click",()=>{
 document.getElementById("btnSalvarCheckin").addEventListener("click", async ()=>{
   const btn = document.getElementById("btnSalvarCheckin");
   btn.disabled = true;
-  const t = todayStr();
+  const t = checkinEditDate || todayStr();
   checkinState.notaLivre = document.getElementById("checkinNotaLivre").value;
+  checkinState.obsMenstruacao = document.getElementById("obsMenstruacao").value;
+  checkinState.obsCorrimento = document.getElementById("obsCorrimento").value;
+  checkinState.obsSexo = document.getElementById("obsSexo").value;
+  if(checkinState.colicaIntensidade!=null){
+    if(checkinState.colicaIntensidade>0) checkinState.sintomas["Cólica"] = checkinState.colicaIntensidade;
+    else delete checkinState.sintomas["Cólica"];
+  }
   const existing = energia.findIndex(e=>e.date===t);
   const prevSnapshot = energia.slice();
+  const prevCiclosSnapshot = ciclos.map(c=> Object.assign({}, c));
   const base = existing>=0 ? energia[existing] : {date:t};
   const merged = Object.assign({}, base, {
     date:t,
@@ -1742,15 +2425,28 @@ document.getElementById("btnSalvarCheckin").addEventListener("click", async ()=>
     sexoHoje: checkinState.sexoHoje,
     corrimento: checkinState.corrimento,
     sintomas: checkinState.sintomas,
-    notaLivre: checkinState.notaLivre
+    notaLivre: checkinState.notaLivre,
+    fluxo: checkinState.fluxo,
+    coagulos: checkinState.coagulos,
+    obsMenstruacao: checkinState.obsMenstruacao,
+    corrimentoQtd: checkinState.corrimentoQtd,
+    corrimentoCaracteristica: checkinState.corrimentoCaracteristica,
+    corrimentoSintomas: checkinState.corrimentoSintomas,
+    obsCorrimento: checkinState.obsCorrimento,
+    sexoVezes: checkinState.sexoVezes,
+    protecao: checkinState.protecao,
+    desejoAntes: checkinState.desejoAntes,
+    satisfacao: checkinState.satisfacao,
+    obsSexo: checkinState.obsSexo
   });
   if(existing>=0) energia[existing] = merged; else energia.unshift(merged);
   energia.sort((a,b)=> a.date < b.date ? 1 : -1);
+  if(checkinState.menstruacao) syncCicloFromMenstruacao(t);
   const ok = await saveKey("energia", energia);
   btn.disabled = false;
-  if(!ok){ energia = prevSnapshot; toast("Não deu pra salvar", true); return; }
+  if(!ok){ energia = prevSnapshot; ciclos = prevCiclosSnapshot; toast("Não deu pra salvar", true); return; }
   document.getElementById("checkinForm").style.display = "none";
-  toast("Registro de hoje salvo");
+  toast(t===todayStr() ? "Registro de hoje salvo" : "Registro de "+fmtDate(t)+" salvo");
   renderEnergia();
 });
 function sexoCountSince(dateFromStr){
@@ -1810,9 +2506,16 @@ document.getElementById("btnSalvarEnergia").addEventListener("click", async ()=>
 });
 function renderEnergia(){
   renderEnergiaResumoHoje();
+  renderLibidoBars();
   renderCiclo();
   renderCicloHistorico();
   renderCalendarioCiclo();
+  renderEntendaFase();
+  renderMeuPadrao();
+  renderSeletorIndicador();
+  renderGraficoIndicador();
+  renderPreMenstrual();
+  renderCompararCiclos();
   const last14 = energia.slice(0,14);
   const bars = document.getElementById("energiaBars");
   bars.innerHTML = last14.slice().reverse().map(e=>{
@@ -2387,6 +3090,7 @@ function renderDiarioAlimentarList(){
   });
 }
 function renderDiarioAlimentar(){
+  renderCozinhaCicloInsight();
   renderDiarioAlimentarChips();
   renderDiarioAlimentarList();
   renderDiarioAlimentarResumo();
@@ -3376,6 +4080,708 @@ function renderInspiracoes(){
 }
 
 /* ============================================================
+   ALAN — SAÚDE & MEDICAÇÕES
+   ============================================================ */
+const ALAN_ITENS_ROTINA = [
+  {id:"puran", periodo:"manha", nome:"Puran T4", extra:"Horário preferencial: 04h–06h · jejum"},
+  {id:"clenilManha", periodo:"manha", nome:"Clenil — 3 puffs"},
+  {id:"sprayManha", periodo:"manha", nome:"Spray nasal — 1 em cada narina"},
+  {id:"vitaminaD", periodo:"manha", nome:"Vitamina D — 2 gotas"},
+  {id:"ferro", periodo:"dia", nome:"Ferro — 7 gotas + vitamina C"},
+  {id:"lavagemNasal", periodo:"dia", nome:"Lavagem nasal"},
+  {id:"clenilNoite", periodo:"noite", nome:"Clenil — 3 puffs"},
+  {id:"sprayNoite", periodo:"noite", nome:"Spray nasal — 1 em cada narina"}
+];
+let alanRotina = {};
+let alanConfig = {
+  puran: {dose:"", orientacao:"Administrar em jejum", frequencia:"Todos os dias", horarioPreferencial:"04:00–06:00", intervalo:"Mínimo 1h antes e 1h depois da alimentação", obs:""}
+};
+function alanHoraAtual(){
+  const d = new Date();
+  return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+function alanDiffHoras(horaInicio, horaFim){
+  if(!horaInicio || !horaFim) return null;
+  const [h1,m1] = horaInicio.split(":").map(Number);
+  const [h2,m2] = horaFim.split(":").map(Number);
+  let diff = (h2*60+m2) - (h1*60+m1);
+  if(diff < 0) diff += 24*60;
+  return diff/60;
+}
+function alanEnsureToday(){
+  const t = todayStr();
+  if(!alanRotina[t]) alanRotina[t] = {};
+  ALAN_ITENS_ROTINA.forEach(item=>{
+    if(!alanRotina[t][item.id]) alanRotina[t][item.id] = {feito:false, horario:"", obs:""};
+  });
+  return alanRotina[t];
+}
+function alanUltimaLavagemDias(){
+  const datas = Object.keys(alanRotina).filter(d=> alanRotina[d].lavagemNasal && alanRotina[d].lavagemNasal.feito).sort();
+  if(datas.length===0) return null;
+  const ultima = datas[datas.length-1];
+  return {data:ultima, dias: daysBetween(ultima, todayStr())};
+}
+function alanItemCardHtml(item, state){
+  const s = state[item.id];
+  let extraSempre = "";
+  if(item.id==="lavagemNasal"){
+    const info = alanUltimaLavagemDias();
+    extraSempre = info
+      ? `<p class="desc" style="margin:4px 0 0 30px;">Última lavagem nasal: ${info.dias===0 ? "hoje" : "há "+info.dias+" dia"+(info.dias>1?"s":"")} (${fmtDate(info.data)})</p>`
+      : `<p class="desc" style="margin:4px 0 0 30px;">Ainda sem registro de lavagem nasal.</p>`;
+  }
+  let extraFeito = "";
+  if(item.id==="puran" && s.feito){
+    const int1 = alanDiffHoras(s.ultimaMamada, s.horario);
+    const int2 = alanDiffHoras(s.horario, s.proximaMamada);
+    extraFeito = `
+      <div class="field"><label class="field-label">Última mamada/alimentação antes</label><input type="time" class="alan-extra" data-id="puran" data-field="ultimaMamada" value="${s.ultimaMamada||""}"></div>
+      <div class="field"><label class="field-label">Próxima mamada/alimentação</label><input type="time" class="alan-extra" data-id="puran" data-field="proximaMamada" value="${s.proximaMamada||""}"></div>
+      ${int1!=null ? `<p class="desc" style="margin:0 0 4px;">Intervalo desde a última mamada: <b>${int1.toFixed(1)}h</b></p>` : ""}
+      ${int2!=null ? `<p class="desc" style="margin:0;">Intervalo até a próxima mamada: <b>${int2.toFixed(1)}h</b></p>` : ""}
+    `;
+  }
+  if(item.id==="ferro" && s.feito){
+    const puranHorario = state.puran && state.puran.horario;
+    const tempoDesdePuran = alanDiffHoras(puranHorario, s.horario);
+    extraFeito = `
+      <div class="field"><label class="field-label">Fonte de vitamina C (opcional)</label><input type="text" class="alan-extra" data-id="ferro" data-field="fonteVitC" value="${(s.fonteVitC||"").replace(/"/g,'&quot;')}" placeholder="Ex: laranja, suco, acerola…"></div>
+      ${tempoDesdePuran!=null ? `<p class="desc" style="margin:0;">Tempo desde o Puran: <b>${tempoDesdePuran.toFixed(1)}h</b></p>` : ""}
+    `;
+  }
+  return `
+    <div class="card">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <input type="checkbox" class="alan-check" data-id="${item.id}" ${s.feito?"checked":""}>
+        <b style="color:var(--ink);">${item.nome}</b>
+      </label>
+      ${item.extra ? `<p class="desc" style="margin:4px 0 0 30px;">${item.extra}</p>` : ""}
+      ${extraSempre}
+      ${s.feito ? `
+        <div style="margin-left:30px;margin-top:8px;">
+          <div class="field"><label class="field-label">Horário</label><input type="time" class="alan-horario" data-id="${item.id}" value="${s.horario||""}"></div>
+          <div class="field"><label class="field-label">Observação (opcional)</label><input type="text" class="alan-obs" data-id="${item.id}" value="${(s.obs||"").replace(/"/g,'&quot;')}" placeholder="Ex: foi dado mais tarde hoje"></div>
+          ${extraFeito}
+        </div>
+      ` : ""}
+    </div>`;
+}
+function wireAlanItemEvents(container){
+  container.querySelectorAll(".alan-check").forEach(cb=>{
+    cb.addEventListener("change", async ()=>{
+      const state = alanEnsureToday();
+      const id = cb.dataset.id;
+      const prev = Object.assign({}, state[id]);
+      state[id].feito = cb.checked;
+      if(cb.checked && !state[id].horario) state[id].horario = alanHoraAtual();
+      const ok = await saveKey("alan_rotina", alanRotina);
+      if(!ok){ state[id] = prev; return; }
+      renderAlanRotina();
+    });
+  });
+  container.querySelectorAll(".alan-horario").forEach(inp=>{
+    inp.addEventListener("change", async ()=>{
+      const state = alanEnsureToday();
+      state[inp.dataset.id].horario = inp.value;
+      await saveKey("alan_rotina", alanRotina);
+      renderAlanRotina();
+    });
+  });
+  container.querySelectorAll(".alan-extra").forEach(inp=>{
+    inp.addEventListener("change", async ()=>{
+      const state = alanEnsureToday();
+      state[inp.dataset.id][inp.dataset.field] = inp.value;
+      await saveKey("alan_rotina", alanRotina);
+      renderAlanRotina();
+    });
+  });
+  container.querySelectorAll(".alan-obs").forEach(inp=>{
+    let deb;
+    inp.addEventListener("input", ()=>{
+      clearTimeout(deb);
+      deb = setTimeout(async ()=>{
+        const state = alanEnsureToday();
+        state[inp.dataset.id].obs = inp.value;
+        await saveKey("alan_rotina", alanRotina);
+      }, 700);
+    });
+  });
+}
+function renderAlanResumoHoje(){
+  const box = document.getElementById("alanResumoHoje");
+  if(!box) return;
+  const state = alanEnsureToday();
+  const total = ALAN_ITENS_ROTINA.length;
+  const feitos = ALAN_ITENS_ROTINA.filter(i=> state[i.id].feito).length;
+  box.innerHTML = `<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--ink);"><span>Rotina de hoje</span><b style="color:var(--accent-dark);">${feitos} de ${total} concluídos</b></div>`;
+}
+function renderAlanRotina(){
+  const state = alanEnsureToday();
+  [["manha","alanRotinaManha"],["dia","alanRotinaDia"],["noite","alanRotinaNoite"]].forEach(([periodo,elId])=>{
+    const box = document.getElementById(elId);
+    if(!box) return;
+    const itens = ALAN_ITENS_ROTINA.filter(i=>i.periodo===periodo);
+    box.innerHTML = itens.map(item=> alanItemCardHtml(item, state)).join("");
+    wireAlanItemEvents(box);
+  });
+  renderAlanResumoHoje();
+}
+function renderAlanCondicao(){
+  const box = document.getElementById("alanCondicaoCard");
+  if(!box) return;
+  const c = alanConfig.puran;
+  box.innerHTML = `
+    <p class="desc" style="margin:0 0 10px;"><b>Tratamento atual:</b> Puran T4 — uso diário</p>
+    <div class="field"><label class="field-label">Dose</label><input type="text" class="alan-cfg" data-field="dose" value="${(c.dose||"").replace(/"/g,'&quot;')}" placeholder="Ex: 25mcg"></div>
+    <div class="field"><label class="field-label">Orientação</label><input type="text" class="alan-cfg" data-field="orientacao" value="${(c.orientacao||"").replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label class="field-label">Frequência</label><input type="text" class="alan-cfg" data-field="frequencia" value="${(c.frequencia||"").replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label class="field-label">Horário preferencial</label><input type="text" class="alan-cfg" data-field="horarioPreferencial" value="${(c.horarioPreferencial||"").replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label class="field-label">Intervalo em relação à alimentação</label><input type="text" class="alan-cfg" data-field="intervalo" value="${(c.intervalo||"").replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label class="field-label">Observações médicas</label><textarea class="alan-cfg" data-field="obs" rows="2">${c.obs||""}</textarea></div>
+  `;
+  let deb;
+  box.querySelectorAll(".alan-cfg").forEach(el=>{
+    el.addEventListener("input",()=>{
+      clearTimeout(deb);
+      deb = setTimeout(async ()=>{
+        alanConfig.puran[el.dataset.field] = el.value;
+        await saveKey("alan_config", alanConfig);
+      }, 700);
+    });
+  });
+}
+let alanEventos = [];
+const ALAN_SE_NECESSARIO_INFO = {
+  aerolin: {nome:"Aerolin", dose:"4 puffs"},
+  esalerg: {nome:"Esalerg", dose:"16 gotas"},
+  luftal: {nome:"Luftal", dose:"10 gotas"}
+};
+const ESALERG_MOTIVOS = ["Nariz escorrendo","Congestão","Sintomas respiratórios","Outro"];
+let esalergMotivoSelecionado = null;
+
+function alanEventosHoje(tipo){ return alanEventos.filter(e=> e.tipo===tipo && e.date===todayStr()); }
+function alanEventosSemana(tipo){
+  const semanaAtras = dateStr((()=>{ const d=new Date(); d.setDate(d.getDate()-6); return d; })());
+  return alanEventos.filter(e=> e.tipo===tipo && e.date>=semanaAtras);
+}
+function alanEventosMes(tipo){
+  const mesStr = todayStr().slice(0,7);
+  return alanEventos.filter(e=> e.tipo===tipo && e.date.slice(0,7)===mesStr);
+}
+async function alanRegistrarEvento(tipo, extra){
+  const info = ALAN_SE_NECESSARIO_INFO[tipo];
+  const evento = Object.assign({id:"eve_"+Date.now(), tipo, date:todayStr(), horario:alanHoraAtual(), dose:info.dose, obs:""}, extra||{});
+  alanEventos.unshift(evento);
+  const ok = await saveKey("alan_eventos", alanEventos);
+  if(!ok){ alanEventos.shift(); toast("Não deu pra salvar", true); return; }
+  renderAlanSeNecessario();
+  toast(info.nome+" registrado");
+}
+function renderAlanSeNecessarioTipo(tipo){
+  const nomeCap = tipo.charAt(0).toUpperCase()+tipo.slice(1);
+  const contadoresBox = document.getElementById("alanContadores"+nomeCap);
+  const listaBox = document.getElementById("alanLista"+nomeCap);
+  if(!contadoresBox) return;
+  const hoje = alanEventosHoje(tipo).length;
+  const semana = alanEventosSemana(tipo).length;
+  const mes = alanEventosMes(tipo).length;
+  contadoresBox.innerHTML = `<p class="desc" style="margin:0;">Hoje: <b style="color:var(--accent-dark);">${hoje}</b> · Esta semana: <b style="color:var(--accent-dark);">${semana}</b> · Este mês: <b style="color:var(--accent-dark);">${mes}</b></p>`;
+  const hojeLista = alanEventosHoje(tipo);
+  if(listaBox){
+    listaBox.innerHTML = hojeLista.length===0 ? "" : hojeLista.map(e=> `<div class="desc" style="margin:2px 0;">${e.horario} — ${e.dose}${e.motivo?" · "+e.motivo:""}</div>`).join("");
+  }
+}
+function renderEsalergMotivoChips(){
+  const box = document.getElementById("esalergMotivoChips");
+  if(!box) return;
+  box.innerHTML = ESALERG_MOTIVOS.map(m=>
+    `<button type="button" class="diario-chip${esalergMotivoSelecionado===m?" active":""}" data-m="${m}">${m}</button>`
+  ).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      esalergMotivoSelecionado = esalergMotivoSelecionado===btn.dataset.m ? null : btn.dataset.m;
+      renderEsalergMotivoChips();
+    });
+  });
+}
+function renderAlanSeNecessario(){
+  ["aerolin","esalerg","luftal"].forEach(renderAlanSeNecessarioTipo);
+  renderEsalergMotivoChips();
+}
+document.getElementById("btnAerolin").addEventListener("click",()=> alanRegistrarEvento("aerolin"));
+document.getElementById("btnLuftal").addEventListener("click",()=> alanRegistrarEvento("luftal", {motivo:"Gases"}));
+document.getElementById("btnEsalerg").addEventListener("click",()=>{
+  alanRegistrarEvento("esalerg", esalergMotivoSelecionado ? {motivo:esalergMotivoSelecionado} : {});
+  esalergMotivoSelecionado = null;
+});
+
+let alanMedicamentosEventuais = [];
+let medEventualEditandoId = null;
+
+function medFormLimpar(){
+  ["me-nome","me-dose","me-inicio","me-fim","me-orientacoes","me-relacaoalimentacao","me-obs"].forEach(id=> document.getElementById(id).value = "");
+  document.getElementById("me-unidade").value = "gotas";
+  document.getElementById("me-tipouso").value = "Todos os dias";
+  medEventualEditandoId = null;
+}
+document.getElementById("btnNovoMedEventual").addEventListener("click",()=>{
+  const form = document.getElementById("medEventualForm");
+  const abrindo = form.style.display === "none";
+  if(abrindo) medFormLimpar();
+  form.style.display = abrindo ? "block" : "none";
+});
+document.getElementById("btnSalvarMedEventual").addEventListener("click", async ()=>{
+  const nome = document.getElementById("me-nome").value.trim();
+  if(!nome) return;
+  const dados = {
+    nome,
+    dose: document.getElementById("me-dose").value.trim(),
+    unidade: document.getElementById("me-unidade").value,
+    tipoUso: document.getElementById("me-tipouso").value,
+    dataInicio: document.getElementById("me-inicio").value,
+    dataFim: document.getElementById("me-fim").value,
+    orientacoes: document.getElementById("me-orientacoes").value.trim(),
+    relacaoAlimentacao: document.getElementById("me-relacaoalimentacao").value.trim(),
+    observacoes: document.getElementById("me-obs").value.trim()
+  };
+  if(medEventualEditandoId){
+    const m = alanMedicamentosEventuais.find(x=>x.id===medEventualEditandoId);
+    Object.assign(m, dados);
+  } else {
+    alanMedicamentosEventuais.unshift(Object.assign({id:"med_"+Date.now(), status:"ativo"}, dados));
+  }
+  const ok = await saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais);
+  if(!ok){ toast("Não deu pra salvar", true); return; }
+  medFormLimpar();
+  document.getElementById("medEventualForm").style.display = "none";
+  renderAlanMedEventuais();
+  toast("Medicamento salvo");
+});
+function medEventualCardHtml(m){
+  const statusLabel = {ativo:"Ativo", pausado:"Pausado", encerrado:"Encerrado"}[m.status] || m.status;
+  const statusClass = {ativo:"mu-status-acontecendo", pausado:"mu-status-sonhando", encerrado:"mu-status-realizado"}[m.status] || "";
+  const hojeLog = alanEventos.filter(e=> e.tipo==="custom:"+m.id && e.date===todayStr());
+  return `
+    <div class="card" data-medid="${m.id}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <b style="color:var(--ink);">${m.nome}</b>
+        <span class="mu-status-pill ${statusClass}">${statusLabel}</span>
+      </div>
+      <p class="desc" style="margin:4px 0 0;">${m.dose||""} ${m.unidade||""} · ${m.tipoUso||""}</p>
+      ${m.orientacoes ? `<p class="desc" style="margin:4px 0 0;"><b>Orientação:</b> ${m.orientacoes}</p>` : ""}
+      ${m.relacaoAlimentacao ? `<p class="desc" style="margin:4px 0 0;"><b>Relação com alimentação:</b> ${m.relacaoAlimentacao}</p>` : ""}
+      ${m.observacoes ? `<p class="desc" style="margin:4px 0 0;"><b>Observações:</b> ${m.observacoes}</p>` : ""}
+      <p class="desc" style="margin:4px 0 0;color:var(--muted);">Início: ${m.dataInicio?fmtDate(m.dataInicio):"—"}${m.dataFim?" · Término: "+fmtDate(m.dataFim):""}</p>
+      ${hojeLog.length ? `<div style="margin-top:8px;">${hojeLog.map(e=>`<div class="desc" style="margin:2px 0;">${e.horario} — administrado</div>`).join("")}</div>` : ""}
+      <div class="qactions" style="flex-wrap:wrap;">
+        ${m.status==="ativo" ? `<button class="btn" data-action="registrar">+ Registrar</button>` : ""}
+        <button class="btn" data-action="editar">Editar</button>
+        ${m.status==="ativo" ? `<button class="btn" data-action="pausar">Pausar</button>` : ""}
+        ${m.status==="pausado" ? `<button class="btn" data-action="reativar">Reativar</button>` : ""}
+        ${m.status!=="encerrado" ? `<button class="btn" data-action="encerrar">Encerrar</button>` : `<button class="btn" data-action="reativar">Reativar</button>`}
+        <button class="btn" data-action="excluir">Excluir</button>
+      </div>
+    </div>`;
+}
+function wireMedEventualEvents(container){
+  container.querySelectorAll("[data-action]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-medid]");
+      const id = card.dataset.medid;
+      const m = alanMedicamentosEventuais.find(x=>x.id===id);
+      if(!m) return;
+      const action = btn.dataset.action;
+      if(action==="registrar"){
+        alanEventos.unshift({id:"eve_"+Date.now(), tipo:"custom:"+id, date:todayStr(), horario:alanHoraAtual(), dose:(m.dose||"")+" "+(m.unidade||""), obs:""});
+        const ok = await saveKey("alan_eventos", alanEventos);
+        if(!ok){ alanEventos.shift(); return; }
+        renderAlanMedEventuais();
+        toast(m.nome+" registrado");
+      } else if(action==="editar"){
+        medEventualEditandoId = id;
+        document.getElementById("me-nome").value = m.nome||"";
+        document.getElementById("me-dose").value = m.dose||"";
+        document.getElementById("me-unidade").value = m.unidade||"gotas";
+        document.getElementById("me-tipouso").value = m.tipoUso||"Todos os dias";
+        document.getElementById("me-inicio").value = m.dataInicio||"";
+        document.getElementById("me-fim").value = m.dataFim||"";
+        document.getElementById("me-orientacoes").value = m.orientacoes||"";
+        document.getElementById("me-relacaoalimentacao").value = m.relacaoAlimentacao||"";
+        document.getElementById("me-obs").value = m.observacoes||"";
+        const form = document.getElementById("medEventualForm");
+        form.style.display = "block";
+        form.scrollIntoView({behavior:"smooth", block:"start"});
+      } else if(action==="pausar"){
+        m.status = "pausado";
+        await saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais);
+        renderAlanMedEventuais();
+      } else if(action==="reativar"){
+        m.status = "ativo";
+        await saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais);
+        renderAlanMedEventuais();
+      } else if(action==="encerrar"){
+        m.status = "encerrado";
+        await saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais);
+        renderAlanMedEventuais();
+      } else if(action==="excluir"){
+        const idx = alanMedicamentosEventuais.findIndex(x=>x.id===id);
+        if(idx<0) return;
+        const removed = alanMedicamentosEventuais.splice(idx,1);
+        const ok = await saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais);
+        if(!ok){ alanMedicamentosEventuais.splice(idx,0,removed[0]); return; }
+        renderAlanMedEventuais();
+      }
+    });
+  });
+}
+function renderAlanMedEventuais(){
+  const ativosBox = document.getElementById("medEventuaisAtivos");
+  const histBox = document.getElementById("medEventuaisHistorico");
+  if(!ativosBox) return;
+  const ativos = alanMedicamentosEventuais.filter(m=> m.status==="ativo" || m.status==="pausado");
+  ativosBox.innerHTML = ativos.length===0
+    ? `<div class="histempty">Nenhum medicamento eventual cadastrado ainda.</div>`
+    : ativos.map(m=> medEventualCardHtml(m)).join("");
+  wireMedEventualEvents(ativosBox);
+  if(histBox){
+    const encerrados = alanMedicamentosEventuais.filter(m=> m.status==="encerrado");
+    histBox.innerHTML = encerrados.length===0
+      ? `<div class="histempty">Nada no histórico ainda.</div>`
+      : encerrados.map(m=> medEventualCardHtml(m)).join("");
+    wireMedEventualEvents(histBox);
+  }
+}
+document.getElementById("btnToggleMedHistorico").addEventListener("click",()=>{
+  const box = document.getElementById("medEventuaisHistorico");
+  box.style.display = box.style.display==="none" ? "block" : "none";
+});
+
+function alanContagemSemana(itemId){
+  const dias = [];
+  for(let i=0;i<7;i++){ const d=new Date(); d.setDate(d.getDate()-i); dias.push(dateStr(d)); }
+  let count=0, total=0;
+  dias.forEach(d=>{
+    if(alanRotina[d] && alanRotina[d][itemId]){ total++; if(alanRotina[d][itemId].feito) count++; }
+  });
+  return {count, total};
+}
+function renderAlanSemana(){
+  const box = document.getElementById("alanSemanaCard");
+  if(!box) return;
+  let html = "";
+  ALAN_ITENS_ROTINA.forEach(item=>{
+    if(item.id==="lavagemNasal"){
+      const {count} = alanContagemSemana(item.id);
+      html += `<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>${item.nome}</span><b style="color:var(--accent-dark);">${count} vez${count===1?"":"es"}</b></div>`;
+    } else {
+      const {count,total} = alanContagemSemana(item.id);
+      html += `<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>${item.nome}</span><b style="color:var(--accent-dark);">${count}/${total||7}</b></div>`;
+    }
+  });
+  ["aerolin","esalerg","luftal"].forEach(tipo=>{
+    const n = alanEventosSemana(tipo).length;
+    html += `<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>${ALAN_SE_NECESSARIO_INFO[tipo].nome}</span><b style="color:var(--accent-dark);">${n} administraç${n===1?"ão":"ões"}</b></div>`;
+  });
+  box.innerHTML = html;
+}
+function alanContagemMes(itemId){
+  const hoje = new Date();
+  const ano = hoje.getFullYear(), mes = hoje.getMonth();
+  const diasNoMesAteHoje = hoje.getDate();
+  let count = 0;
+  for(let dia=1; dia<=diasNoMesAteHoje; dia++){
+    const d = dateStr(new Date(ano,mes,dia));
+    if(alanRotina[d] && alanRotina[d][itemId] && alanRotina[d][itemId].feito) count++;
+  }
+  return {count, previsto: diasNoMesAteHoje};
+}
+function renderAlanMes(){
+  const box = document.getElementById("alanMesCard");
+  if(!box) return;
+  let html = "";
+  ALAN_ITENS_ROTINA.forEach(item=>{
+    if(item.id==="lavagemNasal"){
+      const {count} = alanContagemMes(item.id);
+      html += `<div style="margin-bottom:8px;"><div style="font-size:13px;color:var(--ink);">${item.nome}</div><div class="desc" style="margin:2px 0 0;">${count} vez${count===1?"":"es"} neste mês</div></div>`;
+    } else {
+      const {count,previsto} = alanContagemMes(item.id);
+      const pct = previsto>0 ? Math.round((count/previsto)*100) : 0;
+      html += `<div style="margin-bottom:8px;display:flex;justify-content:space-between;font-size:13px;color:var(--ink);"><span>${item.nome}</span><b style="color:var(--accent-dark);">${count}/${previsto} (${pct}%)</b></div>`;
+    }
+  });
+  const mesStr = todayStr().slice(0,7);
+  ["aerolin","esalerg","luftal"].forEach(tipo=>{
+    const n = alanEventos.filter(e=>e.tipo===tipo && e.date.slice(0,7)===mesStr).length;
+    html += `<div style="margin-bottom:8px;"><div style="font-size:13px;color:var(--ink);">${ALAN_SE_NECESSARIO_INFO[tipo].nome}</div><div class="desc" style="margin:2px 0 0;">Utilizado ${n} vez${n===1?"":"es"} neste mês</div></div>`;
+  });
+  box.innerHTML = html;
+}
+let alanCalendarioMes = new Date();
+function renderAlanCalendario(){
+  const box = document.getElementById("alanCalendarioGrid");
+  const label = document.getElementById("alanCalendarioMesLabel");
+  if(!box) return;
+  const ano = alanCalendarioMes.getFullYear(), mes = alanCalendarioMes.getMonth();
+  const nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  if(label) label.textContent = nomesMeses[mes] + " de " + ano;
+  const primeiroDia = new Date(ano, mes, 1);
+  const diasNoMes = new Date(ano, mes+1, 0).getDate();
+  const offsetSemana = primeiroDia.getDay();
+  let html = "";
+  for(let i=0;i<offsetSemana;i++) html += `<div class="cal-cell empty"></div>`;
+  for(let dia=1; dia<=diasNoMes; dia++){
+    const dStr = dateStr(new Date(ano,mes,dia));
+    const rot = alanRotina[dStr];
+    let feitos = 0, totalReg = 0;
+    if(rot){ ALAN_ITENS_ROTINA.forEach(item=>{ if(rot[item.id]){ totalReg++; if(rot[item.id].feito) feitos++; } }); }
+    const eventosNoDia = alanEventos.filter(e=>e.date===dStr).length;
+    const isToday = dStr === todayStr();
+    let icone = "";
+    if(totalReg>0) icone = feitos===totalReg ? "✅" : (feitos>0 ? "◐" : "");
+    html += `<div class="cal-cell${isToday?' today':''}" data-date="${dStr}">
+      <span class="cal-daynum">${dia}</span>
+      <span class="cal-icons">${icone}${eventosNoDia?" 🩺":""}</span>
+    </div>`;
+  }
+  box.innerHTML = html;
+  box.querySelectorAll(".cal-cell[data-date]").forEach(cell=>{
+    cell.addEventListener("click",()=> alanAbrirDiaModal(cell.dataset.date));
+  });
+}
+document.getElementById("alanBtnMesAnterior").addEventListener("click",()=>{ alanCalendarioMes.setMonth(alanCalendarioMes.getMonth()-1); renderAlanCalendario(); });
+document.getElementById("alanBtnMesSeguinte").addEventListener("click",()=>{ alanCalendarioMes.setMonth(alanCalendarioMes.getMonth()+1); renderAlanCalendario(); });
+function alanAbrirDiaModal(dStr){
+  const m = document.getElementById("alanDiaModalContent");
+  const rot = alanRotina[dStr] || {};
+  let linhas = ALAN_ITENS_ROTINA.map(item=>{
+    const s = rot[item.id];
+    if(!s) return `<div class="desc" style="margin:4px 0;">${item.nome}: sem registro</div>`;
+    return `<div class="desc" style="margin:4px 0;">${item.nome}: ${s.feito ? "✅ "+(s.horario||"") : "⬜ não administrado"}</div>`;
+  }).join("");
+  ["aerolin","esalerg","luftal"].forEach(tipo=>{
+    const evs = alanEventos.filter(e=>e.tipo===tipo && e.date===dStr);
+    linhas += `<div class="desc" style="margin:4px 0;">${ALAN_SE_NECESSARIO_INFO[tipo].nome}: ${evs.length? evs.length+" administraç"+(evs.length===1?"ão":"ões") : "não utilizado"}</div>`;
+  });
+  m.innerHTML = `
+    <button class="mu-modal-close" id="alanCloseDiaModal">✕</button>
+    <h2 style="font-family:var(--serif);font-size:19px;color:var(--ink);margin:6px 0 12px;">${fmtDate(dStr)}</h2>
+    ${linhas}
+  `;
+  document.getElementById("alanDiaModalBg").classList.add("open");
+  document.getElementById("alanCloseDiaModal").onclick = ()=> document.getElementById("alanDiaModalBg").classList.remove("open");
+}
+document.getElementById("alanDiaModalBg").addEventListener("click", e=>{ if(e.target.id==="alanDiaModalBg") document.getElementById("alanDiaModalBg").classList.remove("open"); });
+
+function renderAlan(){
+  renderAlanRotina();
+  renderAlanSeNecessario();
+  renderAlanMedEventuais();
+  renderAlanSemana();
+  renderAlanMes();
+  renderAlanCalendario();
+}
+
+
+
+
+/* ============================================================
+   SKINCARE
+   ============================================================ */
+const SKINCARE_MANHA = [
+ {id:"anua-heartleaf", nome:"Anua – Heartleaf + BHA Foam", freq:"diario", como:"Massagear por aproximadamente 60 segundos e enxaguar bem."},
+ {id:"medicube-zeropore", nome:"Medicube – Zero Pore Pad", freq:["seg","qua","sex"], como:"Passar suavemente pelo rosto."},
+ {id:"celimax-toner-m", nome:"Celimax – Dual Barrier Creamy Toner", freq:"diario", como:"Pressionar suavemente na pele."},
+ {id:"skin1004-centella", nome:"SKIN1004 – Centella Ampoule", freq:"diario", como:"Focar principalmente em regiões avermelhadas ou irritadas."},
+ {id:"skin1004-tonebright", nome:"SKIN1004 – Tone Brightening Ampoule", freq:["seg","qua","sex"], como:"Espalhar pelo rosto."},
+ {id:"axisy-darkspot", nome:"AXIS-Y – Dark Spot Serum", freq:"diario", como:"Aplicar pontualmente nas manchas e espalhar."},
+ {id:"medicube-pdrn", nome:"Medicube – PDRN Collagen Shot", freq:["seg","qui","sab"], como:"Firmeza e cuidado com colágeno."},
+ {id:"kokeshi-olhos-m", nome:"Kokeshi – Olhos de Gueixa", freq:"diario", como:"Batidinhas suaves na região dos olhos com o dedo anelar."},
+ {id:"kokeshi-porcelana-m", nome:"Kokeshi – Pele de Porcelana", freq:"diario", como:"Selar a rotina."},
+ {id:"neck-guasha-m", nome:"Anti-Wrinkle Neck Roll-on Guasha", freq:"diario", como:"Aplicar no pescoço com movimentos de baixo para cima."},
+ {id:"celimax-sunstick", nome:"Celimax – Oil Control Sun Stick FPS50+", freq:"diario", como:"Sempre finalizar a rotina da manhã com protetor solar."}
+];
+const SKINCARE_NOITE = [
+ {id:"anua-heartleaf-n", nome:"Anua – Heartleaf + BHA Foam", freq:"diario", como:"Remover protetor solar e impurezas do dia."},
+ {id:"celimax-toner-n", nome:"Celimax – Dual Barrier Creamy Toner", freq:"diario", como:"Recondicionar a pele após a limpeza."},
+ {id:"skin1004-poremizing", nome:"SKIN1004 – Poremizing Fresh Ampoule", freq:["ter","qui","dom"], como:"Foco nos poros."},
+ {id:"skin1004-teatrica", nome:"SKIN1004 – Tea-Trica Relief Ampoule", freq:"diario", como:"Especialmente útil em noites de pele sensibilizada."},
+ {id:"kokeshi-rosamosqueta", nome:"Kokeshi – Óleo de Rosa Mosqueta", freq:"diario", como:"Aplicar 3–4 gotas e massagear bem."},
+ {id:"kokeshi-olhos-n", nome:"Kokeshi – Olhos de Gueixa", freq:"diario", como:"Batidinhas suaves com o dedo anelar."},
+ {id:"kokeshi-porcelana-n", nome:"Kokeshi – Pele de Porcelana", freq:"diario", como:"Etapa nutritiva da noite."},
+ {id:"neck-guasha-n", nome:"Anti-Wrinkle Neck Roll-on Guasha", freq:"diario", como:"Movimentos de baixo para cima."}
+];
+let skincareRotina = {};
+function skincareAplicaHoje(item){
+  if(item.freq==="diario") return true;
+  return item.freq.includes(casaHojeKey());
+}
+function skincareEnsureToday(){
+  const t = todayStr();
+  if(!skincareRotina[t]) skincareRotina[t] = {manha:{}, noite:{}, reaplicacoes:[]};
+  if(!skincareRotina[t].reaplicacoes) skincareRotina[t].reaplicacoes = [];
+  return skincareRotina[t];
+}
+function renderSkincarePeriodo(periodo, listaFull, elId, progId){
+  const state = skincareEnsureToday();
+  const itensHoje = listaFull.filter(skincareAplicaHoje);
+  const box = document.getElementById(elId);
+  box.innerHTML = itensHoje.map(item=>{
+    const feito = !!state[periodo][item.id];
+    return `<div class="card${feito?' sk-done':''}">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+        <input type="checkbox" class="sk-check" data-periodo="${periodo}" data-id="${item.id}" ${feito?"checked":""}>
+        <span>
+          <b style="color:var(--ink);">${item.nome}</b>
+          <p class="desc" style="margin:4px 0 0;">${item.como}</p>
+        </span>
+      </label>
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".sk-check").forEach(cb=>{
+    cb.addEventListener("change", async ()=>{
+      const st = skincareEnsureToday();
+      st[cb.dataset.periodo][cb.dataset.id] = cb.checked;
+      const ok = await saveKey("skincare_rotina", skincareRotina);
+      if(!ok){ st[cb.dataset.periodo][cb.dataset.id] = !cb.checked; return; }
+      renderSkincare();
+    });
+  });
+  const total = itensHoje.length;
+  const feitos = itensHoje.filter(i=> state[periodo][i.id]).length;
+  const progEl = document.getElementById(progId);
+  if(progEl) progEl.textContent = `${feitos}/${total} concluídos — ${total? Math.round(feitos/total*100):0}%`;
+  return {total, feitos};
+}
+function renderSkincareReaplicacoes(){
+  const box = document.getElementById("skReaplicacoesLista");
+  if(!box) return;
+  const st = skincareEnsureToday();
+  box.innerHTML = st.reaplicacoes.length===0
+    ? `<p class="desc" style="margin:0;">Nenhuma reaplicação registrada hoje.</p>`
+    : st.reaplicacoes.map(h=>`<span class="mu-feel-tag">${h}</span>`).join(" ");
+}
+document.getElementById("btnReaplicarProtetor").addEventListener("click", async ()=>{
+  const st = skincareEnsureToday();
+  const prev = st.reaplicacoes.slice();
+  st.reaplicacoes.push(alanHoraAtual());
+  const ok = await saveKey("skincare_rotina", skincareRotina);
+  if(!ok){ st.reaplicacoes = prev; return; }
+  renderSkincareReaplicacoes();
+  toast("Reaplicação registrada");
+});
+const SKINCARE_DIAS_ORDEM = ["seg","ter","qua","qui","sex","sab","dom"];
+const SKINCARE_DIAS_LABEL = {seg:"Segunda",ter:"Terça",qua:"Quarta",qui:"Quinta",sex:"Sexta",sab:"Sábado",dom:"Domingo"};
+function skincareAplicaNoDia(item, weekdayKey){
+  if(item.freq==="diario") return true;
+  return item.freq.includes(weekdayKey);
+}
+function renderSkincareCalendarioSemanal(){
+  const box = document.getElementById("skCalendarioSemanal");
+  if(!box) return;
+  const especiais = [
+    ...SKINCARE_MANHA.filter(i=>Array.isArray(i.freq)).map(i=>Object.assign({periodo:"☀️"}, i)),
+    ...SKINCARE_NOITE.filter(i=>Array.isArray(i.freq)).map(i=>Object.assign({periodo:"🌙"}, i))
+  ];
+  if(especiais.length===0){ box.innerHTML = `<div class="histempty">Nenhum tratamento especial cadastrado.</div>`; return; }
+  box.innerHTML = `<div style="overflow-x:auto;"><table class="hist" style="min-width:520px;">
+    <tr><th>Produto</th>${SKINCARE_DIAS_ORDEM.map(d=>`<th>${SKINCARE_DIAS_LABEL[d].slice(0,3)}</th>`).join("")}</tr>
+    ${especiais.map(item=>`<tr><td>${item.periodo} ${item.nome}</td>${SKINCARE_DIAS_ORDEM.map(d=> `<td style="text-align:center;">${item.freq.includes(d)?"✓":""}</td>`).join("")}</tr>`).join("")}
+  </table></div>`;
+}
+function skincareStatusDia(dStr){
+  const wd = CASA_WEEKDAY_KEYS[new Date(dStr+"T00:00:00").getDay()];
+  const entry = skincareRotina[dStr];
+  const itensM = SKINCARE_MANHA.filter(i=> skincareAplicaNoDia(i, wd));
+  const itensN = SKINCARE_NOITE.filter(i=> skincareAplicaNoDia(i, wd));
+  const feitosM = entry ? itensM.filter(i=> entry.manha[i.id]).length : 0;
+  const feitosN = entry ? itensN.filter(i=> entry.noite[i.id]).length : 0;
+  const totalM = itensM.length, totalN = itensN.length;
+  return {
+    manhaCompleta: totalM>0 && feitosM===totalM,
+    noiteCompleta: totalN>0 && feitosN===totalN,
+    manhaFeitos: feitosM, manhaTotal: totalM,
+    noiteFeitos: feitosN, noiteTotal: totalN,
+    temRegistro: !!entry
+  };
+}
+function renderSkincareConsistenciaHoje(){
+  const box = document.getElementById("skConsistenciaHoje");
+  if(!box) return;
+  const t = todayStr();
+  const st = skincareStatusDia(t);
+  const entry = skincareRotina[t];
+  const protetorUsado = entry && entry.manha["celimax-sunstick"];
+  const protetorReaplicado = entry && entry.reaplicacoes && entry.reaplicacoes.length>0;
+  function linha(label, ok){
+    return `<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>${label}</span><b style="color:${ok?'var(--accent-dark)':'var(--muted)'};">${ok?"Sim":"Ainda não"}</b></div>`;
+  }
+  box.innerHTML = linha("☀️ Rotina da manhã concluída", st.manhaCompleta) + linha("🌙 Rotina da noite concluída", st.noiteCompleta) + linha("☀️ Protetor utilizado", !!protetorUsado) + linha("🔄 Protetor reaplicado", !!protetorReaplicado);
+}
+function renderSkincareConsistenciaSemana(){
+  const box = document.getElementById("skConsistenciaSemana");
+  if(!box) return;
+  let manhaOk=0, noiteOk=0, diasCompletos=0;
+  for(let i=0;i<7;i++){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const st = skincareStatusDia(dateStr(d));
+    if(st.manhaCompleta) manhaOk++;
+    if(st.noiteCompleta) noiteOk++;
+    if(st.manhaCompleta && st.noiteCompleta) diasCompletos++;
+  }
+  const adesao = Math.round((diasCompletos/7)*100);
+  box.innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>Rotinas da manhã realizadas</span><b style="color:var(--accent-dark);">${manhaOk}/7</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>Rotinas da noite realizadas</span><b style="color:var(--accent-dark);">${noiteOk}/7</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>Dias completos</span><b style="color:var(--accent-dark);">${diasCompletos}/7</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink);"><span>Adesão semanal</span><b style="color:var(--accent-dark);">${adesao}%</b></div>
+  `;
+}
+let skincareCalendarioMes = new Date();
+function renderSkincareHabitTracker(){
+  const box = document.getElementById("skHabitTrackerGrid");
+  const label = document.getElementById("skHabitTrackerMesLabel");
+  if(!box) return;
+  const ano = skincareCalendarioMes.getFullYear(), mes = skincareCalendarioMes.getMonth();
+  const nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  if(label) label.textContent = nomesMeses[mes] + " de " + ano;
+  const primeiroDia = new Date(ano, mes, 1);
+  const diasNoMes = new Date(ano, mes+1, 0).getDate();
+  const offset = primeiroDia.getDay();
+  let html = "";
+  for(let i=0;i<offset;i++) html += `<div class="cal-cell empty"></div>`;
+  for(let dia=1; dia<=diasNoMes; dia++){
+    const dStr = dateStr(new Date(ano,mes,dia));
+    const st = skincareStatusDia(dStr);
+    let emoji = "⚪";
+    if(st.temRegistro){
+      if(st.manhaCompleta && st.noiteCompleta) emoji = "🟢";
+      else if(st.manhaFeitos>0 || st.noiteFeitos>0) emoji = "🟡";
+    }
+    const isToday = dStr===todayStr();
+    html += `<div class="cal-cell${isToday?' today':''}"><span class="cal-daynum">${dia}</span><span class="cal-icons">${emoji}</span></div>`;
+  }
+  box.innerHTML = html;
+}
+document.getElementById("skHabitBtnMesAnterior").addEventListener("click",()=>{ skincareCalendarioMes.setMonth(skincareCalendarioMes.getMonth()-1); renderSkincareHabitTracker(); });
+document.getElementById("skHabitBtnMesSeguinte").addEventListener("click",()=>{ skincareCalendarioMes.setMonth(skincareCalendarioMes.getMonth()+1); renderSkincareHabitTracker(); });
+
+function renderSkincare(){
+  const dataEl = document.getElementById("skDataHoje");
+  if(dataEl) dataEl.textContent = CASA_SEMANA[casaHojeKey()].nome + " · " + fmtDate(todayStr());
+  const resM = renderSkincarePeriodo("manha", SKINCARE_MANHA, "skManhaLista", "skManhaProgresso");
+  const resN = renderSkincarePeriodo("noite", SKINCARE_NOITE, "skNoiteLista", "skNoiteProgresso");
+  const msgBox = document.getElementById("skMensagemConcluido");
+  const tudoConcluido = resM.total>0 && resM.feitos===resM.total && resN.total>0 && resN.feitos===resN.total;
+  if(msgBox) msgBox.style.display = tudoConcluido ? "block" : "none";
+  renderSkincareReaplicacoes();
+  renderSkincareCalendarioSemanal();
+  renderSkincareConsistenciaHoje();
+  renderSkincareConsistenciaSemana();
+  renderSkincareHabitTracker();
+}
+
+/* ============================================================
    IDENTIDADE — Quem é a Ana que estou me tornando?
    ============================================================ */
 const VISAO_TOPICS = [
@@ -3660,7 +5066,74 @@ function renderTreinoSemanalList(panelEl){
   });
 }
 
+/* ============================================================
+   INTEGRAÇÕES LEVES — Treino e Cozinha, informativas, sem regra fixa
+   ============================================================ */
+function renderTreinoEnergiaInsight(){
+  const box = document.getElementById("treinoEnergiaInsight");
+  if(!box) return;
+  const hoje = energia.find(e=>e.date===todayStr());
+  const partes = [];
+  if(hoje && hoje.energiaNota!=null){
+    const vals = energia.filter(e=>e.energiaNota!=null && e.date!==todayStr()).map(e=>Number(e.energiaNota));
+    if(vals.length>=5){
+      const media = vals.reduce((a,b)=>a+b,0)/vals.length;
+      const diff = Number(hoje.energiaNota) - media;
+      if(diff <= -1) partes.push(`Hoje sua energia está em ${hoje.energiaNota}/5 — abaixo da sua média (${media.toFixed(1)}/5).`);
+      else if(diff >= 1) partes.push(`Hoje sua energia está em ${hoje.energiaNota}/5 — acima da sua média (${media.toFixed(1)}/5).`);
+    }
+  }
+  const fase = faseAtualEstimada();
+  if(fase){
+    const nCiclosFase = ciclosComDadosNaFase(fase.fase);
+    if(nCiclosFase>=2){
+      const m = mediaPorFase(fase.fase, "energiaNota");
+      if(m!=null) partes.push(`Nos seus últimos ciclos, na fase ${fase.fase.toLowerCase()} sua energia média foi ${m}/5.`);
+    }
+  }
+  if(partes.length===0){ box.style.display="none"; return; }
+  box.style.display = "block";
+  box.innerHTML = `<label class="field-label">⚡ Do seu histórico de energia</label>` + partes.map(p=>`<p class="desc" style="margin:4px 0;">${p}</p>`).join("");
+}
+function renderCozinhaCicloInsight(){
+  const box = document.getElementById("cozinhaCicloInsight");
+  if(!box) return;
+  const ord = cicloOrdenados();
+  const transicoes = [];
+  for(let i=0;i<ord.length-1;i++) transicoes.push(ord[i+1].inicio);
+  if(transicoes.length<3){ box.style.display="none"; return; }
+  const alvos = ["Vontade de doce","Compulsão","Fome aumentada"];
+  const achados = [];
+  alvos.forEach(nome=>{
+    const dias = [];
+    transicoes.forEach(fim=>{
+      for(let d=10; d>=1; d--){
+        const e = energia.find(x=>x.date===addDays(fim,-d));
+        if(e && e.sintomas && e.sintomas[nome]!==undefined){ dias.push(d); break; }
+      }
+    });
+    if(dias.length>=3 && dias.length>=Math.ceil(transicoes.length*0.6)){
+      const media = Math.round(dias.reduce((a,b)=>a+b,0)/dias.length);
+      achados.push({nome, dia: media});
+    }
+  });
+  if(achados.length===0){ box.style.display="none"; return; }
+  box.style.display = "block";
+  const diaCicloHoje = diaDoCicloHoje();
+  const duracaoCiclo = cicloMediaDuracao() || 28;
+  let avisoHoje = "";
+  if(diaCicloHoje!=null){
+    const diasParaMenstruacao = duracaoCiclo - diaCicloHoje + 1;
+    const proximo = achados.find(a=> Math.abs(a.dia - diasParaMenstruacao) <= 1);
+    if(proximo) avisoHoje = `<p class="desc" style="margin:8px 0 0;color:var(--accent-dark);">Hoje está perto da janela onde você costuma sentir mais ${proximo.nome.toLowerCase()} — pode ser um bom dia pra ter as opções da Biblioteca já separadas.</p>`;
+  }
+  box.innerHTML = `<label class="field-label">🍫 Do seu histórico de ciclo</label>` +
+    achados.map(a=> `<p class="desc" style="margin:4px 0;">Seu histórico mostra mais <b>${a.nome.toLowerCase()}</b> por volta de <b>${a.dia} dias antes</b> da menstruação.</p>`).join("") +
+    avisoHoje;
+}
+
 function renderTreino(){
+  renderTreinoEnergiaInsight();
   renderTreinoSubnav();
   const root = document.getElementById("treinoDayPanels");
   root.innerHTML = TREINO_DIAS.map(d=> `<div class="daypanel${d.id===treinoActiveDay?" active":""}" id="daypanel-${d.id}"></div>`).join("");
@@ -3865,7 +5338,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -3914,6 +5387,11 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.sonhos_categorias!==undefined){ sonhosCategoriasCustom = data.sonhos_categorias; ops.push(saveKey("sonhos_categorias", sonhosCategoriasCustom)); }
       if(data.inspiracoes!==undefined){ inspiracoes = data.inspiracoes; ops.push(saveKey("inspiracoes", inspiracoes)); }
       if(data.ciclos!==undefined){ ciclos = data.ciclos; ops.push(saveKey("ciclos", ciclos)); }
+      if(data.alan_rotina!==undefined){ alanRotina = data.alan_rotina; ops.push(saveKey("alan_rotina", alanRotina)); }
+      if(data.alan_config!==undefined){ alanConfig = data.alan_config; ops.push(saveKey("alan_config", alanConfig)); }
+      if(data.alan_eventos!==undefined){ alanEventos = data.alan_eventos; ops.push(saveKey("alan_eventos", alanEventos)); }
+      if(data.alan_medicamentos_eventuais!==undefined){ alanMedicamentosEventuais = data.alan_medicamentos_eventuais; ops.push(saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais)); }
+      if(data.skincare_rotina!==undefined){ skincareRotina = data.skincare_rotina; ops.push(saveKey("skincare_rotina", skincareRotina)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -4074,6 +5552,8 @@ function renderAll(){
   renderInsights();
   renderCasa();
   renderMural();
+  renderAlan();
+  renderSkincare();
   makeListBox("box-reposicao","reposicao","novo item da lista de compras…", true, reposicao);
   makeListBox("box-freezer","freezer","novo item no freezer…", false, freezer);
   makeListBox("box-geladeira","geladeira","novo item na geladeira…", false, geladeira);
@@ -4129,6 +5609,11 @@ function init(){
   sonhosCategoriasCustom = loadKey("sonhos_categorias", []);
   inspiracoes = loadKey("inspiracoes", []);
   ciclos = loadKey("ciclos", []);
+  alanRotina = loadKey("alan_rotina", {});
+  alanConfig = loadKey("alan_config", {puran: {dose:"", orientacao:"Administrar em jejum", frequencia:"Todos os dias", horarioPreferencial:"04:00–06:00", intervalo:"Mínimo 1h antes e 1h depois da alimentação", obs:""}});
+  alanEventos = loadKey("alan_eventos", []);
+  alanMedicamentosEventuais = loadKey("alan_medicamentos_eventuais", []);
+  skincareRotina = loadKey("skincare_rotina", {});
   if(planejamentoMeta.lastReset !== todayStr()){
     planejamento = [];
     planejamentoMeta = {lastReset: todayStr()};
