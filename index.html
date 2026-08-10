@@ -1238,6 +1238,199 @@
     <h2 class="h2">Prática do dia</h2>
     <div class="card" id="espPraticaDia"></div>
 
+    <h2 class="h2">🌟 Meu Eixo Espiritual</h2>
+
+    <div class="card" style="border:2px solid var(--accent);">
+      <div style="font-family:var(--serif);font-size:20px;color:var(--accent-dark);">⚡ Exu Bará</div>
+      <p class="desc" style="margin:2px 0 12px;">Regente do meu Ori / da minha cabeça</p>
+
+      <label class="field-label">Conhecer Bará</label>
+      <p class="desc" style="margin:4px 0 12px;">Orixá indicado na minha leitura. Movimento, caminhos, comunicação, impulso de vida e direção — Bará abre, movimenta e coloca os caminhos em fluxo.</p>
+
+      <label class="field-label">Como honrar</label>
+      <p class="desc" style="margin:4px 0 12px;">Movimento, atitude, palavra cumprida, honestidade, decisão e coragem para caminhar.</p>
+
+      <label class="field-label">Bará no cotidiano</label>
+      <p class="desc" style="margin:4px 0 12px;">Honrar Bará não é só ritual — é viver com decisão, cumprir a palavra dada, agir com honestidade e ter coragem de escolher e caminhar, mesmo quando é mais fácil ficar parada.</p>
+
+      <label class="field-label">Orações e falas</label>
+      <div class="card" style="background:var(--pale);margin-top:6px;">
+        <p class="prayer-text" style="margin:0 0 10px;">Exu Bará, dono dos caminhos, abra meus caminhos, me dê clareza e afaste de mim o que não é meu.</p>
+        <p class="desc" style="margin:0;">Antes de sair de casa: pare perto da porta, respire e fale com firmeza, sem desespero.</p>
+      </div>
+
+      <label class="field-label" style="margin-top:14px;display:block;">Reflexões</label>
+      <div id="espBaraReflexoes"></div>
+
+      <label class="field-label" style="margin-top:14px;display:block;">Meus registros e aprendizados</label>
+      <div class="field"><textarea id="espBaraRegistroTexto" rows="2" placeholder="O que percebi, aprendi ou vivi com Bará…"></textarea></div>
+      <button class="btn primary" id="btnSalvarRegistroBara">Registrar</button>
+      <div id="espBaraRegistrosList" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card" style="border:2px solid var(--accent);margin-top:14px;">
+      <div style="font-family:var(--serif);font-size:20px;color:var(--accent-dark);">🌪 Iansã</div>
+      <p class="desc" style="margin:2px 0 12px;">Meu Orixá</p>
+
+      <label class="field-label">Conhecer Iansã</label>
+      <p class="desc" style="margin:4px 0 12px;">Força escrita ao lado de Exu na minha leitura. Vento, coragem, verdade, corte do que pesa e equilíbrio da intensidade — Iansã direciona e dá firmeza para que o movimento de Bará não vire ansiedade, impulsividade ou desgaste.</p>
+
+      <label class="field-label">Como honrar</label>
+      <p class="desc" style="margin:4px 0 12px;">Verdade, coragem, liberdade, movimento, respiração, corte do que pesa e controle da impulsividade.</p>
+
+      <label class="field-label">Iansã no cotidiano</label>
+      <p class="desc" style="margin:4px 0 12px;">Quando sentir ansiedade, irritação ou excesso de energia, pare. Respire fundo e perceba o ar entrando e saindo. Se puder, fique perto de uma janela ou de um local com vento.</p>
+
+      <label class="field-label">Orações e falas</label>
+      <div class="card" style="background:var(--pale);margin-top:6px;">
+        <p class="prayer-text" style="margin:0 0 10px;">Iansã, leve o que pesa, corte o que me atrapalha e me dê direção, equilíbrio e coragem.</p>
+        <p class="desc" style="margin:0;">Em momentos de raiva intensa, desespero ou lugar pesado, prefira a fala geral: "As forças que me acompanham, me protejam, me acalmem e afastem de mim o que não é meu."</p>
+      </div>
+
+      <label class="field-label" style="margin-top:14px;display:block;">Reflexões</label>
+      <div id="espIansaReflexoes"></div>
+
+      <label class="field-label" style="margin-top:14px;display:block;">Meus registros e aprendizados</label>
+      <div class="field"><textarea id="espIansaRegistroTexto" rows="2" placeholder="O que percebi, aprendi ou vivi com Iansã…"></textarea></div>
+      <button class="btn primary" id="btnSalvarRegistroIansa">Registrar</button>
+      <div id="espIansaRegistrosList" style="margin-top:10px;"></div>
+    </div>
+
+    <h2 class="h2">🔗 Bará + Iansã — Meu Eixo</h2>
+    <div class="card">
+      <p class="desc" style="margin:0 0 10px;">Bará movimenta, abre e coloca os caminhos em fluxo. Iansã direciona, traz coragem, firmeza e corte — ajudando esse movimento a não virar impulsividade ou desgaste.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
+        <div class="desc" style="text-align:center;background:var(--pale);border-radius:10px;padding:8px;margin:0;">Movimento + Direção</div>
+        <div class="desc" style="text-align:center;background:var(--pale);border-radius:10px;padding:8px;margin:0;">Ação + Coragem</div>
+        <div class="desc" style="text-align:center;background:var(--pale);border-radius:10px;padding:8px;margin:0;">Caminho + Verdade</div>
+        <div class="desc" style="text-align:center;background:var(--pale);border-radius:10px;padding:8px;margin:0;">Impulso + Equilíbrio</div>
+      </div>
+      <div class="desc" style="text-align:center;background:var(--pale);border-radius:10px;padding:8px;margin:0 0 14px;">Abertura + Corte do que não serve</div>
+
+      <label class="field-label" style="display:block;">Meu Eixo Hoje</label>
+      <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">O que Bará me lembra que preciso movimentar?</label><textarea id="eixoMovimentar" rows="2"></textarea></div>
+      <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">O que Iansã me lembra que preciso direcionar ou cortar?</label><textarea id="eixoDirecionar" rows="2"></textarea></div>
+      <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">Qual atitude concreta posso tomar hoje?</label><textarea id="eixoAtitude" rows="2"></textarea></div>
+      <button class="btn primary" id="btnSalvarEixoHoje">Salvar</button>
+      <div id="espEixoHojeList" style="margin-top:12px;"></div>
+    </div>
+
+    <h2 class="h2">🕯️ Outras Forças Importantes no Meu Caminho</h2>
+
+    <div class="card">
+      <div style="font-family:var(--serif);font-size:17px;color:var(--ink);">🌻 Oxum</div>
+      <label class="field-label">Conhecer Oxum</label>
+      <p class="desc" style="margin:4px 0 12px;">Ligação espiritual mencionada na minha leitura. Doçura, autoestima, prosperidade, acolhimento, beleza e estabilidade emocional.</p>
+      <label class="field-label">Como honrar</label>
+      <p class="desc" style="margin:4px 0 12px;">Doçura, beleza, prosperidade, autocuidado, merecimento, acolhimento e equilíbrio emocional. Honrar Oxum não precisa ser ritual — pode ser: cuidar de mim, me arrumar, usar perfume, cuidar do cabelo e da pele, falar comigo mesma com mais respeito, receber elogios, não me diminuir, reconhecer meu próprio valor.</p>
+      <label class="field-label">Orações e falas</label>
+      <div class="card" style="background:var(--pale);margin-top:6px;">
+        <p class="prayer-text" style="margin:0;">Oxum, traga doçura, prosperidade, beleza, amor próprio e estabilidade para minha vida.</p>
+      </div>
+      <label class="field-label" style="margin-top:14px;display:block;">Meus registros e aprendizados</label>
+      <div class="field"><textarea id="espOxumRegistroTexto" rows="2" placeholder="O que percebi, aprendi ou vivi com Oxum…"></textarea></div>
+      <button class="btn primary" id="btnSalvarRegistroOxum">Registrar</button>
+      <div id="espOxumRegistrosList" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);font-size:17px;color:var(--ink);">🗝️ Seu 7 da Lira</div>
+      <p class="desc" style="margin:2px 0 12px;">Meu Exu de assentamento</p>
+      <label class="field-label">Conhecer</label>
+      <p class="desc" style="margin:4px 0 12px;">Proteção, defesa espiritual, corte de demandas e abertura de caminhos.</p>
+      <label class="field-label">Orações e falas</label>
+      <div class="card" style="background:var(--pale);margin-top:6px;">
+        <p class="prayer-text" style="margin:0 0 10px;">Seu 7 da Lira, guardião dos meus caminhos, peço proteção, corte de demandas, defesa espiritual e abertura dos meus caminhos, com ordem, verdade e merecimento.</p>
+        <p class="desc" style="margin:0;"><b>Quando falar:</b> antes de sair, antes de resolver assunto difícil, quando sentir necessidade de proteção, ou quando for cuidar do assentamento conforme orientação recebida.</p>
+      </div>
+      <p class="desc" style="margin:10px 0 0;"><b>Quando evitar chamar pelo nome:</b> raiva intensa, desespero, choro descontrolado, lugar pesado (briga, hospital, velório) ou impulso contra alguém. Nessas situações, prefira a fala geral: "As forças que me acompanham, me protejam, me acalmem e afastem de mim o que não é meu."</p>
+      <p class="desc" style="margin:10px 0 0;">Tudo relacionado ao assentamento segue estritamente a orientação da minha mãe de santo — o sistema não sugere oferenda, entrega, obrigação ou manutenção.</p>
+      <label class="field-label" style="margin-top:14px;display:block;">Meus registros e aprendizados</label>
+      <div class="field"><textarea id="espSeteRegistroTexto" rows="2" placeholder="O que percebi, aprendi ou vivi…"></textarea></div>
+      <button class="btn primary" id="btnSalvarRegistroSete">Registrar</button>
+      <div id="espSeteRegistrosList" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);font-size:17px;color:var(--ink);">🌙 Dama da Noite</div>
+      <p class="desc" style="margin:2px 0 12px;">Minha Pombagira de assentamento</p>
+      <label class="field-label">Conhecer</label>
+      <p class="desc" style="margin:4px 0 12px;">Magnetismo, presença, autoestima, poder feminino e atração do que é bom.</p>
+      <label class="field-label">Como honrar</label>
+      <p class="desc" style="margin:4px 0 12px;">Autoestima, perfume, cuidado pessoal, postura, amor próprio e magnetismo sem dependência emocional.</p>
+      <label class="field-label">Orações e falas</label>
+      <div class="card" style="background:var(--pale);margin-top:6px;">
+        <p class="prayer-text" style="margin:0 0 10px;">Dama da Noite, fortaleça minha autoestima, meu magnetismo, minha presença e minha segurança. Que eu atraia o que for bom, verdadeiro e próspero para minha vida.</p>
+        <p class="desc" style="margin:0;"><b>Quando posso me conectar:</b> antes de me arrumar, quando precisar recuperar autoestima, em momento de autocuidado, ou em prática leve de magnetismo.</p>
+      </div>
+      <p class="desc" style="margin:10px 0 0;"><b>Quando evitar chamar pelo nome:</b> raiva intensa, desespero, lugar pesado ou impulso contra alguém — prefira a fala geral.</p>
+      <label class="field-label" style="margin-top:14px;display:block;">Meus registros e aprendizados</label>
+      <div class="field"><textarea id="espDamaRegistroTexto" rows="2" placeholder="O que percebi, aprendi ou vivi…"></textarea></div>
+      <button class="btn primary" id="btnSalvarRegistroDama">Registrar</button>
+      <div id="espDamaRegistrosList" style="margin-top:10px;"></div>
+    </div>
+
+    <h2 class="h2">📚 Conhecendo os Orixás</h2>
+    <div class="callout"><p>Biblioteca educativa — estudar e respeitar outras forças não significa que elas sejam meus Orixás. Só entra aqui o que eu mesma trouxer como fonte confiável; nada é inventado.</p></div>
+
+    <div class="card" style="background:var(--pale);">
+      <label class="field-label">✨ Meus Orixás</label>
+      <p class="desc" style="margin:4px 0 0;">⚡ Exu Bará · 🌪 Iansã</p>
+    </div>
+
+    <div class="card">
+      <button class="btn primary" id="btnNovoOrixaBiblioteca">+ Adicionar Orixá pra estudar</button>
+      <div id="orixaBibliotecaForm" style="display:none;margin-top:14px;">
+        <div class="field"><label class="field-label">Nome</label><input type="text" id="ob-nome"></div>
+        <div class="field"><label class="field-label">Quem é</label><textarea id="ob-quemE" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Princípios associados</label><textarea id="ob-principios" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Histórias e tradição</label><textarea id="ob-historias" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Símbolos</label><input type="text" id="ob-simbolos"></div>
+        <div class="field"><label class="field-label">Elementos associados</label><input type="text" id="ob-elementos"></div>
+        <div class="field"><label class="field-label">Valores que essa força ensina</label><textarea id="ob-valores" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Como viver esses valores no cotidiano</label><textarea id="ob-cotidiano" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Como demonstrar respeito</label><textarea id="ob-respeito" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Fontes do conteúdo</label><input type="text" id="ob-fontes" placeholder="Ex: livro, mãe de santo, site confiável…"></div>
+        <button class="btn primary" id="btnSalvarOrixaBiblioteca">Salvar</button>
+      </div>
+    </div>
+
+    <div id="orixasBibliotecaLista"></div>
+
+    <h2 class="h2">♡ Orixás que Estou Estudando</h2>
+    <div class="card" id="orixasEstudandoLista"></div>
+
+    <h2 class="h2">📓 Meus Estudos Espirituais</h2>
+    <div id="espCadernoTemas" style="margin-bottom:10px;"></div>
+    <div class="card">
+      <button class="btn primary" id="btnNovoCaderno">+ Novo registro</button>
+      <div id="espCadernoForm" style="display:none;margin-top:14px;">
+        <div class="field"><label class="field-label">Tema</label><div id="espCadernoTemaPicker" style="flex-wrap:wrap;" class="toggle-simnao"></div></div>
+        <div class="field"><label class="field-label">Título (opcional)</label><input type="text" id="ec-titulo"></div>
+        <div class="field"><label class="field-label">Texto</label><textarea id="ec-texto" rows="3"></textarea></div>
+        <div class="field"><label class="field-label">Imagem/documento (opcional)</label><input type="file" id="ec-foto" accept="image/*"></div>
+        <button class="btn primary" id="btnSalvarCaderno">Salvar</button>
+      </div>
+    </div>
+    <div id="espCadernoLista"></div>
+
+    <h2 class="h2">🏠 Orientações da Minha Casa</h2>
+    <div class="callout"><p>Essas orientações têm prioridade sobre qualquer sugestão genérica deste aplicativo. O sistema nunca altera uma orientação registrada aqui sozinho.</p></div>
+    <div class="card">
+      <button class="btn primary" id="btnNovaOrientacao">+ Registrar orientação</button>
+      <div id="espOrientacaoForm" style="display:none;margin-top:14px;">
+        <div class="grid2">
+          <div class="field"><label class="field-label">Data</label><input type="date" id="eo-data"></div>
+          <div class="field"><label class="field-label">Quem orientou</label><input type="text" id="eo-quem"></div>
+        </div>
+        <div class="field"><label class="field-label">Tema</label><div id="espOrientacaoTemaPicker" style="flex-wrap:wrap;" class="toggle-simnao"></div></div>
+        <div class="field"><label class="field-label">Orientação recebida</label><textarea id="eo-orientacao" rows="3"></textarea></div>
+        <div class="field"><label class="field-label">Observações</label><textarea id="eo-obs" rows="2"></textarea></div>
+        <button class="btn primary" id="btnSalvarOrientacao">Salvar</button>
+      </div>
+    </div>
+    <div id="espOrientacoesLista"></div>
+
     <h2 class="h2">Oração de conexão com Ori e Pai Bará</h2>
     <div class="card"><p class="prayer-text">Meu Ori, minha cabeça, meu guia interno, eu te saúdo com respeito. Que hoje eu esteja firme, lúcida e alinhada com aquilo que é verdadeiro para mim. Que meus pensamentos sejam claros, minhas escolhas conscientes e minhas atitudes honrem quem estou me tornando. Meu Pai Bará, eu me coloco diante da sua força com amor, respeito e gratidão. Quero me aproximar com verdade, não apenas para pedir, mas para aprender a caminhar. Que meu Ori esteja firme, equilibrado e protegido. Que eu tenha clareza para reconhecer os caminhos certos, coragem para agir e sabedoria para não me perder da minha essência. Ensina-me a viver com honra, responsabilidade e presença. Fortalece minha palavra, meu caráter e minha coragem. Que eu saiba prosperar sem perder a humildade, cuidar dos meus sem me abandonar e honrar sua força em meus pensamentos, palavras e atitudes. Gratidão pela vida, pela proteção e por mais um dia de caminhada.</p></div>
 
@@ -5680,6 +5873,508 @@ function renderEspiritualidadeHoje(){
   if(dataEl) dataEl.textContent = CASA_SEMANA[casaHojeKey()].nome + " · " + fmtDate(todayStr());
   renderChecklist("cl-espiritual","prog-espiritual",CL_ESPIRITUAL,"espiritual");
   renderEspPraticaDia();
+  renderEspBara();
+  renderEspIansa();
+  renderEspEixoHojeList();
+  renderEspOutrasForcas();
+  renderOrixasBiblioteca();
+  renderEspCadernos();
+  renderOrientacoesLista();
+}
+
+/* ============================================================
+   ESPIRITUALIDADE — Meu Eixo (reflexões e registros por força, reaproveitável)
+   ============================================================ */
+let espReflexoes = [];
+let espRegistrosForca = [];
+function renderEspReflexoes(forca, containerId, perguntas){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = perguntas.map((p,i)=>{
+    const respostas = espReflexoes.filter(r=> r.forca===forca && r.pergunta===p).sort((a,b)=> a.date<b.date?1:-1);
+    return `<div class="card" style="background:var(--pale);margin-bottom:8px;">
+      <p style="font-family:var(--serif);font-size:14.5px;color:var(--ink);margin:0 0 8px;">${p}</p>
+      <textarea rows="2" class="esp-reflexao-input" data-forca="${forca}" data-pergunta="${i}" placeholder="Responda quando quiser…"></textarea>
+      <button class="btn esp-reflexao-salvar" data-forca="${forca}" data-pergunta="${i}" style="margin-top:6px;">Salvar resposta</button>
+      ${respostas.length? `<div style="margin-top:8px;">${respostas.map(r=>`<p class="desc" style="margin:4px 0;"><b style="color:var(--accent-dark);">${fmtDate(r.date)}:</b> ${r.resposta}</p>`).join("")}</div>` : ""}
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".esp-reflexao-salvar").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const idx = +btn.dataset.pergunta;
+      const f = btn.dataset.forca;
+      const perguntaTxt = perguntas[idx];
+      const textarea = box.querySelector(`.esp-reflexao-input[data-forca="${f}"][data-pergunta="${idx}"]`);
+      const val = textarea.value.trim();
+      if(!val) return;
+      espReflexoes.unshift({id:"ref_"+Date.now(), forca:f, pergunta: perguntaTxt, resposta: val, date: todayStr()});
+      const ok = await saveKey("esp_reflexoes", espReflexoes);
+      if(!ok){ espReflexoes.shift(); toast("Não deu pra salvar", true); return; }
+      textarea.value = "";
+      renderEspReflexoes(forca, containerId, perguntas);
+      toast("Resposta salva");
+    });
+  });
+}
+function renderEspRegistrosForca(forca, listId){
+  const box = document.getElementById(listId);
+  if(!box) return;
+  const lista = espRegistrosForca.filter(r=>r.forca===forca);
+  box.innerHTML = lista.length===0 ? `<div class="histempty">Seus registros vão aparecer aqui.</div>` : lista.map(r=>`
+    <div class="entry">
+      <span class="del" data-id="${r.id}">excluir</span>
+      <span class="date">${fmtDate(r.date)}</span>${r.texto}
+    </div>`).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const idx = espRegistrosForca.findIndex(x=>x.id===d.dataset.id);
+      if(idx<0) return;
+      const removed = espRegistrosForca.splice(idx,1);
+      const ok = await saveKey("esp_registros_forca", espRegistrosForca);
+      if(!ok) espRegistrosForca.splice(idx,0,removed[0]);
+      renderEspRegistrosForca(forca, listId);
+    });
+  });
+}
+function espSalvarRegistroForca(forca, textareaId, listId){
+  const ta = document.getElementById(textareaId);
+  const val = ta.value.trim();
+  if(!val) return;
+  espRegistrosForca.unshift({id:"reg_"+Date.now(), forca, texto: val, date: todayStr()});
+  saveKey("esp_registros_forca", espRegistrosForca).then(ok=>{
+    if(!ok){ espRegistrosForca.shift(); toast("Não deu pra salvar", true); return; }
+    ta.value = "";
+    renderEspRegistrosForca(forca, listId);
+    toast("Registrado");
+  });
+}
+
+/* ============================================================
+   ESPIRITUALIDADE — Exu Bará
+   ============================================================ */
+const ESP_BARA_REFLEXOES = [
+  "Onde minha vida precisa de movimento?",
+  "Que caminho estou evitando escolher?",
+  "O que comecei e preciso levar adiante?",
+  "Minha palavra está alinhada às minhas atitudes?",
+  "Onde preciso tomar uma decisão?",
+  "O que depende de movimento meu, e não apenas de um pedido?"
+];
+function renderEspBara(){
+  renderEspReflexoes("bara","espBaraReflexoes", ESP_BARA_REFLEXOES);
+  renderEspRegistrosForca("bara","espBaraRegistrosList");
+}
+document.getElementById("btnSalvarRegistroBara").addEventListener("click",()=>{
+  espSalvarRegistroForca("bara","espBaraRegistroTexto","espBaraRegistrosList");
+});
+
+/* ============================================================
+   ESPIRITUALIDADE — Iansã
+   ============================================================ */
+const ESP_IANSA_REFLEXOES = [
+  "O que preciso ter coragem para enfrentar?",
+  "O que preciso deixar ir?",
+  "O que estou carregando que já deveria ter sido encerrado?",
+  "Estou agindo com coragem ou por impulso?",
+  "Onde preciso me posicionar com verdade?",
+  "O que precisa mudar?",
+  "Onde minha intensidade precisa de direção?"
+];
+function renderEspIansa(){
+  renderEspReflexoes("iansa","espIansaReflexoes", ESP_IANSA_REFLEXOES);
+  renderEspRegistrosForca("iansa","espIansaRegistrosList");
+}
+document.getElementById("btnSalvarRegistroIansa").addEventListener("click",()=>{
+  espSalvarRegistroForca("iansa","espIansaRegistroTexto","espIansaRegistrosList");
+});
+
+/* ============================================================
+   ESPIRITUALIDADE — Bará + Iansã, meu eixo
+   ============================================================ */
+let espEixoHoje = [];
+function renderEspEixoHojeList(){
+  const box = document.getElementById("espEixoHojeList");
+  if(!box) return;
+  if(espEixoHoje.length===0){ box.innerHTML = `<div class="histempty">Seus registros vão aparecer aqui.</div>`; return; }
+  box.innerHTML = espEixoHoje.map(e=>`
+    <div class="entry">
+      <span class="del" data-id="${e.id}">excluir</span>
+      <span class="date">${fmtDate(e.date)}</span>
+      ${e.movimentar? `<p class="desc" style="margin:4px 0;"><b style="color:var(--accent-dark);">Movimentar:</b> ${e.movimentar}</p>`:""}
+      ${e.direcionar? `<p class="desc" style="margin:4px 0;"><b style="color:var(--accent-dark);">Direcionar/cortar:</b> ${e.direcionar}</p>`:""}
+      ${e.atitude? `<p class="desc" style="margin:4px 0;"><b style="color:var(--accent-dark);">Atitude:</b> ${e.atitude}</p>`:""}
+    </div>`).join("");
+  box.querySelectorAll(".del").forEach(d=>{
+    d.addEventListener("click", async ()=>{
+      const idx = espEixoHoje.findIndex(x=>x.id===d.dataset.id);
+      if(idx<0) return;
+      const removed = espEixoHoje.splice(idx,1);
+      const ok = await saveKey("esp_eixo_hoje", espEixoHoje);
+      if(!ok) espEixoHoje.splice(idx,0,removed[0]);
+      renderEspEixoHojeList();
+    });
+  });
+}
+document.getElementById("btnSalvarEixoHoje").addEventListener("click", async ()=>{
+  const movEl = document.getElementById("eixoMovimentar");
+  const dirEl = document.getElementById("eixoDirecionar");
+  const atiEl = document.getElementById("eixoAtitude");
+  const mov = movEl.value.trim(), dir = dirEl.value.trim(), ati = atiEl.value.trim();
+  if(!mov && !dir && !ati) return;
+  espEixoHoje.unshift({id:"eixo_"+Date.now(), date: todayStr(), movimentar: mov, direcionar: dir, atitude: ati});
+  const ok = await saveKey("esp_eixo_hoje", espEixoHoje);
+  if(!ok){ espEixoHoje.shift(); toast("Não deu pra salvar", true); return; }
+  movEl.value = ""; dirEl.value = ""; atiEl.value = "";
+  renderEspEixoHojeList();
+  toast("Registrado");
+});
+
+/* ============================================================
+   ESPIRITUALIDADE — Outras Forças (Oxum, Seu 7 da Lira, Dama da Noite)
+   ============================================================ */
+function renderEspOutrasForcas(){
+  renderEspRegistrosForca("oxum","espOxumRegistrosList");
+  renderEspRegistrosForca("sete","espSeteRegistrosList");
+  renderEspRegistrosForca("dama","espDamaRegistrosList");
+}
+document.getElementById("btnSalvarRegistroOxum").addEventListener("click",()=>{
+  espSalvarRegistroForca("oxum","espOxumRegistroTexto","espOxumRegistrosList");
+});
+document.getElementById("btnSalvarRegistroSete").addEventListener("click",()=>{
+  espSalvarRegistroForca("sete","espSeteRegistroTexto","espSeteRegistrosList");
+});
+document.getElementById("btnSalvarRegistroDama").addEventListener("click",()=>{
+  espSalvarRegistroForca("dama","espDamaRegistroTexto","espDamaRegistrosList");
+});
+
+/* ============================================================
+   ESPIRITUALIDADE — Conhecendo os Orixás (biblioteca educativa)
+   ============================================================ */
+let espOrixasBiblioteca = [];
+let orixaBibEditandoId = null;
+function orixaBibFormLimpar(){
+  ["ob-nome","ob-quemE","ob-principios","ob-historias","ob-simbolos","ob-elementos","ob-valores","ob-cotidiano","ob-respeito","ob-fontes"].forEach(id=> document.getElementById(id).value="");
+  orixaBibEditandoId = null;
+}
+document.getElementById("btnNovoOrixaBiblioteca").addEventListener("click",()=>{
+  const form = document.getElementById("orixaBibliotecaForm");
+  const abrindo = form.style.display==="none";
+  if(abrindo) orixaBibFormLimpar();
+  form.style.display = abrindo?"block":"none";
+});
+document.getElementById("btnSalvarOrixaBiblioteca").addEventListener("click", async ()=>{
+  const nome = document.getElementById("ob-nome").value.trim();
+  if(!nome) return;
+  const dados = {
+    nome,
+    quemE: document.getElementById("ob-quemE").value.trim(),
+    principios: document.getElementById("ob-principios").value.trim(),
+    historias: document.getElementById("ob-historias").value.trim(),
+    simbolos: document.getElementById("ob-simbolos").value.trim(),
+    elementos: document.getElementById("ob-elementos").value.trim(),
+    valores: document.getElementById("ob-valores").value.trim(),
+    cotidiano: document.getElementById("ob-cotidiano").value.trim(),
+    respeito: document.getElementById("ob-respeito").value.trim(),
+    fontes: document.getElementById("ob-fontes").value.trim()
+  };
+  if(orixaBibEditandoId){
+    const o = espOrixasBiblioteca.find(x=>x.id===orixaBibEditandoId);
+    Object.assign(o, dados);
+  } else {
+    espOrixasBiblioteca.unshift(Object.assign({id:"orixa_"+Date.now(), queroConhecer:false, minhasAnotacoes:"", estudoRegistros:[]}, dados));
+  }
+  const ok = await saveKey("esp_orixas_biblioteca", espOrixasBiblioteca);
+  if(!ok){ toast("Não deu pra salvar", true); return; }
+  orixaBibFormLimpar();
+  document.getElementById("orixaBibliotecaForm").style.display = "none";
+  renderOrixasBiblioteca();
+  toast("Orixá salvo");
+});
+function orixaBibCardHtml(o){
+  const estudos = o.estudoRegistros||[];
+  return `<div class="card" data-orixaid="${o.id}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+      <b style="font-family:var(--serif);font-size:17px;color:var(--ink);">${o.nome}</b>
+      <button class="btn" data-action="favoritar" style="white-space:nowrap;">${o.queroConhecer? "♥ Quero conhecer melhor":"♡ Quero conhecer melhor"}</button>
+    </div>
+    ${o.quemE? `<p class="desc" style="margin:8px 0 0;"><b>Quem é:</b> ${o.quemE}</p>`:""}
+    ${o.principios? `<p class="desc" style="margin:6px 0 0;"><b>Princípios:</b> ${o.principios}</p>`:""}
+    ${o.historias? `<p class="desc" style="margin:6px 0 0;"><b>Histórias e tradição:</b> ${o.historias}</p>`:""}
+    ${o.simbolos? `<p class="desc" style="margin:6px 0 0;"><b>Símbolos:</b> ${o.simbolos}</p>`:""}
+    ${o.elementos? `<p class="desc" style="margin:6px 0 0;"><b>Elementos:</b> ${o.elementos}</p>`:""}
+    ${o.valores? `<p class="desc" style="margin:6px 0 0;"><b>Valores que ensina:</b> ${o.valores}</p>`:""}
+    ${o.cotidiano? `<p class="desc" style="margin:6px 0 0;"><b>No cotidiano:</b> ${o.cotidiano}</p>`:""}
+    ${o.respeito? `<p class="desc" style="margin:6px 0 0;"><b>Como demonstrar respeito:</b> ${o.respeito}</p>`:""}
+    ${o.fontes? `<p class="desc" style="margin:6px 0 0;color:var(--muted);"><i>Fonte: ${o.fontes}</i></p>`:""}
+
+    <label class="field-label" style="margin-top:10px;display:block;">Minhas anotações</label>
+    <textarea class="ob-anotacoes" data-id="${o.id}" rows="2" placeholder="Suas anotações livres…">${o.minhasAnotacoes||""}</textarea>
+
+    <label class="field-label" style="margin-top:10px;display:block;">O que estou aprendendo</label>
+    <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">O que aprendi?</label><textarea class="ob-estudo" data-campo="aprendi" rows="2"></textarea></div>
+    <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">O que essa força representa?</label><textarea class="ob-estudo" data-campo="representa" rows="2"></textarea></div>
+    <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">Que ensinamento me chamou atenção?</label><textarea class="ob-estudo" data-campo="ensinamento" rows="2"></textarea></div>
+    <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">Como posso viver esse valor no cotidiano?</label><textarea class="ob-estudo" data-campo="viverCotidiano" rows="2"></textarea></div>
+    <div class="field"><label class="field-label" style="font-weight:400;text-transform:none;letter-spacing:0;">Que dúvida quero levar pra minha mãe de santo?</label><textarea class="ob-estudo" data-campo="duvida" rows="2"></textarea></div>
+    <button class="btn primary" data-action="salvar-estudo">Salvar registro de estudo</button>
+
+    ${estudos.length? `<div style="margin-top:10px;">${estudos.map(e=> `<div class="desc" style="margin:0 0 10px;padding:8px;background:var(--pale);border-radius:8px;">
+      <b style="color:var(--accent-dark);">${fmtDate(e.date)}</b>
+      ${e.aprendi?`<div>Aprendi: ${e.aprendi}</div>`:""}
+      ${e.representa?`<div>Representa: ${e.representa}</div>`:""}
+      ${e.ensinamento?`<div>Ensinamento: ${e.ensinamento}</div>`:""}
+      ${e.viverCotidiano?`<div>Como viver: ${e.viverCotidiano}</div>`:""}
+      ${e.duvida?`<div>Dúvida pra mãe de santo: ${e.duvida}</div>`:""}
+    </div>`).join("")}</div>` : ""}
+
+    <div class="qactions">
+      <button class="btn" data-action="editar">Editar</button>
+      <button class="btn" data-action="excluir">Excluir</button>
+    </div>
+  </div>`;
+}
+function wireOrixaBibEvents(container){
+  container.querySelectorAll("[data-action]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-orixaid]");
+      const id = card.dataset.orixaid;
+      const o = espOrixasBiblioteca.find(x=>x.id===id);
+      if(!o) return;
+      const action = btn.dataset.action;
+      if(action==="favoritar"){
+        o.queroConhecer = !o.queroConhecer;
+        await saveKey("esp_orixas_biblioteca", espOrixasBiblioteca);
+        renderOrixasBiblioteca();
+      } else if(action==="salvar-estudo"){
+        const campos = {};
+        card.querySelectorAll(".ob-estudo").forEach(ta=> campos[ta.dataset.campo] = ta.value.trim());
+        if(!Object.values(campos).some(v=>v)) return;
+        if(!o.estudoRegistros) o.estudoRegistros = [];
+        o.estudoRegistros.unshift(Object.assign({id:"est_"+Date.now(), date: todayStr()}, campos));
+        const ok = await saveKey("esp_orixas_biblioteca", espOrixasBiblioteca);
+        if(!ok){ o.estudoRegistros.shift(); return; }
+        renderOrixasBiblioteca();
+        toast("Registro de estudo salvo");
+      } else if(action==="editar"){
+        orixaBibEditandoId = id;
+        document.getElementById("ob-nome").value = o.nome||"";
+        document.getElementById("ob-quemE").value = o.quemE||"";
+        document.getElementById("ob-principios").value = o.principios||"";
+        document.getElementById("ob-historias").value = o.historias||"";
+        document.getElementById("ob-simbolos").value = o.simbolos||"";
+        document.getElementById("ob-elementos").value = o.elementos||"";
+        document.getElementById("ob-valores").value = o.valores||"";
+        document.getElementById("ob-cotidiano").value = o.cotidiano||"";
+        document.getElementById("ob-respeito").value = o.respeito||"";
+        document.getElementById("ob-fontes").value = o.fontes||"";
+        const form = document.getElementById("orixaBibliotecaForm");
+        form.style.display = "block";
+        form.scrollIntoView({behavior:"smooth", block:"start"});
+      } else if(action==="excluir"){
+        const idx = espOrixasBiblioteca.findIndex(x=>x.id===id);
+        if(idx<0) return;
+        const removed = espOrixasBiblioteca.splice(idx,1);
+        const ok = await saveKey("esp_orixas_biblioteca", espOrixasBiblioteca);
+        if(!ok) espOrixasBiblioteca.splice(idx,0,removed[0]);
+        renderOrixasBiblioteca();
+      }
+    });
+  });
+  container.querySelectorAll(".ob-anotacoes").forEach(ta=>{
+    let deb;
+    ta.addEventListener("input",()=>{
+      clearTimeout(deb);
+      deb = setTimeout(async ()=>{
+        const o = espOrixasBiblioteca.find(x=>x.id===ta.dataset.id);
+        if(!o) return;
+        o.minhasAnotacoes = ta.value;
+        await saveKey("esp_orixas_biblioteca", espOrixasBiblioteca);
+      }, 700);
+    });
+  });
+}
+function renderOrixasBiblioteca(){
+  const listaBox = document.getElementById("orixasBibliotecaLista");
+  const estudandoBox = document.getElementById("orixasEstudandoLista");
+  if(!listaBox) return;
+  listaBox.innerHTML = espOrixasBiblioteca.length===0
+    ? `<div class="histempty">Nenhum Orixá cadastrado ainda. Adicione quando tiver uma fonte confiável de conteúdo.</div>`
+    : espOrixasBiblioteca.map(o=> orixaBibCardHtml(o)).join("");
+  wireOrixaBibEvents(listaBox);
+  if(estudandoBox){
+    const estudando = espOrixasBiblioteca.filter(o=>o.queroConhecer);
+    estudandoBox.innerHTML = estudando.length===0
+      ? `<p class="desc" style="margin:0;">Nenhum ainda — marque "♡ Quero conhecer melhor" em algum Orixá da biblioteca.</p>`
+      : estudando.map(o=>`<span class="diario-chip active" style="cursor:default;">${o.nome}</span>`).join("");
+  }
+}
+
+/* ============================================================
+   ESPIRITUALIDADE — Meus Estudos Espirituais (cadernos)
+   ============================================================ */
+const ESP_TEMAS_CADERNO = ["Exu Bará","Iansã","Outros Orixás","Ori","Exus","Pombagiras","Minha tradição","Fundamentos que estou aprendendo","Orientações recebidas","Dúvidas para minha mãe de santo"];
+let espCadernos = [];
+let cadernoTemaSelecionado = ESP_TEMAS_CADERNO[0];
+let cadernoFiltroAtivo = "Todos";
+function renderCadernoTemaPicker(){
+  const box = document.getElementById("espCadernoTemaPicker");
+  if(!box) return;
+  box.innerHTML = ESP_TEMAS_CADERNO.map(t=> `<button type="button" data-t="${t}" class="${cadernoTemaSelecionado===t?"active":""}">${t}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{ cadernoTemaSelecionado = btn.dataset.t; renderCadernoTemaPicker(); });
+  });
+}
+function renderCadernoFiltros(){
+  const box = document.getElementById("espCadernoTemas");
+  if(!box) return;
+  const opts = ["Todos", ...ESP_TEMAS_CADERNO];
+  box.innerHTML = opts.map(t=> `<button type="button" class="diario-chip${cadernoFiltroAtivo===t?" active":""}" data-t="${t}">${t}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{ cadernoFiltroAtivo = btn.dataset.t; renderCadernoLista(); renderCadernoFiltros(); });
+  });
+}
+document.getElementById("btnNovoCaderno").addEventListener("click",()=>{
+  const form = document.getElementById("espCadernoForm");
+  const abrindo = form.style.display==="none";
+  if(abrindo){
+    cadernoTemaSelecionado = ESP_TEMAS_CADERNO[0];
+    renderCadernoTemaPicker();
+    document.getElementById("ec-titulo").value = "";
+    document.getElementById("ec-texto").value = "";
+    document.getElementById("ec-foto").value = "";
+  }
+  form.style.display = abrindo?"block":"none";
+});
+document.getElementById("btnSalvarCaderno").addEventListener("click", async ()=>{
+  const texto = document.getElementById("ec-texto").value.trim();
+  const titulo = document.getElementById("ec-titulo").value.trim();
+  if(!texto && !titulo) return;
+  const btn = document.getElementById("btnSalvarCaderno");
+  btn.disabled = true; btn.textContent = "Salvando…";
+  const fileInput = document.getElementById("ec-foto");
+  let foto = null;
+  if(fileInput.files.length){
+    try{ foto = await compressImageFile(fileInput.files[0], 700, 0.65); }catch(e){}
+  }
+  espCadernos.unshift({id:"cad_"+Date.now(), tema: cadernoTemaSelecionado, titulo, texto, foto, date: todayStr()});
+  const ok = await saveKey("esp_cadernos", espCadernos);
+  btn.disabled = false; btn.textContent = "Salvar";
+  if(!ok){ espCadernos.shift(); toast("Não deu pra salvar — tente com imagem menor", true); return; }
+  document.getElementById("ec-titulo").value = "";
+  document.getElementById("ec-texto").value = "";
+  fileInput.value = "";
+  document.getElementById("espCadernoForm").style.display = "none";
+  renderCadernoLista();
+  toast("Registrado");
+});
+function renderCadernoLista(){
+  const box = document.getElementById("espCadernoLista");
+  if(!box) return;
+  const lista = cadernoFiltroAtivo==="Todos" ? espCadernos : espCadernos.filter(c=>c.tema===cadernoFiltroAtivo);
+  box.innerHTML = lista.length===0
+    ? `<div class="histempty">Nenhum registro ${cadernoFiltroAtivo==="Todos"?"ainda":'em "'+cadernoFiltroAtivo+'"'}.</div>`
+    : lista.map(c=>`
+      <div class="card" data-cadernoid="${c.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <span class="diario-chip active" style="cursor:default;">${c.tema}</span>
+          <span class="desc" style="margin:0;">${fmtDate(c.date)}</span>
+        </div>
+        ${c.titulo? `<b style="display:block;margin-top:8px;color:var(--ink);">${c.titulo}</b>`:""}
+        ${c.texto? `<p class="desc" style="margin:6px 0 0;">${c.texto}</p>`:""}
+        ${c.foto? `<img src="${c.foto}" style="width:100%;max-width:240px;border-radius:12px;margin-top:8px;display:block;">`:""}
+        <div class="qactions"><button class="btn" data-action="excluir">Excluir</button></div>
+      </div>`).join("");
+  box.querySelectorAll("[data-action='excluir']").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-cadernoid]");
+      const id = card.dataset.cadernoid;
+      const idx = espCadernos.findIndex(x=>x.id===id);
+      if(idx<0) return;
+      const removed = espCadernos.splice(idx,1);
+      const ok = await saveKey("esp_cadernos", espCadernos);
+      if(!ok) espCadernos.splice(idx,0,removed[0]);
+      renderCadernoLista();
+    });
+  });
+}
+function renderEspCadernos(){
+  renderCadernoFiltros();
+  renderCadernoLista();
+}
+
+/* ============================================================
+   ESPIRITUALIDADE — Orientações da Minha Casa
+   ============================================================ */
+const ESP_TEMAS_ORIENTACAO = ["Bará","Iansã","Ori","Seu 7 da Lira","Dama da Noite","Oxum","Assentamento","Prática","Obrigação","Outros"];
+let espOrientacoes = [];
+let orientacaoTemaSelecionado = ESP_TEMAS_ORIENTACAO[0];
+function renderOrientacaoTemaPicker(){
+  const box = document.getElementById("espOrientacaoTemaPicker");
+  if(!box) return;
+  box.innerHTML = ESP_TEMAS_ORIENTACAO.map(t=> `<button type="button" data-t="${t}" class="${orientacaoTemaSelecionado===t?"active":""}">${t}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{ orientacaoTemaSelecionado = btn.dataset.t; renderOrientacaoTemaPicker(); });
+  });
+}
+document.getElementById("btnNovaOrientacao").addEventListener("click",()=>{
+  const form = document.getElementById("espOrientacaoForm");
+  const abrindo = form.style.display==="none";
+  if(abrindo){
+    document.getElementById("eo-data").value = todayStr();
+    document.getElementById("eo-quem").value = "";
+    document.getElementById("eo-orientacao").value = "";
+    document.getElementById("eo-obs").value = "";
+    orientacaoTemaSelecionado = ESP_TEMAS_ORIENTACAO[0];
+    renderOrientacaoTemaPicker();
+  }
+  form.style.display = abrindo?"block":"none";
+});
+document.getElementById("btnSalvarOrientacao").addEventListener("click", async ()=>{
+  const orientacao = document.getElementById("eo-orientacao").value.trim();
+  if(!orientacao) return;
+  const dados = {
+    id:"ori_"+Date.now(),
+    data: document.getElementById("eo-data").value || todayStr(),
+    quem: document.getElementById("eo-quem").value.trim(),
+    tema: orientacaoTemaSelecionado,
+    orientacao,
+    obs: document.getElementById("eo-obs").value.trim()
+  };
+  espOrientacoes.unshift(dados);
+  const ok = await saveKey("esp_orientacoes", espOrientacoes);
+  if(!ok){ espOrientacoes.shift(); toast("Não deu pra salvar", true); return; }
+  document.getElementById("espOrientacaoForm").style.display = "none";
+  renderOrientacoesLista();
+  toast("Orientação registrada");
+});
+function renderOrientacoesLista(){
+  const box = document.getElementById("espOrientacoesLista");
+  if(!box) return;
+  box.innerHTML = espOrientacoes.length===0
+    ? `<div class="histempty">Nenhuma orientação registrada ainda.</div>`
+    : espOrientacoes.map(o=>`
+      <div class="card" data-orientacaoid="${o.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <span class="diario-chip active" style="cursor:default;">${o.tema}</span>
+          <span class="desc" style="margin:0;">${fmtDate(o.data)}</span>
+        </div>
+        ${o.quem? `<p class="desc" style="margin:8px 0 0;"><b>Quem orientou:</b> ${o.quem}</p>`:""}
+        <p class="desc" style="margin:6px 0 0;">${o.orientacao}</p>
+        ${o.obs? `<p class="desc" style="margin:6px 0 0;color:var(--muted);">${o.obs}</p>`:""}
+        <div class="qactions"><button class="btn" data-action="excluir">Excluir</button></div>
+      </div>`).join("");
+  box.querySelectorAll("[data-action='excluir']").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-orientacaoid]");
+      const id = card.dataset.orientacaoid;
+      const idx = espOrientacoes.findIndex(x=>x.id===id);
+      if(idx<0) return;
+      const removed = espOrientacoes.splice(idx,1);
+      const ok = await saveKey("esp_orientacoes", espOrientacoes);
+      if(!ok) espOrientacoes.splice(idx,0,removed[0]);
+      renderOrientacoesLista();
+    });
+  });
 }
 
 /* ============================================================
@@ -5763,7 +6458,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele, esp_reflexoes: espReflexoes, esp_registros_forca: espRegistrosForca, esp_eixo_hoje: espEixoHoje, esp_orixas_biblioteca: espOrixasBiblioteca, esp_cadernos: espCadernos, esp_orientacoes: espOrientacoes,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -5819,6 +6514,12 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.skincare_rotina!==undefined){ skincareRotina = data.skincare_rotina; ops.push(saveKey("skincare_rotina", skincareRotina)); }
       if(data.skincare_produtos!==undefined){ skincareProdutos = data.skincare_produtos; ops.push(saveKey("skincare_produtos", skincareProdutos)); }
       if(data.skincare_diario_pele!==undefined){ skincareDiarioPele = data.skincare_diario_pele; ops.push(saveKey("skincare_diario_pele", skincareDiarioPele)); }
+      if(data.esp_reflexoes!==undefined){ espReflexoes = data.esp_reflexoes; ops.push(saveKey("esp_reflexoes", espReflexoes)); }
+      if(data.esp_registros_forca!==undefined){ espRegistrosForca = data.esp_registros_forca; ops.push(saveKey("esp_registros_forca", espRegistrosForca)); }
+      if(data.esp_eixo_hoje!==undefined){ espEixoHoje = data.esp_eixo_hoje; ops.push(saveKey("esp_eixo_hoje", espEixoHoje)); }
+      if(data.esp_orixas_biblioteca!==undefined){ espOrixasBiblioteca = data.esp_orixas_biblioteca; ops.push(saveKey("esp_orixas_biblioteca", espOrixasBiblioteca)); }
+      if(data.esp_cadernos!==undefined){ espCadernos = data.esp_cadernos; ops.push(saveKey("esp_cadernos", espCadernos)); }
+      if(data.esp_orientacoes!==undefined){ espOrientacoes = data.esp_orientacoes; ops.push(saveKey("esp_orientacoes", espOrientacoes)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -6044,6 +6745,12 @@ function init(){
   skincareRotina = loadKey("skincare_rotina", {});
   skincareProdutos = loadKey("skincare_produtos", []);
   skincareDiarioPele = loadKey("skincare_diario_pele", []);
+  espReflexoes = loadKey("esp_reflexoes", []);
+  espRegistrosForca = loadKey("esp_registros_forca", []);
+  espEixoHoje = loadKey("esp_eixo_hoje", []);
+  espOrixasBiblioteca = loadKey("esp_orixas_biblioteca", []);
+  espCadernos = loadKey("esp_cadernos", []);
+  espOrientacoes = loadKey("esp_orientacoes", []);
   if(planejamentoMeta.lastReset !== todayStr()){
     planejamento = [];
     planejamentoMeta = {lastReset: todayStr()};
