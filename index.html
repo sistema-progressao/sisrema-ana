@@ -1141,11 +1141,102 @@
         <div class="cal-grid" id="skHabitTrackerGrid"></div>
         <p class="desc" style="margin-top:12px;">🟢 rotina completa · 🟡 parcial · ⚪ não registrada. O objetivo é consistência, não perfeição — sem cobrança por dias perdidos.</p>
       </div>
+
+      <h2 class="h2">🧴 Minha Skincare</h2>
+      <div class="card">
+        <button class="btn primary" id="btnNovoProdutoSkincare">+ Adicionar produto</button>
+        <div id="skProdutoForm" style="display:none;margin-top:14px;">
+          <div class="field"><label class="field-label">Produto</label><input type="text" id="sp-nome"></div>
+          <div class="grid2">
+            <div class="field"><label class="field-label">Marca</label><input type="text" id="sp-marca"></div>
+            <div class="field"><label class="field-label">Etapa da rotina</label><input type="text" id="sp-etapa" placeholder="Ex: ampola, toner…"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label class="field-label">Manhã/Noite</label><select id="sp-periodo"><option value="manha">Manhã</option><option value="noite">Noite</option><option value="ambos">Manhã e noite</option></select></div>
+            <div class="field"><label class="field-label">Frequência</label><input type="text" id="sp-frequencia" placeholder="Ex: diário, seg/qua/sex…"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label class="field-label">Data que comecei a usar</label><input type="date" id="sp-datainicio"></div>
+            <div class="field"><label class="field-label">Data de abertura</label><input type="date" id="sp-dataabertura"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label class="field-label">Validade</label><input type="date" id="sp-validade"></div>
+            <div class="field"><label class="field-label">Quantidade restante</label><input type="text" id="sp-quantidade" placeholder="Ex: metade, 20%…"></div>
+          </div>
+          <div class="field"><label class="field-label">Status</label><div class="toggle-simnao" id="sp-status-picker" style="flex-wrap:wrap;"></div></div>
+          <div class="field"><label class="field-label">Observações</label><textarea id="sp-obs" rows="2"></textarea></div>
+          <div class="field"><label class="field-label">Foto do produto (opcional)</label><input type="file" id="sp-foto" accept="image/*"></div>
+          <button class="btn primary" id="btnSalvarProdutoSkincare">Salvar produto</button>
+        </div>
+      </div>
+      <div id="skProdutosLista"></div>
+
+      <h2 class="h2">📝 Diário da Pele</h2>
+      <div class="card">
+        <div class="field"><label class="field-label">Como está minha pele hoje?</label><div id="skDiarioCondicoesChips"></div></div>
+        <div class="field"><label class="field-label">Observações</label><textarea id="skDiarioObs" rows="2"></textarea></div>
+        <div class="field"><label class="field-label">Foto da pele (opcional)</label><input type="file" id="skDiarioFoto" accept="image/*"></div>
+        <button class="btn primary" id="btnSalvarDiarioPele">Registrar</button>
+      </div>
+      <div id="skDiarioPeleLista"></div>
+
+      <h2 class="h2">📸 Minha Evolução</h2>
+      <div class="card">
+        <div id="skEvolucaoGaleria" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;"></div>
+      </div>
+      <div class="card">
+        <label class="field-label">Comparar duas datas</label>
+        <div class="grid2">
+          <div class="field"><label class="field-label">Data 1</label><select id="skCompararData1"></select></div>
+          <div class="field"><label class="field-label">Data 2</label><select id="skCompararData2"></select></div>
+        </div>
+        <div id="skComparacaoResultado" style="margin-top:10px;"></div>
+      </div>
+
+      <h2 class="h2">⚠️ Pausar Durante a Amamentação</h2>
+      <div class="card" style="background:var(--pale);border-color:var(--accent);">
+        <p class="desc" style="margin:0;">Esses produtos ficam registrados como pausados e não entram na rotina diária enquanto estiverem nesse status — assim você não esquece deles pra quando puder retomar:</p>
+        <div id="skPausadosLista" style="margin-top:10px;"></div>
+      </div>
+
+      <h2 class="h2">💡 Alertas Importantes</h2>
+      <div class="card">
+        <p class="desc" style="margin:0 0 8px;"><b>🌹 Óleo de Rosa Mosqueta:</b> usar apenas à noite, conforme a rotina definida.</p>
+        <p class="desc" style="margin:0 0 8px;"><b>☀️ Protetor solar:</b> obrigatório diariamente, inclusive em casa.</p>
+        <p class="desc" style="margin:0 0 8px;"><b>🔄 Reaplicação:</b> lembrar a cada 2 horas.</p>
+        <p class="desc" style="margin:0;"><b>🧴 Produtos novos:</b> registre a data de início e evite introduzir vários produtos novos ao mesmo tempo, pra conseguir observar como a pele reage a cada um.</p>
+      </div>
+
+      <h2 class="h2">🛒 Reposição de Skincare</h2>
+      <div class="card" id="skReposicaoLista"></div>
     </div>
   </section>
 
   <section class="panel" id="panel-espiritualidade">
     <div class="callout"><span class="eyebrow">Como usar</span><p>As práticas seguem sua tradição e a orientação da sua casa religiosa; este espaço só organiza a rotina de conexão. Vela sempre em base estável, longe de cortinas, papéis, crianças e animais, e nunca acesa sem supervisão.</p></div>
+
+    <h2 class="h2">✨ Minha Conexão Hoje</h2>
+    <div class="card" style="background:var(--pale);">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="espDataHoje"></div>
+      <div class="grid2">
+        <div>
+          <label class="field-label">Meu Ori</label>
+          <p style="font-family:var(--serif);font-size:17px;color:var(--accent-dark);margin:2px 0 0;">⚡ Exu Bará</p>
+        </div>
+        <div>
+          <label class="field-label">Meu Eixo</label>
+          <p style="font-family:var(--serif);font-size:17px;color:var(--accent-dark);margin:2px 0 0;">⚡ Bará + 🌪 Iansã</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout"><p style="font-family:var(--serif);font-size:16px;text-align:center;margin:0;">"Como posso cuidar da minha espiritualidade hoje?"</p></div>
+
+    <h2 class="h2">Checklist espiritual do dia</h2>
+    <div class="card"><ul class="checklist" id="cl-espiritual"></ul><div class="progress" id="prog-espiritual"></div></div>
+
+    <h2 class="h2">Prática do dia</h2>
+    <div class="card" id="espPraticaDia"></div>
 
     <h2 class="h2">Oração de conexão com Ori e Pai Bará</h2>
     <div class="card"><p class="prayer-text">Meu Ori, minha cabeça, meu guia interno, eu te saúdo com respeito. Que hoje eu esteja firme, lúcida e alinhada com aquilo que é verdadeiro para mim. Que meus pensamentos sejam claros, minhas escolhas conscientes e minhas atitudes honrem quem estou me tornando. Meu Pai Bará, eu me coloco diante da sua força com amor, respeito e gratidão. Quero me aproximar com verdade, não apenas para pedir, mas para aprender a caminhar. Que meu Ori esteja firme, equilibrado e protegido. Que eu tenha clareza para reconhecer os caminhos certos, coragem para agir e sabedoria para não me perder da minha essência. Ensina-me a viver com honra, responsabilidade e presença. Fortalece minha palavra, meu caráter e minha coragem. Que eu saiba prosperar sem perder a humildade, cuidar dos meus sem me abandonar e honrar sua força em meus pensamentos, palavras e atitudes. Gratidão pela vida, pela proteção e por mais um dia de caminhada.</p></div>
@@ -1244,6 +1335,7 @@
    DATA
    ============================================================ */
 const CL_MANHA = ["Água","Higiene e autocuidado","Café","Conexão espiritual","Escrita breve","Prioridade do dia","Estudo / investimento em si","Treino","Remédios/vitamina"];
+const CL_ESPIRITUAL = ["Cuidar do meu Ori","Honrar Bará","Conectar-me com Iansã","Prática semanal, se houver","Autocuidado/atitude espiritual","Agradecer"];
 const CL_NOITE = ["Pia e bancadas no mínimo funcional","Lixo retirado quando necessário","Varanda varrida e mesa limpa","Escritório utilizável e mesa pronta","Mamadeiras encaminhadas conforme rotina de higiene","Almoço definido e itens descongelando na geladeira","Garrafa de água cheia","Roupa e materiais de estudo separados","Roupa de treino preparada","Prioridade de amanhã registrada"];
 const CL_FECHAMENTO = ["Registrar o ponto de parada e a próxima ação física","Atualizar a prioridade de amanhã","Deixar mesa e materiais prontos","Encerrar mentalmente o expediente antes de entrar na noite familiar"];
 
@@ -4766,7 +4858,297 @@ function renderSkincareHabitTracker(){
 document.getElementById("skHabitBtnMesAnterior").addEventListener("click",()=>{ skincareCalendarioMes.setMonth(skincareCalendarioMes.getMonth()-1); renderSkincareHabitTracker(); });
 document.getElementById("skHabitBtnMesSeguinte").addEventListener("click",()=>{ skincareCalendarioMes.setMonth(skincareCalendarioMes.getMonth()+1); renderSkincareHabitTracker(); });
 
+const SKINCARE_STATUS = [
+  {id:"ok", label:"🟢 OK"},
+  {id:"acabando", label:"🟡 Acabando"},
+  {id:"comprar", label:"🔴 Comprar"},
+  {id:"pausado", label:"⏸️ Pausado"}
+];
+let skincareProdutos = [];
+let skProdutoStatusSelecionado = "ok";
+let skProdutoEditandoId = null;
+function renderSkProdutoStatusPicker(){
+  const box = document.getElementById("sp-status-picker");
+  if(!box) return;
+  box.innerHTML = SKINCARE_STATUS.map(s=> `<button type="button" data-s="${s.id}" class="${skProdutoStatusSelecionado===s.id?"active":""}">${s.label}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{ skProdutoStatusSelecionado = btn.dataset.s; renderSkProdutoStatusPicker(); });
+  });
+}
+function skProdutoFormLimpar(){
+  ["sp-nome","sp-marca","sp-etapa","sp-frequencia","sp-datainicio","sp-dataabertura","sp-validade","sp-quantidade","sp-obs"].forEach(id=> document.getElementById(id).value="");
+  document.getElementById("sp-periodo").value = "manha";
+  document.getElementById("sp-foto").value = "";
+  skProdutoStatusSelecionado = "ok";
+  renderSkProdutoStatusPicker();
+  skProdutoEditandoId = null;
+}
+document.getElementById("btnNovoProdutoSkincare").addEventListener("click",()=>{
+  const form = document.getElementById("skProdutoForm");
+  const abrindo = form.style.display==="none";
+  if(abrindo) skProdutoFormLimpar();
+  form.style.display = abrindo?"block":"none";
+});
+document.getElementById("btnSalvarProdutoSkincare").addEventListener("click", async ()=>{
+  const nome = document.getElementById("sp-nome").value.trim();
+  if(!nome) return;
+  const btn = document.getElementById("btnSalvarProdutoSkincare");
+  btn.disabled = true; btn.textContent = "Salvando…";
+  const fileInput = document.getElementById("sp-foto");
+  let foto = null;
+  if(fileInput.files.length){
+    try{ foto = await compressImageFile(fileInput.files[0], 500, 0.6); }catch(e){}
+  }
+  const dados = {
+    nome,
+    marca: document.getElementById("sp-marca").value.trim(),
+    etapa: document.getElementById("sp-etapa").value.trim(),
+    periodo: document.getElementById("sp-periodo").value,
+    frequencia: document.getElementById("sp-frequencia").value.trim(),
+    dataInicio: document.getElementById("sp-datainicio").value,
+    dataAbertura: document.getElementById("sp-dataabertura").value,
+    validade: document.getElementById("sp-validade").value,
+    quantidadeRestante: document.getElementById("sp-quantidade").value.trim(),
+    status: skProdutoStatusSelecionado,
+    observacoes: document.getElementById("sp-obs").value.trim()
+  };
+  if(foto) dados.foto = foto;
+  if(skProdutoEditandoId){
+    const p = skincareProdutos.find(x=>x.id===skProdutoEditandoId);
+    Object.assign(p, dados);
+  } else {
+    skincareProdutos.unshift(Object.assign({id:"prod_"+Date.now()}, dados));
+  }
+  const ok = await saveKey("skincare_produtos", skincareProdutos);
+  btn.disabled = false; btn.textContent = "Salvar produto";
+  if(!ok){ toast("Não deu pra salvar — tente com foto menor", true); return; }
+  skProdutoFormLimpar();
+  document.getElementById("skProdutoForm").style.display = "none";
+  renderSkProdutos();
+  toast("Produto salvo");
+});
+function skProdutoCardHtml(p){
+  const statusInfo = SKINCARE_STATUS.find(s=>s.id===p.status) || SKINCARE_STATUS[0];
+  return `
+    <div class="card" data-prodid="${p.id}">
+      <div style="display:flex;gap:12px;">
+        ${p.foto ? `<img src="${p.foto}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : ""}
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <b style="color:var(--ink);">${p.nome}</b>
+            <span class="mu-status-pill" style="background:var(--pale);color:var(--accent-dark);white-space:nowrap;">${statusInfo.label}</span>
+          </div>
+          <p class="desc" style="margin:2px 0 0;">${p.marca||""}${p.etapa? " · "+p.etapa : ""}</p>
+        </div>
+      </div>
+      <p class="desc" style="margin:6px 0 0;">${p.periodo==="manha"?"Manhã":p.periodo==="noite"?"Noite":"Manhã e noite"}${p.frequencia? " · "+p.frequencia : ""}</p>
+      ${p.dataInicio ? `<p class="desc" style="margin:2px 0 0;">Uso desde: ${fmtDate(p.dataInicio)}</p>` : ""}
+      ${p.validade ? `<p class="desc" style="margin:2px 0 0;">Validade: ${fmtDate(p.validade)}</p>` : ""}
+      ${p.quantidadeRestante ? `<p class="desc" style="margin:2px 0 0;">Restante: ${p.quantidadeRestante}</p>` : ""}
+      ${p.observacoes ? `<p class="desc" style="margin:2px 0 0;">${p.observacoes}</p>` : ""}
+      <div class="qactions">
+        <button class="btn" data-action="editar">Editar</button>
+        <button class="btn" data-action="excluir">Excluir</button>
+      </div>
+    </div>`;
+}
+function wireSkProdutoEvents(container){
+  container.querySelectorAll("[data-action]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-prodid]");
+      const id = card.dataset.prodid;
+      const p = skincareProdutos.find(x=>x.id===id);
+      if(!p) return;
+      if(btn.dataset.action==="editar"){
+        skProdutoEditandoId = id;
+        document.getElementById("sp-nome").value = p.nome||"";
+        document.getElementById("sp-marca").value = p.marca||"";
+        document.getElementById("sp-etapa").value = p.etapa||"";
+        document.getElementById("sp-periodo").value = p.periodo||"manha";
+        document.getElementById("sp-frequencia").value = p.frequencia||"";
+        document.getElementById("sp-datainicio").value = p.dataInicio||"";
+        document.getElementById("sp-dataabertura").value = p.dataAbertura||"";
+        document.getElementById("sp-validade").value = p.validade||"";
+        document.getElementById("sp-quantidade").value = p.quantidadeRestante||"";
+        document.getElementById("sp-obs").value = p.observacoes||"";
+        skProdutoStatusSelecionado = p.status||"ok";
+        renderSkProdutoStatusPicker();
+        const form = document.getElementById("skProdutoForm");
+        form.style.display = "block";
+        form.scrollIntoView({behavior:"smooth", block:"start"});
+      } else if(btn.dataset.action==="excluir"){
+        const idx = skincareProdutos.findIndex(x=>x.id===id);
+        if(idx<0) return;
+        const removed = skincareProdutos.splice(idx,1);
+        const ok = await saveKey("skincare_produtos", skincareProdutos);
+        if(!ok){ skincareProdutos.splice(idx,0,removed[0]); return; }
+        renderSkProdutos();
+      }
+    });
+  });
+}
+function renderSkProdutos(){
+  const box = document.getElementById("skProdutosLista");
+  if(!box) return;
+  if(skincareProdutos.length===0){ box.innerHTML = `<div class="histempty">Nenhum produto cadastrado ainda.</div>`; return; }
+  box.innerHTML = skincareProdutos.map(p=> skProdutoCardHtml(p)).join("");
+  wireSkProdutoEvents(box);
+}
+
+const SKINCARE_DIARIO_CONDICOES = ["Normal","Ressecada","Oleosa","Sensível","Irritada","Acne","Manchas mais aparentes","Textura/poros"];
+let skincareDiarioPele = [];
+let skDiarioCondicoesSelecionadas = [];
+function renderSkDiarioCondicoesChips(){
+  const box = document.getElementById("skDiarioCondicoesChips");
+  if(!box) return;
+  box.innerHTML = SKINCARE_DIARIO_CONDICOES.map(c=> `<button type="button" class="diario-chip${skDiarioCondicoesSelecionadas.includes(c)?" active":""}" data-c="${c}">${c}</button>`).join("");
+  box.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const c = btn.dataset.c;
+      const idx = skDiarioCondicoesSelecionadas.indexOf(c);
+      if(idx>=0) skDiarioCondicoesSelecionadas.splice(idx,1); else skDiarioCondicoesSelecionadas.push(c);
+      renderSkDiarioCondicoesChips();
+    });
+  });
+}
+document.getElementById("btnSalvarDiarioPele").addEventListener("click", async ()=>{
+  const obsEl = document.getElementById("skDiarioObs");
+  const obs = obsEl.value.trim();
+  if(skDiarioCondicoesSelecionadas.length===0 && !obs){ toast("Marque algo ou escreva uma observação", true); return; }
+  const btn = document.getElementById("btnSalvarDiarioPele");
+  btn.disabled = true; btn.textContent = "Salvando…";
+  const fileInput = document.getElementById("skDiarioFoto");
+  let foto = null;
+  if(fileInput.files.length){
+    try{ foto = await compressImageFile(fileInput.files[0], 700, 0.65); }catch(e){}
+  }
+  const entrada = {id:"dp_"+Date.now(), date: todayStr(), condicoes: skDiarioCondicoesSelecionadas.slice(), observacoes: obs, foto};
+  skincareDiarioPele.unshift(entrada);
+  const ok = await saveKey("skincare_diario_pele", skincareDiarioPele);
+  btn.disabled = false; btn.textContent = "Registrar";
+  if(!ok){ skincareDiarioPele.shift(); toast("Não deu pra salvar — tente com foto menor", true); return; }
+  skDiarioCondicoesSelecionadas = [];
+  obsEl.value = "";
+  fileInput.value = "";
+  renderSkDiarioCondicoesChips();
+  renderSkDiarioPeleLista();
+  renderSkEvolucao();
+  toast("Registrado");
+});
+function renderSkDiarioPeleLista(){
+  const box = document.getElementById("skDiarioPeleLista");
+  if(!box) return;
+  if(skincareDiarioPele.length===0){ box.innerHTML = `<div class="histempty">Seus registros vão aparecer aqui.</div>`; return; }
+  box.innerHTML = skincareDiarioPele.map(e=>`
+    <div class="card" data-diarioid="${e.id}">
+      <b style="color:var(--ink);">${fmtDate(e.date)}</b>
+      ${e.condicoes.length? `<div style="margin-top:6px;">${e.condicoes.map(c=>`<span class="diario-chip active" style="cursor:default;">${c}</span>`).join("")}</div>` : ""}
+      ${e.observacoes? `<p class="desc" style="margin:6px 0 0;">${e.observacoes}</p>` : ""}
+      ${e.foto ? `<img src="${e.foto}" style="width:100%;max-width:200px;border-radius:12px;margin-top:8px;display:block;">` : ""}
+      <div class="qactions"><button class="btn" data-action="excluir">Excluir</button></div>
+    </div>`).join("");
+  box.querySelectorAll("[data-action='excluir']").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-diarioid]");
+      const id = card.dataset.diarioid;
+      const idx = skincareDiarioPele.findIndex(x=>x.id===id);
+      if(idx<0) return;
+      const removed = skincareDiarioPele.splice(idx,1);
+      const ok = await saveKey("skincare_diario_pele", skincareDiarioPele);
+      if(!ok){ skincareDiarioPele.splice(idx,0,removed[0]); return; }
+      renderSkDiarioPeleLista();
+      renderSkEvolucao();
+    });
+  });
+}
+function renderSkEvolucao(){
+  const galeria = document.getElementById("skEvolucaoGaleria");
+  const sel1 = document.getElementById("skCompararData1");
+  const sel2 = document.getElementById("skCompararData2");
+  if(!galeria) return;
+  const comFoto = skincareDiarioPele.filter(e=>e.foto).slice().sort((a,b)=> a.date<b.date?1:-1);
+  galeria.innerHTML = comFoto.length===0
+    ? `<div class="histempty">Suas fotos registradas no diário vão aparecer aqui.</div>`
+    : comFoto.map(e=> `<div class="card" style="padding:8px;"><img src="${e.foto}" style="width:100%;border-radius:10px;display:block;"><p class="desc" style="margin:6px 0 0;text-align:center;">${fmtDate(e.date)}</p></div>`).join("");
+  if(sel1 && sel2){
+    const opts = comFoto.map(e=> `<option value="${e.id}">${fmtDate(e.date)}</option>`).join("");
+    sel1.innerHTML = `<option value="">—</option>` + opts;
+    sel2.innerHTML = `<option value="">—</option>` + opts;
+  }
+}
+function renderSkComparacao(){
+  const box = document.getElementById("skComparacaoResultado");
+  if(!box) return;
+  const id1 = document.getElementById("skCompararData1").value;
+  const id2 = document.getElementById("skCompararData2").value;
+  if(!id1 || !id2){ box.innerHTML = ""; return; }
+  const e1 = skincareDiarioPele.find(x=>x.id===id1);
+  const e2 = skincareDiarioPele.find(x=>x.id===id2);
+  if(!e1 || !e2) return;
+  box.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div><img src="${e1.foto}" style="width:100%;border-radius:12px;display:block;"><p class="desc" style="text-align:center;margin:4px 0 0;">${fmtDate(e1.date)}</p></div>
+    <div><img src="${e2.foto}" style="width:100%;border-radius:12px;display:block;"><p class="desc" style="text-align:center;margin:4px 0 0;">${fmtDate(e2.date)}</p></div>
+  </div>`;
+}
+document.getElementById("skCompararData1").addEventListener("change", renderSkComparacao);
+document.getElementById("skCompararData2").addEventListener("change", renderSkComparacao);
+
+function skincareSeedPausados(){
+  const nomesPausados = ["Fraijour Retin-Collagen Eye Cream","Celimax Retinal Shot 0,1%"];
+  let mudou = false;
+  nomesPausados.forEach(nome=>{
+    if(!skincareProdutos.find(p=>p.nome===nome)){
+      skincareProdutos.push({id:"prod_seed_"+nome.replace(/[^a-zA-Z0-9]/g,""), nome, marca:"", etapa:"", periodo:"noite", frequencia:"", dataInicio:"", dataAbertura:"", validade:"", quantidadeRestante:"", status:"pausado", observacoes:"Pausado durante a amamentação."});
+      mudou = true;
+    }
+  });
+  if(mudou) saveKey("skincare_produtos", skincareProdutos);
+}
+function renderSkPausados(){
+  const box = document.getElementById("skPausadosLista");
+  if(!box) return;
+  const pausados = skincareProdutos.filter(p=>p.status==="pausado");
+  box.innerHTML = pausados.length===0
+    ? `<p class="desc" style="margin:0;">Nenhum produto pausado no momento.</p>`
+    : pausados.map(p=> skProdutoCardHtml(p)).join("");
+  wireSkProdutoEvents(box);
+}
+function renderSkReposicao(){
+  const box = document.getElementById("skReposicaoLista");
+  if(!box) return;
+  const lista = skincareProdutos.filter(p=> p.status==="acabando" || p.status==="comprar");
+  if(lista.length===0){ box.innerHTML = `<div class="histempty">Nada pra repor no momento.</div>`; return; }
+  box.innerHTML = lista.map(p=>{
+    const statusInfo = SKINCARE_STATUS.find(s=>s.id===p.status);
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);">
+      <div>
+        <b style="color:var(--ink);">${p.nome}</b>
+        <p class="desc" style="margin:2px 0 0;">${p.marca||""}${p.marca?" · ":""}${statusInfo.label}</p>
+      </div>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;">
+        <input type="checkbox" class="sk-repos-comprado" data-id="${p.id}"> Comprado
+      </label>
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".sk-repos-comprado").forEach(cb=>{
+    cb.addEventListener("change", async ()=>{
+      if(!cb.checked) return;
+      const p = skincareProdutos.find(x=>x.id===cb.dataset.id);
+      if(!p) return;
+      const statusAnterior = p.status;
+      p.status = "ok";
+      const ok = await saveKey("skincare_produtos", skincareProdutos);
+      if(!ok){ p.status = statusAnterior; return; }
+      renderSkReposicao();
+      renderSkProdutos();
+      renderSkPausados();
+      toast(p.nome+" atualizado pro estoque");
+    });
+  });
+}
+
 function renderSkincare(){
+  skincareSeedPausados();
   const dataEl = document.getElementById("skDataHoje");
   if(dataEl) dataEl.textContent = CASA_SEMANA[casaHojeKey()].nome + " · " + fmtDate(todayStr());
   const resM = renderSkincarePeriodo("manha", SKINCARE_MANHA, "skManhaLista", "skManhaProgresso");
@@ -4779,6 +5161,13 @@ function renderSkincare(){
   renderSkincareConsistenciaHoje();
   renderSkincareConsistenciaSemana();
   renderSkincareHabitTracker();
+  renderSkProdutoStatusPicker();
+  renderSkProdutos();
+  renderSkDiarioCondicoesChips();
+  renderSkDiarioPeleLista();
+  renderSkEvolucao();
+  renderSkPausados();
+  renderSkReposicao();
 }
 
 /* ============================================================
@@ -5258,6 +5647,41 @@ function makeTaskList(containerId, storeKey, placeholder, itemsRef, logRef, logK
 }
 
 /* ============================================================
+   ESPIRITUALIDADE — Minha Conexão Hoje
+   ============================================================ */
+const ESP_PRATICA_SEMANA = {
+  seg: {foco:"Caminhos", forcas:"Exu Bará + Seu 7 da Lira", objetivo:"Começar a semana com movimento, proteção e clareza."},
+  qua: {foco:"Equilíbrio emocional", forcas:"Iansã + Oxum", pratica:"Banho leve de camomila e erva-doce.", objetivo:"Acalmar a cabeça, suavizar excessos e buscar equilíbrio."},
+  sex: {foco:"Magnetismo", forcas:"Dama da Noite", pratica:"Oração + perfume/autocuidado.", objetivo:"Fortalecer presença, autoestima e atração positiva."},
+  dom: {foco:"Orixás e Ori", pratica:"Agradecimento aos Orixás e cuidado com a cabeça.", objetivo:"Fechar e iniciar ciclos com equilíbrio espiritual."}
+};
+function renderEspPraticaDia(){
+  const box = document.getElementById("espPraticaDia");
+  if(!box) return;
+  const dk = casaHojeKey();
+  const p = ESP_PRATICA_SEMANA[dk];
+  if(!p){
+    box.innerHTML = `<p class="desc" style="margin:0;">Hoje não há uma prática semanal específica. Mantenha sua conexão diária com leveza.</p>`;
+    return;
+  }
+  box.innerHTML = `
+    <label class="field-label">Foco de hoje</label>
+    <p style="font-family:var(--serif);font-size:17px;color:var(--ink);margin:2px 0 10px;">${p.foco}</p>
+    <label class="field-label">Forças</label>
+    <p class="desc" style="margin:2px 0 10px;">${p.forcas||""}</p>
+    ${p.pratica? `<label class="field-label">Prática</label><p class="desc" style="margin:2px 0 10px;">${p.pratica}</p>` : ""}
+    <label class="field-label">Objetivo</label>
+    <p class="desc" style="margin:2px 0 0;">${p.objetivo}</p>
+  `;
+}
+function renderEspiritualidadeHoje(){
+  const dataEl = document.getElementById("espDataHoje");
+  if(dataEl) dataEl.textContent = CASA_SEMANA[casaHojeKey()].nome + " · " + fmtDate(todayStr());
+  renderChecklist("cl-espiritual","prog-espiritual",CL_ESPIRITUAL,"espiritual");
+  renderEspPraticaDia();
+}
+
+/* ============================================================
    ESPIRITUALIDADE — afirmações
    ============================================================ */
 document.getElementById("btnSalvarAfirmacao").addEventListener("click",()=>{
@@ -5338,7 +5762,7 @@ function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 document.getElementById("btnExportJson").addEventListener("click",()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal,
     _exportedAt: new Date().toISOString()};
   downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -5392,6 +5816,8 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.alan_eventos!==undefined){ alanEventos = data.alan_eventos; ops.push(saveKey("alan_eventos", alanEventos)); }
       if(data.alan_medicamentos_eventuais!==undefined){ alanMedicamentosEventuais = data.alan_medicamentos_eventuais; ops.push(saveKey("alan_medicamentos_eventuais", alanMedicamentosEventuais)); }
       if(data.skincare_rotina!==undefined){ skincareRotina = data.skincare_rotina; ops.push(saveKey("skincare_rotina", skincareRotina)); }
+      if(data.skincare_produtos!==undefined){ skincareProdutos = data.skincare_produtos; ops.push(saveKey("skincare_produtos", skincareProdutos)); }
+      if(data.skincare_diario_pele!==undefined){ skincareDiarioPele = data.skincare_diario_pele; ops.push(saveKey("skincare_diario_pele", skincareDiarioPele)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -5561,6 +5987,7 @@ function renderAll(){
   makeTaskList("box-tarefas","tarefas","nova tarefa…", tarefas, tarefasConcluidas, "tarefas_concluidas");
   makeListBox("box-planejamento-dia","planejamento_dia","prioridade de hoje…", true, planejamentoDia);
   renderDesabafos();
+  renderEspiritualidadeHoje();
   renderAfirmacoes();
   renderTreino();
   renderResumo();
@@ -5614,6 +6041,8 @@ function init(){
   alanEventos = loadKey("alan_eventos", []);
   alanMedicamentosEventuais = loadKey("alan_medicamentos_eventuais", []);
   skincareRotina = loadKey("skincare_rotina", {});
+  skincareProdutos = loadKey("skincare_produtos", []);
+  skincareDiarioPele = loadKey("skincare_diario_pele", []);
   if(planejamentoMeta.lastReset !== todayStr()){
     planejamento = [];
     planejamentoMeta = {lastReset: todayStr()};
