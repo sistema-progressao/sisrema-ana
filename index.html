@@ -1576,7 +1576,8 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
    ============================================================ */
 function ensureToday(){
   const t = todayStr();
-  if(!rotina[t]) rotina[t] = {manha:[], noite:[], fechamento:[], texto:"", fechDestaque:"", fechAprendizado:"", fechSentir:""};
+  if(!rotina[t]) rotina[t] = {manha:[], noite:[], fechamento:[], texto:"", fechDestaque:"", fechAprendizado:"", fechSentir:"", espiritual:[]};
+  if(!rotina[t].espiritual) rotina[t].espiritual = [];
   return rotina[t];
 }
 function renderChecklist(ulId, progId, items, key){
