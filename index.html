@@ -462,7 +462,7 @@
     <div class="toolbar">
       <button class="btn" id="btnExportJson">⬇ Exportar backup (.json)</button>
       <button class="btn" id="btnImportJson">⬆ Importar backup</button>
-      <input type="file" id="fileImport" accept="application/json">
+      <input type="file" id="fileImport" accept=".json,application/json">
       <button class="btn ghost" id="btnExportDiario">Exportar diário (.txt)</button>
     </div>
   </header>
@@ -6791,19 +6791,32 @@ function renderDesabafos(){
 /* ============================================================
    EXPORT / IMPORT (seu backup manual — use para manter PC e celular iguais)
    ============================================================ */
-function downloadBlob(filename, content, type){
+async function downloadBlob(filename, content, type){
   const blob = new Blob([content], {type});
+  if(navigator.canShare){
+    try{
+      const file = new File([blob], filename, {type});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title: filename});
+        return true;
+      }
+    }catch(e){
+      if(e && e.name === "AbortError") return false;
+      /* não suportado ou falhou — cai no método de download padrão abaixo */
+    }
+  }
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = filename;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  return true;
 }
-document.getElementById("btnExportJson").addEventListener("click",()=>{
+document.getElementById("btnExportJson").addEventListener("click", async ()=>{
   const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele, esp_reflexoes: espReflexoes, esp_registros_forca: espRegistrosForca, esp_eixo_hoje: espEixoHoje, esp_orixas_biblioteca: espOrixasBiblioteca, esp_cadernos: espCadernos, esp_orientacoes: espOrientacoes, esp_praticas: espPraticas, treino_pernas_hoje: treinoPernasHoje, treino_evolucao: treinoEvolucao,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal, treino_rir: treinoRIR,
     _exportedAt: new Date().toISOString()};
-  downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
-  toast("Backup exportado");
+  const ok = await downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
+  if(ok) toast("Backup exportado");
 });
 document.getElementById("btnImportJson").addEventListener("click",()=> document.getElementById("fileImport").click());
 document.getElementById("fileImport").addEventListener("change",(e)=>{
@@ -6875,6 +6888,7 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
     }catch(err){
       alert("Não foi possível ler este arquivo de backup.");
     }
+    e.target.value = "";
   };
   reader.readAsText(file);
 });
