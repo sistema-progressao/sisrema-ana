@@ -434,15 +434,50 @@
   .mu-vision-caption p{font-size:11.5px;color:var(--mu-ink-soft);font-style:italic;margin:0;}
   .mu-vision-nofoto{padding:26px 14px;text-align:center;}
   .mu-vision-nofoto .mu-emoji{font-size:30px;}
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 </style>
 </head>
 <body>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDSjrCkILT-Ti-otxm6fDCp1aTG204gvw",
+    authDomain: "sistema-ana-4fe13.firebaseapp.com",
+    projectId: "sistema-ana-4fe13",
+    storageBucket: "sistema-ana-4fe13.firebasestorage.app",
+    messagingSenderId: "576992506924",
+    appId: "1:576992506924:web:9143d1c51d1472676fcd89"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
+<div id="loginOverlay" style="position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;">
+  <div style="max-width:340px;width:100%;">
+    <h1 style="font-family:var(--serif);font-size:22px;color:var(--ink);text-align:center;margin:0 0 6px;">Sistema Operacional da Ana</h1>
+    <p class="desc" style="text-align:center;margin:0 0 24px;">Entre com seu e-mail e senha pra acessar seus dados, sincronizados em qualquer aparelho.</p>
+    <div class="card">
+      <div class="field"><label class="field-label">E-mail</label><input type="email" id="loginEmail" autocomplete="username"></div>
+      <div class="field"><label class="field-label">Senha</label><input type="password" id="loginSenha" autocomplete="current-password"></div>
+      <div id="loginErro" style="display:none;color:#B8666F;font-size:12.5px;margin-bottom:10px;"></div>
+      <button class="btn primary" id="btnLoginEntrar" style="width:100%;">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="loadingOverlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+  <div class="spin" style="width:24px;height:24px;border:2.5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;"></div>
+  <p style="font-family:var(--serif);font-style:italic;color:var(--muted);font-size:14px;">Carregando seu sistema…</p>
+</div>
 
 <div class="shell">
   <header class="top">
     <span class="eyebrow">Projeto Ana Primeiro</span>
     <h1 class="title">Sistema Operacional da Ana</h1>
-    <div class="subtitle">seu app pessoal — funciona offline; exporte um backup de vez em quando para manter PC e celular iguais</div>
+    <div class="subtitle"><span class="dot" id="syncDot"></span><span id="syncLabel">seu app pessoal — sincronizado automaticamente entre celular e computador</span></div>
     <nav class="tabs">
       <button data-tab="hoje" class="active">Hoje</button>
       <button data-tab="diario">Diário</button>
@@ -1849,21 +1884,48 @@ function todayStr(){ return dateStr(new Date()); }
 function fmtDate(s){ const [y,m,d]=s.split("-"); return d+"/"+m+"/"+y; }
 function toast(msg, isErr){ const t=document.getElementById("toast"); t.textContent=msg; t.className="toast show"+(isErr?" err":""); setTimeout(()=>t.classList.remove("show"),2200); }
 
-function loadKey(key, fallback){
+function setSync(ok){
+  const dot = document.getElementById("syncDot"), lbl = document.getElementById("syncLabel");
+  if(!dot) return;
+  dot.className = "dot" + (ok ? "" : " off");
+  if(lbl) lbl.textContent = ok ? "Sincronizado" : "Sem conexão — algumas alterações podem não ter salvo";
+}
+function firestoreKeyRef(key){
+  return db.collection("soa_users").doc(auth.currentUser.uid).collection("keys").doc(key);
+}
+async function loadKey(key, fallback){
   try{
-    const v = localStorage.getItem("soa_"+key);
-    return v !== null ? JSON.parse(v) : fallback;
+    const snap = await firestoreKeyRef(key).get();
+    if(snap.exists && snap.data().v !== undefined){
+      setSync(true);
+      return snap.data().v;
+    }
+    return fallback;
   }catch(e){
+    setSync(false);
     return fallback;
   }
 }
-function saveKey(key, val){
+async function saveKeyOnce(key, val){
+  await firestoreKeyRef(key).set({v: val, atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()});
+  return true;
+}
+async function saveKey(key, val){
   try{
-    localStorage.setItem("soa_"+key, JSON.stringify(val));
+    await saveKeyOnce(key, val);
+    setSync(true);
     return true;
   }catch(e){
-    toast("Não foi possível salvar. O armazenamento do navegador pode estar cheio.", true);
-    return false;
+    await new Promise(r=> setTimeout(r, 900));
+    try{
+      await saveKeyOnce(key, val);
+      setSync(true);
+      return true;
+    }catch(e2){
+      setSync(false);
+      toast("Não deu para salvar agora. Verifique sua conexão.", true);
+      return false;
+    }
   }
 }
 
@@ -7481,90 +7543,144 @@ function renderAll(){
   renderTreino();
   renderResumo();
 }
-function init(){
-  rotina = loadKey("rotina", {});
-  diario = loadKey("diario", {});
-  energia = loadKey("energia", []);
-  cardapio = loadKey("cardapio", DIAS.map(()=> REFEICOES.map(()=> "")));
-  reposicao = loadKey("reposicao", []);
-  freezer = loadKey("freezer", []);
-  geladeira = loadKey("geladeira", []);
-  afirmacoes = loadKey("afirmacoes", []);
-  treinoCargas = loadKey("treino_cargas", {});
-  treinoNotas = loadKey("treino_notas", {});
-  treinoNotasHistorico = loadKey("treino_notas_historico", {});
-  let migrated = false;
-  Object.keys(treinoNotas||{}).forEach(key=>{
-    const oldText = (treinoNotas[key]||"").trim();
-    if(oldText && !(treinoNotasHistorico[key] && treinoNotasHistorico[key].length)){
-      treinoNotasHistorico[key] = [{date: todayStr(), text: oldText}];
-      migrated = true;
+async function init(){
+  try{
+    [rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes,
+     treinoCargas, treinoNotas, treinoNotasHistorico, treinoSummary, treinoSemanal, treinoRIR, planejamento, hidratacao, visao, identBiblioteca, amState, planejamentoMeta, diarioAlimentar, tarefas, planejamentoDia, planejamentoDiaMeta, desabafos, tarefasConcluidas, trabalhoFeito, trabalhoPendencias, trabalhoPendenciasConcluidas, trabalhoAndamento, trabalhoAndamentoConcluidos, insights, casaRotina, freqLog, freqSubProgress, sonhos, sonhosCategoriasCustom, inspiracoes, ciclos, alanRotina, alanConfig, alanEventos, alanMedicamentosEventuais, skincareRotina, skincareProdutos, skincareDiarioPele, espReflexoes, espRegistrosForca, espEixoHoje, espOrixasBiblioteca, espCadernos, espOrientacoes, espPraticas, treinoPernasHoje, treinoEvolucao, meusMedicamentos, meusMedRegistros, meusMedReavaliacoes] = await Promise.all([
+      loadKey("rotina", {}),
+      loadKey("diario", {}),
+      loadKey("energia", []),
+      loadKey("cardapio", DIAS.map(()=> REFEICOES.map(()=> ""))),
+      loadKey("reposicao", []),
+      loadKey("freezer", []),
+      loadKey("geladeira", []),
+      loadKey("afirmacoes", []),
+      loadKey("treino_cargas", {}),
+      loadKey("treino_notas", {}),
+      loadKey("treino_notas_historico", {}),
+      loadKey("treino_summary", {}),
+      loadKey("treino_semanal", []),
+      loadKey("treino_rir", {}),
+      loadKey("planejamento", []),
+      loadKey("hidratacao", {}),
+      loadKey("visao", {}),
+      loadKey("ident_biblioteca", defaultIdentBiblioteca()),
+      loadKey("alimentacao_state", amDefaultState()),
+      loadKey("planejamento_meta", {lastReset: null}),
+      loadKey("diario_alimentar", []),
+      loadKey("tarefas", []),
+      loadKey("planejamento_dia", []),
+      loadKey("planejamento_dia_meta", {lastReset: null}),
+      loadKey("desabafos", []),
+      loadKey("tarefas_concluidas", []),
+      loadKey("trabalho_feito", []),
+      loadKey("trabalho_pendencias", []),
+      loadKey("trabalho_pendencias_concluidas", []),
+      loadKey("trabalho_andamento", []),
+      loadKey("trabalho_andamento_concluidos", []),
+      loadKey("insights", []),
+      loadKey("casa_rotina", {}),
+      loadKey("casa_freq_log", {}),
+      loadKey("casa_freq_sub", {}),
+      loadKey("sonhos", []),
+      loadKey("sonhos_categorias", []),
+      loadKey("inspiracoes", []),
+      loadKey("ciclos", []),
+      loadKey("alan_rotina", {}),
+      loadKey("alan_config", {puran: {dose:"", orientacao:"Administrar em jejum", frequencia:"Todos os dias", horarioPreferencial:"04:00–06:00", intervalo:"Mínimo 1h antes e 1h depois da alimentação", obs:""}}),
+      loadKey("alan_eventos", []),
+      loadKey("alan_medicamentos_eventuais", []),
+      loadKey("skincare_rotina", {}),
+      loadKey("skincare_produtos", []),
+      loadKey("skincare_diario_pele", []),
+      loadKey("esp_reflexoes", []),
+      loadKey("esp_registros_forca", []),
+      loadKey("esp_eixo_hoje", []),
+      loadKey("esp_orixas_biblioteca", []),
+      loadKey("esp_cadernos", []),
+      loadKey("esp_orientacoes", []),
+      loadKey("esp_praticas", []),
+      loadKey("treino_pernas_hoje", {}),
+      loadKey("treino_evolucao", []),
+      loadKey("meus_medicamentos", []),
+      loadKey("meus_med_registros", []),
+      loadKey("meus_med_reavaliacoes", [])
+    ]);
+    let migrated = false;
+    Object.keys(treinoNotas||{}).forEach(key=>{
+      const oldText = (treinoNotas[key]||"").trim();
+      if(oldText && !(treinoNotasHistorico[key] && treinoNotasHistorico[key].length)){
+        treinoNotasHistorico[key] = [{date: todayStr(), text: oldText}];
+        migrated = true;
+      }
+    });
+    if(migrated) saveKey("treino_notas_historico", treinoNotasHistorico);
+    if(planejamentoMeta.lastReset !== todayStr()){
+      planejamento = [];
+      planejamentoMeta = {lastReset: todayStr()};
+      saveKey("planejamento", planejamento);
+      saveKey("planejamento_meta", planejamentoMeta);
     }
-  });
-  if(migrated) saveKey("treino_notas_historico", treinoNotasHistorico);
-  treinoSummary = loadKey("treino_summary", {});
-  treinoSemanal = loadKey("treino_semanal", []);
-  treinoRIR = loadKey("treino_rir", {});
-  planejamento = loadKey("planejamento", []);
-  planejamentoMeta = loadKey("planejamento_meta", {lastReset: null});
-  diarioAlimentar = loadKey("diario_alimentar", []);
-  tarefas = loadKey("tarefas", []);
-  planejamentoDia = loadKey("planejamento_dia", []);
-  planejamentoDiaMeta = loadKey("planejamento_dia_meta", {lastReset: null});
-  desabafos = loadKey("desabafos", []);
-  tarefasConcluidas = loadKey("tarefas_concluidas", []);
-  trabalhoFeito = loadKey("trabalho_feito", []);
-  trabalhoPendencias = loadKey("trabalho_pendencias", []);
-  trabalhoPendenciasConcluidas = loadKey("trabalho_pendencias_concluidas", []);
-  trabalhoAndamento = loadKey("trabalho_andamento", []);
-  trabalhoAndamentoConcluidos = loadKey("trabalho_andamento_concluidos", []);
-  insights = loadKey("insights", []);
-  casaRotina = loadKey("casa_rotina", {});
-  freqLog = loadKey("casa_freq_log", {});
-  freqSubProgress = loadKey("casa_freq_sub", {});
-  sonhos = loadKey("sonhos", []);
-  sonhosCategoriasCustom = loadKey("sonhos_categorias", []);
-  inspiracoes = loadKey("inspiracoes", []);
-  ciclos = loadKey("ciclos", []);
-  alanRotina = loadKey("alan_rotina", {});
-  alanConfig = loadKey("alan_config", {puran: {dose:"", orientacao:"Administrar em jejum", frequencia:"Todos os dias", horarioPreferencial:"04:00–06:00", intervalo:"Mínimo 1h antes e 1h depois da alimentação", obs:""}});
-  alanEventos = loadKey("alan_eventos", []);
-  alanMedicamentosEventuais = loadKey("alan_medicamentos_eventuais", []);
-  skincareRotina = loadKey("skincare_rotina", {});
-  skincareProdutos = loadKey("skincare_produtos", []);
-  skincareDiarioPele = loadKey("skincare_diario_pele", []);
-  espReflexoes = loadKey("esp_reflexoes", []);
-  espRegistrosForca = loadKey("esp_registros_forca", []);
-  espEixoHoje = loadKey("esp_eixo_hoje", []);
-  espOrixasBiblioteca = loadKey("esp_orixas_biblioteca", []);
-  espCadernos = loadKey("esp_cadernos", []);
-  espOrientacoes = loadKey("esp_orientacoes", []);
-  espPraticas = loadKey("esp_praticas", []);
-  treinoPernasHoje = loadKey("treino_pernas_hoje", {});
-  treinoEvolucao = loadKey("treino_evolucao", []);
-  meusMedicamentos = loadKey("meus_medicamentos", []);
-  meusMedRegistros = loadKey("meus_med_registros", []);
-  meusMedReavaliacoes = loadKey("meus_med_reavaliacoes", []);
-  if(planejamentoMeta.lastReset !== todayStr()){
-    planejamento = [];
-    planejamentoMeta = {lastReset: todayStr()};
-    saveKey("planejamento", planejamento);
-    saveKey("planejamento_meta", planejamentoMeta);
+    if(planejamentoDiaMeta.lastReset !== todayStr()){
+      planejamentoDia = [];
+      planejamentoDiaMeta = {lastReset: todayStr()};
+      saveKey("planejamento_dia", planejamentoDia);
+      saveKey("planejamento_dia_meta", planejamentoDiaMeta);
+    }
+    setSync(true);
+  }catch(e){
+    cardapio = DIAS.map(()=> REFEICOES.map(()=> ""));
+    setSync(false);
   }
-  if(planejamentoDiaMeta.lastReset !== todayStr()){
-    planejamentoDia = [];
-    planejamentoDiaMeta = {lastReset: todayStr()};
-    saveKey("planejamento_dia", planejamentoDia);
-    saveKey("planejamento_dia_meta", planejamentoDiaMeta);
-  }
-  amState = loadKey("alimentacao_state", amDefaultState());
-  hidratacao = loadKey("hidratacao", {});
-  visao = loadKey("visao", {});
-  identBiblioteca = loadKey("ident_biblioteca", defaultIdentBiblioteca());
   migrarTreinoChavesPosicionaisParaNome();
   renderAll();
+  document.getElementById("loadingOverlay").style.display = "none";
 }
-init();
+
+function mostrarLogin(mostrar){
+  document.getElementById("loginOverlay").style.display = mostrar ? "flex" : "none";
+}
+function mostrarCarregando(mostrar){
+  const el = document.getElementById("loadingOverlay");
+  el.style.display = mostrar ? "flex" : "none";
+}
+document.getElementById("btnLoginEntrar").addEventListener("click", async ()=>{
+  const email = document.getElementById("loginEmail").value.trim();
+  const senha = document.getElementById("loginSenha").value;
+  const erroEl = document.getElementById("loginErro");
+  erroEl.style.display = "none";
+  if(!email || !senha){
+    erroEl.textContent = "Preencha e-mail e senha.";
+    erroEl.style.display = "block";
+    return;
+  }
+  const btn = document.getElementById("btnLoginEntrar");
+  btn.disabled = true; btn.textContent = "Entrando…";
+  try{
+    await auth.signInWithEmailAndPassword(email, senha);
+    // onAuthStateChanged cuida do resto
+  }catch(e){
+    let msg = "Não foi possível entrar. Confira e-mail e senha.";
+    if(e.code === "auth/too-many-requests") msg = "Muitas tentativas. Aguarde um pouco e tente de novo.";
+    if(e.code === "auth/network-request-failed") msg = "Sem conexão com a internet.";
+    erroEl.textContent = msg;
+    erroEl.style.display = "block";
+  }
+  btn.disabled = false; btn.textContent = "Entrar";
+});
+document.getElementById("loginSenha").addEventListener("keydown", e=>{
+  if(e.key === "Enter") document.getElementById("btnLoginEntrar").click();
+});
+auth.onAuthStateChanged(user=>{
+  if(user){
+    mostrarLogin(false);
+    mostrarCarregando(true);
+    init();
+  } else {
+    mostrarCarregando(false);
+    mostrarLogin(true);
+  }
+});
 </script>
 </body>
 </html>
