@@ -473,6 +473,31 @@
     <h2 class="h2">Manhã essencial</h2>
     <div class="card"><ul class="checklist" id="cl-manha"></ul><div class="progress" id="prog-manha"></div></div>
 
+    <h2 class="h2">💊 Meus Medicamentos</h2>
+    <div class="card" id="meusMedResumo"></div>
+    <div id="meusMedicamentosLista"></div>
+
+    <h2 class="h2">📋 Meus Tratamentos</h2>
+    <div class="card" id="meusTratamentosLista"></div>
+
+    <h2 class="h2">🧪 Reavaliação de Exames</h2>
+    <div id="meusMedReavaliacoesLista"></div>
+
+    <h2 class="h2">📅 Histórico de Medicamentos</h2>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <button type="button" class="btn" id="meusMedBtnMesAnterior">‹</button>
+        <b id="meusMedCalendarioMesLabel" style="font-family:var(--serif);color:var(--ink);"></b>
+        <button type="button" class="btn" id="meusMedBtnMesSeguinte">›</button>
+      </div>
+      <div class="cal-weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+      <div class="cal-grid" id="meusMedCalendarioGrid"></div>
+      <p class="desc" style="margin-top:12px;">✅ tomado/aplicado · ❌ não registrado · toque no dia pra ver detalhes</p>
+    </div>
+    <div class="mu-modal-bg" id="meusMedDiaModalBg">
+      <div class="mu-modal" id="meusMedDiaModalContent"></div>
+    </div>
+
     <h2 class="h2">Tarefas</h2>
     <div class="card">
       <p class="desc">Qualquer pendência solta do dia. Fica aqui até você marcar como feita — aí some sozinha. Não reseta.</p>
@@ -1907,6 +1932,7 @@ function renderHoje(){
   const state = ensureToday();
   renderChecklist("cl-manha","prog-manha",CL_MANHA,"manha");
   renderChecklist("cl-noite","prog-noite",CL_NOITE,"noite");
+  renderMeusMedicamentos();
   document.getElementById("fechDestaque").value = state.fechDestaque || "";
   document.getElementById("fechAprendizado").value = state.fechAprendizado || "";
   document.getElementById("fechSentir").value = state.fechSentir || "";
@@ -5471,6 +5497,405 @@ function renderSkincare(){
 }
 
 /* ============================================================
+   MEUS MEDICAMENTOS — motor de frequência
+   ============================================================ */
+let meusMedicamentos = [];
+let meusMedRegistros = [];
+function meusMedAddMonths(dStr, months){
+  const d = new Date(dStr+"T00:00:00");
+  d.setMonth(d.getMonth()+months);
+  return dateStr(d);
+}
+function meusMedSeedInicial(){
+  let mudou = false;
+  const seeds = [
+    {id:"med_vitd50k", nome:"Vitamina D 50.000 UI", dose:"1 comprimido", orientacao:"Via oral, 1 vez por semana", tipoFrequencia:"semanal", dataInicio:"2026-08-11", totalDoses:8, duracaoMeses:2, duracaoDias:null, tipoAplicacao:"tomar", status:"ativo"},
+    {id:"med_fisiogen", nome:"Fisiogen Ferro", dose:"1 comprimido", orientacao:"Via oral, dias intercalados", tipoFrequencia:"intercalado", dataInicio:null, totalDoses:null, duracaoMeses:3, duracaoDias:null, tipoAplicacao:"tomar", status:"aguardando_inicio"},
+    {id:"med_mecobe", nome:"Metilcobalamina 1.000 mcg (Mecobê)", dose:"1 comprimido", orientacao:"Via oral, 1 vez ao dia", tipoFrequencia:"diario", dataInicio:null, totalDoses:null, duracaoMeses:3, duracaoDias:null, tipoAplicacao:"tomar", status:"aguardando_inicio"},
+    {id:"med_vitd4k", nome:"Vitamina D 4.000 UI", dose:"1 comprimido", orientacao:"Via oral, 1 vez ao dia", tipoFrequencia:"diario", dataInicio:null, totalDoses:null, duracaoMeses:6, duracaoDias:null, tipoAplicacao:"tomar", status:"aguardando_condicao",
+      dependeDe:{tipo:"conclusao_medicamento", medicamentoId:"med_vitd50k"}, condicaoLabel:"Aguardando conclusão da Vitamina D 50.000 UI"},
+    {id:"med_pomada_gineco", nome:"Pomada ginecológica", dose:"", orientacao:"Detalhes da prescrição a definir", tipoFrequencia:null, dataInicio:null, totalDoses:null, duracaoMeses:null, duracaoDias:null, tipoAplicacao:"aplicar", status:"aguardando_condicao",
+      dependeDe:{tipo:"condicao_ciclo", condicao:"fim_menstruacao"}, condicaoLabel:"Iniciar tratamento após o término da menstruação. Sua menstruação começou em 10/08/2026."}
+  ];
+  seeds.forEach(s=>{
+    if(!meusMedicamentos.find(m=>m.id===s.id)){ meusMedicamentos.push(s); mudou = true; }
+  });
+  if(mudou) saveKey("meus_medicamentos", meusMedicamentos);
+}
+
+function meusMedSeedRegistroInicial(){
+  if(!meusMedRegistros.find(r=> r.medicamentoId==="med_vitd50k" && r.date==="2026-08-11")){
+    meusMedRegistros.push({id:"reg_seed_vitd50k", medicamentoId:"med_vitd50k", date:"2026-08-11", horario:"", status:"tomado", obs:""});
+    saveKey("meus_med_registros", meusMedRegistros);
+  }
+}
+function meusMedDataFim(med){
+  if(!med.dataInicio) return null;
+  if(med.duracaoMeses) return meusMedAddMonths(med.dataInicio, med.duracaoMeses);
+  if(med.duracaoDias) return addDays(med.dataInicio, med.duracaoDias-1);
+  return null;
+}
+function meusMedStatusHoje(med, dStr){
+  if(med.status==="concluido") return "concluido";
+  if(med.status==="aguardando_condicao") return "aguardando_condicao";
+  if(med.status==="aguardando_detalhes") return "aguardando_detalhes";
+  if(med.status==="aguardando_inicio" || !med.dataInicio) return "aguardando_inicio";
+  if(dStr < med.dataInicio) return "aguardando_inicio";
+  const dias = daysBetween(med.dataInicio, dStr);
+  if(med.tipoFrequencia==="semanal"){
+    if(dias % 7 !== 0) return "nao_e_dia";
+    const doseNum = Math.floor(dias/7)+1;
+    if(med.totalDoses && doseNum > med.totalDoses) return "concluido";
+    return "dia_de_tomar";
+  }
+  if(med.tipoFrequencia==="intercalado"){
+    const fim = meusMedDataFim(med);
+    if(fim && dStr > fim) return "concluido";
+    return (dias % 2 === 0) ? "dia_de_tomar" : "nao_e_dia";
+  }
+  const fim = meusMedDataFim(med);
+  if(fim && dStr > fim) return "concluido";
+  return "dia_de_tomar";
+}
+function meusMedProgresso(med, dStr){
+  if(!med.dataInicio) return "";
+  const dias = daysBetween(med.dataInicio, dStr);
+  if(med.tipoFrequencia==="semanal" && med.totalDoses){
+    const doseNum = Math.min(Math.floor(dias/7)+1, med.totalDoses);
+    return `Dose ${doseNum} de ${med.totalDoses}`;
+  }
+  const fim = meusMedDataFim(med);
+  if(fim){
+    const totalDias = daysBetween(med.dataInicio, fim)+1;
+    return `Dia ${Math.min(dias+1, totalDias)} de ${totalDias}`;
+  }
+  return "";
+}
+function meusMedContarRegistros(medId){
+  return meusMedRegistros.filter(r=> r.medicamentoId===medId && (r.status==="tomado"||r.status==="aplicado")).length;
+}
+function meusMedEstaConcluido(med){
+  if(med.status==="concluido") return true;
+  if(med.totalDoses) return meusMedContarRegistros(med.id) >= med.totalDoses;
+  const calc = meusMedStatusHoje(med, todayStr());
+  return calc==="concluido";
+}
+function meusMedVerificarDependencias(){
+  let mudou = false;
+  meusMedicamentos.forEach(med=>{
+    if(med.status==="aguardando_condicao" && med.dependeDe && med.dependeDe.tipo==="conclusao_medicamento"){
+      const alvo = meusMedicamentos.find(m=>m.id===med.dependeDe.medicamentoId);
+      if(alvo && meusMedEstaConcluido(alvo)){
+        med.status = "aguardando_inicio";
+        mudou = true;
+      }
+    }
+  });
+  if(mudou) saveKey("meus_medicamentos", meusMedicamentos);
+}
+function meusMedAtualizarConcluidos(){
+  let mudou = false;
+  meusMedicamentos.forEach(med=>{
+    if(med.status==="ativo" && meusMedEstaConcluido(med) && med.status!=="concluido"){
+      med.status = "concluido";
+      mudou = true;
+    }
+  });
+  if(mudou) saveKey("meus_medicamentos", meusMedicamentos);
+}
+
+function meusMedCardHtml(med){
+  const t = todayStr();
+  const registroHoje = meusMedRegistros.find(r=> r.medicamentoId===med.id && r.date===t);
+  let statusFinal, statusLabel;
+  if(med.status==="aguardando_condicao"){ statusFinal="aguardando_condicao"; statusLabel="⏸ Aguardando condição"; }
+  else if(med.status==="aguardando_detalhes"){ statusFinal="aguardando_detalhes"; statusLabel="⏸ Aguardando detalhes"; }
+  else if(med.status==="aguardando_inicio" || !med.dataInicio){ statusFinal="aguardando_inicio"; statusLabel="⏸ Aguardando início"; }
+  else if(med.status==="concluido"){ statusFinal="concluido"; statusLabel="🏁 Tratamento concluído"; }
+  else if(registroHoje){
+    statusFinal = "feito";
+    statusLabel = (registroHoje.status==="aplicado"?"✅ Aplicado":"✅ Tomado") + (registroHoje.horario?" às "+registroHoje.horario:"");
+  } else {
+    const calc = meusMedStatusHoje(med, t);
+    if(calc==="concluido"){ statusFinal="concluido"; statusLabel="🏁 Tratamento concluído"; }
+    else if(calc==="nao_e_dia"){ statusFinal="nao_e_dia"; statusLabel="⏭ Não é dia de uso"; }
+    else { statusFinal="pendente"; statusLabel="⬜ Pendente"; }
+  }
+  const progresso = statusFinal==="feito"||statusFinal==="pendente"||statusFinal==="nao_e_dia" ? meusMedProgresso(med, t) : "";
+  return `<div class="card" data-medid="${med.id}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+      <div>
+        <b style="color:var(--ink);">${med.nome}</b>
+        <p class="desc" style="margin:2px 0 0;">${med.dose}${med.orientacao? " · "+med.orientacao:""}</p>
+      </div>
+      <span style="white-space:nowrap;font-size:11px;font-weight:700;color:var(--accent-dark);background:var(--pale);border-radius:20px;padding:3px 10px;">${statusLabel}</span>
+    </div>
+    ${progresso? `<p class="desc" style="margin:4px 0 0;color:var(--muted);">${progresso}</p>`:""}
+    ${statusFinal==="aguardando_condicao" ? `
+      <p class="desc" style="margin:6px 0 0;">${med.condicaoLabel||""}</p>
+      ${med.dependeDe && med.dependeDe.tipo==="condicao_ciclo" ? `<button class="btn primary" data-action="condicao-resolvida" style="margin-top:8px;">🩸 Minha menstruação terminou</button>` : ""}
+    ` : ""}
+    ${statusFinal==="aguardando_detalhes" ? `
+      <div class="callout" style="margin-top:8px;"><p>Condição liberada — preencha os detalhes da prescrição pra ativar o tratamento.</p></div>
+      <div class="field"><label class="field-label">Dose / quantidade por aplicação</label><input type="text" class="med-detalhe" data-campo="dose" data-id="${med.id}" placeholder="Ex: 1 aplicação"></div>
+      <div class="field"><label class="field-label">Orientação de uso</label><input type="text" class="med-detalhe" data-campo="orientacao" data-id="${med.id}" placeholder="Ex: aplicar à noite"></div>
+      <div class="field"><label class="field-label">Duração (dias)</label><input type="text" inputmode="numeric" class="med-detalhe" data-campo="duracaoDias" data-id="${med.id}"></div>
+      <div class="field"><label class="field-label">Horário preferencial (opcional)</label><input type="time" class="med-detalhe" data-campo="horarioPreferencial" data-id="${med.id}"></div>
+      <div class="field"><label class="field-label">Data de início</label><input type="date" class="med-data-inicio-detalhe" data-id="${med.id}" value="${t}"></div>
+      <button class="btn primary" data-action="salvar-detalhes">Salvar e iniciar tratamento</button>
+    ` : ""}
+    ${statusFinal==="aguardando_inicio" ? `
+      <div class="field" style="margin-top:8px;"><label class="field-label">Data de início</label><input type="date" class="med-data-inicio" data-id="${med.id}"></div>
+      <button class="btn primary" data-action="confirmar-inicio">Confirmar início</button>
+    ` : ""}
+    ${statusFinal==="pendente" ? `
+      <div class="qactions" style="margin-top:8px;"><button class="btn primary" data-action="marcar">${med.tipoAplicacao==="aplicar"?"Aplicado":"Tomado"}</button></div>
+    ` : ""}
+    ${statusFinal==="feito" ? `
+      <div class="qactions" style="margin-top:8px;">
+        <input type="time" class="med-horario-edit" data-id="${med.id}" value="${registroHoje.horario||""}" style="width:auto;display:inline-block;">
+        <button class="btn" data-action="desfazer">Desfazer</button>
+      </div>` : ""}
+  </div>`;
+}
+function wireMeusMedEvents(container){
+  container.querySelectorAll("[data-action]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-medid]");
+      const id = card.dataset.medid;
+      const med = meusMedicamentos.find(m=>m.id===id);
+      if(!med) return;
+      const t = todayStr();
+      const action = btn.dataset.action;
+      if(action==="marcar"){
+        const novo = {id:"reg_"+Date.now(), medicamentoId:id, date:t, horario:alanHoraAtual(), status: med.tipoAplicacao==="aplicar"?"aplicado":"tomado", obs:""};
+        meusMedRegistros.push(novo);
+        const ok = await saveKey("meus_med_registros", meusMedRegistros);
+        if(!ok){ meusMedRegistros.pop(); toast("Não deu pra salvar", true); return; }
+        renderMeusMedicamentos();
+      } else if(action==="desfazer"){
+        const idx = meusMedRegistros.findIndex(r=> r.medicamentoId===id && r.date===t);
+        if(idx<0) return;
+        const removed = meusMedRegistros.splice(idx,1);
+        const ok = await saveKey("meus_med_registros", meusMedRegistros);
+        if(!ok) meusMedRegistros.splice(idx,0,removed[0]);
+        renderMeusMedicamentos();
+      } else if(action==="confirmar-inicio"){
+        const inp = card.querySelector(".med-data-inicio");
+        if(!inp.value) return;
+        const prevData = med.dataInicio, prevStatus = med.status;
+        med.dataInicio = inp.value;
+        med.status = "ativo";
+        const ok = await saveKey("meus_medicamentos", meusMedicamentos);
+        if(!ok){ med.dataInicio = prevData; med.status = prevStatus; return; }
+        renderMeusMedicamentos();
+        toast(med.nome+" iniciado");
+      } else if(action==="condicao-resolvida"){
+        const prevStatus = med.status;
+        med.status = "aguardando_detalhes";
+        const ok = await saveKey("meus_medicamentos", meusMedicamentos);
+        if(!ok){ med.status = prevStatus; return; }
+        renderMeusMedicamentos();
+        toast("Condição liberada");
+      } else if(action==="salvar-detalhes"){
+        const dataInicioEl = card.querySelector(".med-data-inicio-detalhe");
+        if(!dataInicioEl.value){ toast("Informe a data de início", true); return; }
+        const prev = Object.assign({}, med);
+        card.querySelectorAll(".med-detalhe").forEach(el=>{
+          const campo = el.dataset.campo;
+          if(campo==="duracaoDias") med.duracaoDias = el.value ? +el.value : null;
+          else med[campo] = el.value;
+        });
+        med.dataInicio = dataInicioEl.value;
+        if(!med.tipoFrequencia) med.tipoFrequencia = "diario";
+        med.status = "ativo";
+        const ok = await saveKey("meus_medicamentos", meusMedicamentos);
+        if(!ok){ Object.assign(med, prev); return; }
+        renderMeusMedicamentos();
+        toast(med.nome+" iniciado");
+      }
+    });
+  });
+  container.querySelectorAll(".med-horario-edit").forEach(inp=>{
+    inp.addEventListener("change", async ()=>{
+      const id = inp.dataset.id;
+      const reg = meusMedRegistros.find(r=> r.medicamentoId===id && r.date===todayStr());
+      if(!reg) return;
+      reg.horario = inp.value;
+      await saveKey("meus_med_registros", meusMedRegistros);
+    });
+  });
+}
+function renderMeusMedResumo(){
+  const box = document.getElementById("meusMedResumo");
+  if(!box) return;
+  const t = todayStr();
+  const relevantes = meusMedicamentos.filter(m=>{
+    const s = meusMedStatusHoje(m,t);
+    return s==="dia_de_tomar" || meusMedRegistros.find(r=>r.medicamentoId===m.id && r.date===t);
+  });
+  const feitos = relevantes.filter(m=> meusMedRegistros.find(r=>r.medicamentoId===m.id && r.date===t)).length;
+  box.innerHTML = `<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--ink);"><span>💊 Medicamentos</span><b style="color:var(--accent-dark);">${relevantes.length===0?"nenhum hoje":feitos+" de "+relevantes.length+" concluídos hoje"}</b></div>`;
+}
+function meusMedResumoDuracao(med){
+  const partes = [];
+  if(med.duracaoMeses) partes.push(`${med.duracaoMeses} ${med.duracaoMeses===1?"mês":"meses"}`);
+  if(med.duracaoDias) partes.push(`${med.duracaoDias} dias`);
+  if(med.totalDoses) partes.push(`${med.totalDoses} doses`);
+  return partes.join(" / ") || "—";
+}
+function renderMeusTratamentos(){
+  const box = document.getElementById("meusTratamentosLista");
+  if(!box) return;
+  const ativos = meusMedicamentos.filter(m=>m.status==="ativo");
+  const aguardando = meusMedicamentos.filter(m=> ["aguardando_inicio","aguardando_condicao","aguardando_detalhes"].includes(m.status));
+  const concluidos = meusMedicamentos.filter(m=>m.status==="concluido");
+  function linha(m, extra){
+    return `<div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:6px;color:var(--ink);"><span>${m.nome}</span><b style="color:var(--muted);font-weight:400;text-align:right;">${extra}</b></div>`;
+  }
+  let html = `<label class="field-label">Ativos</label>`;
+  html += ativos.length ? ativos.map(m=> linha(m, meusMedResumoDuracao(m))).join("") : `<p class="desc" style="margin:4px 0 12px;">Nenhum no momento.</p>`;
+  html += `<label class="field-label" style="margin-top:14px;display:block;">Aguardando</label>`;
+  html += aguardando.length ? aguardando.map(m=> linha(m, m.condicaoLabel || "Aguardando início")).join("") : `<p class="desc" style="margin:4px 0 12px;">Nenhum no momento.</p>`;
+  html += `<label class="field-label" style="margin-top:14px;display:block;">Concluídos</label>`;
+  html += concluidos.length ? concluidos.map(m=> linha(m, meusMedResumoDuracao(m))).join("") : `<p class="desc" style="margin:4px 0;">Nenhum ainda.</p>`;
+  box.innerHTML = html;
+}
+let meusMedCalendarioMes = new Date();
+function meusMedDiaStatus(med, dStr){
+  if(!med.dataInicio || dStr < med.dataInicio) return null;
+  const registro = meusMedRegistros.find(r=> r.medicamentoId===med.id && r.date===dStr);
+  if(registro) return "feito";
+  const calc = meusMedStatusHoje(med, dStr);
+  if(calc==="dia_de_tomar") return dStr < todayStr() ? "perdido" : "pendente";
+  return null;
+}
+function renderMeusMedCalendario(){
+  const box = document.getElementById("meusMedCalendarioGrid");
+  const label = document.getElementById("meusMedCalendarioMesLabel");
+  if(!box) return;
+  const ano = meusMedCalendarioMes.getFullYear(), mes = meusMedCalendarioMes.getMonth();
+  const nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  if(label) label.textContent = nomesMeses[mes] + " de " + ano;
+  const primeiroDia = new Date(ano, mes, 1);
+  const diasNoMes = new Date(ano, mes+1, 0).getDate();
+  const offset = primeiroDia.getDay();
+  let html = "";
+  for(let i=0;i<offset;i++) html += `<div class="cal-cell empty"></div>`;
+  for(let dia=1; dia<=diasNoMes; dia++){
+    const dStr = dateStr(new Date(ano,mes,dia));
+    let feitos=0, perdidos=0;
+    meusMedicamentos.forEach(med=>{
+      const s = meusMedDiaStatus(med, dStr);
+      if(s==="feito") feitos++;
+      else if(s==="perdido") perdidos++;
+    });
+    let icone = "";
+    if(perdidos>0) icone = "❌";
+    else if(feitos>0) icone = "✅";
+    const isToday = dStr===todayStr();
+    html += `<div class="cal-cell${isToday?' today':''}" data-date="${dStr}"><span class="cal-daynum">${dia}</span><span class="cal-icons">${icone}</span></div>`;
+  }
+  box.innerHTML = html;
+  box.querySelectorAll(".cal-cell[data-date]").forEach(cell=>{
+    cell.addEventListener("click",()=> meusMedAbrirDiaModal(cell.dataset.date));
+  });
+}
+document.getElementById("meusMedBtnMesAnterior").addEventListener("click",()=>{ meusMedCalendarioMes.setMonth(meusMedCalendarioMes.getMonth()-1); renderMeusMedCalendario(); });
+document.getElementById("meusMedBtnMesSeguinte").addEventListener("click",()=>{ meusMedCalendarioMes.setMonth(meusMedCalendarioMes.getMonth()+1); renderMeusMedCalendario(); });
+function meusMedAbrirDiaModal(dStr){
+  const m = document.getElementById("meusMedDiaModalContent");
+  const relevantes = meusMedicamentos.filter(med=> med.dataInicio && dStr >= med.dataInicio);
+  const linhas = relevantes.map(med=>{
+    const registro = meusMedRegistros.find(r=> r.medicamentoId===med.id && r.date===dStr);
+    const calc = meusMedStatusHoje(med, dStr);
+    let statusTxt;
+    if(registro) statusTxt = (registro.status==="aplicado"?"✅ Aplicado":"✅ Tomado");
+    else if(calc==="dia_de_tomar") statusTxt = dStr < todayStr() ? "❌ Não registrado" : "⬜ Pendente";
+    else if(calc==="nao_e_dia") statusTxt = "⏭ Não era dia";
+    else if(calc==="concluido") statusTxt = "🏁 Concluído";
+    else return null;
+    return `<div class="desc" style="margin:0 0 10px;padding:8px;background:var(--pale);border-radius:8px;">
+      <b style="color:var(--ink);">${med.nome}</b><br>
+      Dose: ${med.dose||"—"}<br>
+      Horário previsto: ${med.horarioPreferencial||"—"}<br>
+      Horário registrado: ${registro&&registro.horario?registro.horario:"—"}<br>
+      Status: ${statusTxt}<br>
+      ${registro&&registro.obs? "Observações: "+registro.obs : ""}
+    </div>`;
+  }).filter(Boolean);
+  m.innerHTML = `
+    <button class="mu-modal-close" id="meusMedCloseDiaModal">✕</button>
+    <h2 style="font-family:var(--serif);font-size:19px;color:var(--ink);margin:6px 0 12px;">${fmtDate(dStr)}</h2>
+    ${linhas.length? linhas.join("") : `<p class="desc" style="margin:0;">Nenhum medicamento relevante nesse dia.</p>`}
+  `;
+  document.getElementById("meusMedDiaModalBg").classList.add("open");
+  document.getElementById("meusMedCloseDiaModal").onclick = ()=> document.getElementById("meusMedDiaModalBg").classList.remove("open");
+}
+document.getElementById("meusMedDiaModalBg").addEventListener("click", e=>{ if(e.target.id==="meusMedDiaModalBg") document.getElementById("meusMedDiaModalBg").classList.remove("open"); });
+
+let meusMedReavaliacoes = [];
+function meusMedReavSeedInicial(){
+  if(!meusMedReavaliacoes.find(r=>r.id==="reav_exames_vitd")){
+    meusMedReavaliacoes.push({id:"reav_exames_vitd", titulo:"Reavaliar exames laboratoriais", dataPrevista:null, observacao:"Reavaliação prevista para 6–12 meses após início do tratamento, conforme orientação médica.", status:"pendente"});
+    saveKey("meus_med_reavaliacoes", meusMedReavaliacoes);
+  }
+}
+function renderMeusMedReavaliacoes(){
+  meusMedReavSeedInicial();
+  const box = document.getElementById("meusMedReavaliacoesLista");
+  if(!box) return;
+  box.innerHTML = meusMedReavaliacoes.map(r=>`
+    <div class="card" data-reavid="${r.id}" style="${r.status==='concluido'?'opacity:.65;':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+        <b style="color:var(--ink);">🧪 ${r.titulo}</b>
+        <span style="white-space:nowrap;font-size:11px;font-weight:700;color:var(--accent-dark);background:var(--pale);border-radius:20px;padding:3px 10px;">${r.status==='concluido'?'✅ Concluído':'⬜ Pendente'}</span>
+      </div>
+      ${r.observacao? `<p class="desc" style="margin:4px 0 0;">${r.observacao}</p>`:""}
+      <div class="field" style="margin-top:8px;"><label class="field-label">Data prevista</label><input type="date" class="reav-data" data-id="${r.id}" value="${r.dataPrevista||""}"></div>
+      ${r.status!=='concluido' ? `<button class="btn primary" data-action="concluir-reav">Marcar como concluído</button>` : `<button class="btn" data-action="reabrir-reav">Reabrir</button>`}
+    </div>`).join("");
+  box.querySelectorAll(".reav-data").forEach(inp=>{
+    inp.addEventListener("change", async ()=>{
+      const r = meusMedReavaliacoes.find(x=>x.id===inp.dataset.id);
+      if(!r) return;
+      const prev = r.dataPrevista;
+      r.dataPrevista = inp.value;
+      const ok = await saveKey("meus_med_reavaliacoes", meusMedReavaliacoes);
+      if(!ok) r.dataPrevista = prev;
+    });
+  });
+  box.querySelectorAll("[data-action]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const card = btn.closest("[data-reavid]");
+      const r = meusMedReavaliacoes.find(x=>x.id===card.dataset.reavid);
+      if(!r) return;
+      const prev = r.status;
+      r.status = btn.dataset.action==="concluir-reav" ? "concluido" : "pendente";
+      const ok = await saveKey("meus_med_reavaliacoes", meusMedReavaliacoes);
+      if(!ok){ r.status = prev; return; }
+      renderMeusMedReavaliacoes();
+    });
+  });
+}
+
+function renderMeusMedicamentos(){
+  meusMedSeedInicial();
+  meusMedSeedRegistroInicial();
+  meusMedAtualizarConcluidos();
+  meusMedVerificarDependencias();
+  renderMeusMedResumo();
+  const box = document.getElementById("meusMedicamentosLista");
+  if(!box) return;
+  const visiveis = meusMedicamentos.filter(m=> m.status !== "concluido");
+  box.innerHTML = visiveis.map(m=> meusMedCardHtml(m)).join("");
+  wireMeusMedEvents(box);
+  renderMeusTratamentos();
+  renderMeusMedReavaliacoes();
+  renderMeusMedCalendario();
+}
+
+/* ============================================================
    IDENTIDADE — Quem é a Ana que estou me tornando?
    ============================================================ */
 const VISAO_TOPICS = [
@@ -6812,7 +7237,7 @@ async function downloadBlob(filename, content, type){
   return true;
 }
 document.getElementById("btnExportJson").addEventListener("click", async ()=>{
-  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele, esp_reflexoes: espReflexoes, esp_registros_forca: espRegistrosForca, esp_eixo_hoje: espEixoHoje, esp_orixas_biblioteca: espOrixasBiblioteca, esp_cadernos: espCadernos, esp_orientacoes: espOrientacoes, esp_praticas: espPraticas, treino_pernas_hoje: treinoPernasHoje, treino_evolucao: treinoEvolucao,
+  const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele, esp_reflexoes: espReflexoes, esp_registros_forca: espRegistrosForca, esp_eixo_hoje: espEixoHoje, esp_orixas_biblioteca: espOrixasBiblioteca, esp_cadernos: espCadernos, esp_orientacoes: espOrientacoes, esp_praticas: espPraticas, treino_pernas_hoje: treinoPernasHoje, treino_evolucao: treinoEvolucao, meus_medicamentos: meusMedicamentos, meus_med_registros: meusMedRegistros, meus_med_reavaliacoes: meusMedReavaliacoes,
     treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal, treino_rir: treinoRIR,
     _exportedAt: new Date().toISOString()};
   const ok = await downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
@@ -6878,6 +7303,9 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.esp_praticas!==undefined){ espPraticas = data.esp_praticas; ops.push(saveKey("esp_praticas", espPraticas)); }
       if(data.treino_pernas_hoje!==undefined){ treinoPernasHoje = data.treino_pernas_hoje; ops.push(saveKey("treino_pernas_hoje", treinoPernasHoje)); }
       if(data.treino_evolucao!==undefined){ treinoEvolucao = data.treino_evolucao; ops.push(saveKey("treino_evolucao", treinoEvolucao)); }
+      if(data.meus_medicamentos!==undefined){ meusMedicamentos = data.meus_medicamentos; ops.push(saveKey("meus_medicamentos", meusMedicamentos)); }
+      if(data.meus_med_registros!==undefined){ meusMedRegistros = data.meus_med_registros; ops.push(saveKey("meus_med_registros", meusMedRegistros)); }
+      if(data.meus_med_reavaliacoes!==undefined){ meusMedReavaliacoes = data.meus_med_reavaliacoes; ops.push(saveKey("meus_med_reavaliacoes", meusMedReavaliacoes)); }
       if(data.alimentacao_state!==undefined){ amState = data.alimentacao_state; ops.push(saveKey("alimentacao_state", amState)); }
       if(data.hidratacao!==undefined){ hidratacao = data.hidratacao; ops.push(saveKey("hidratacao", hidratacao)); }
       if(data.visao!==undefined){ visao = data.visao; ops.push(saveKey("visao", visao)); }
@@ -7114,6 +7542,9 @@ function init(){
   espPraticas = loadKey("esp_praticas", []);
   treinoPernasHoje = loadKey("treino_pernas_hoje", {});
   treinoEvolucao = loadKey("treino_evolucao", []);
+  meusMedicamentos = loadKey("meus_medicamentos", []);
+  meusMedRegistros = loadKey("meus_med_registros", []);
+  meusMedReavaliacoes = loadKey("meus_med_reavaliacoes", []);
   if(planejamentoMeta.lastReset !== todayStr()){
     planejamento = [];
     planejamentoMeta = {lastReset: todayStr()};
