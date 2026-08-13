@@ -478,6 +478,11 @@
     <span class="eyebrow">Projeto Ana Primeiro</span>
     <h1 class="title">Sistema Operacional da Ana</h1>
     <div class="subtitle"><span class="dot" id="syncDot"></span><span id="syncLabel">seu app pessoal — sincronizado automaticamente entre celular e computador</span></div>
+    <div id="erroDebugBanner" style="display:none;background:#FBEAE6;border:1px solid #E3A99A;border-radius:10px;padding:12px 14px;margin-top:10px;font-size:12.5px;color:#8A3B2A;">
+      <b>Erro técnico (tire um print desta caixa e mande pra Ana revisar):</b>
+      <div id="erroDebugTexto" style="margin-top:4px;word-break:break-word;"></div>
+      <button type="button" id="btnFecharErroDebug" style="margin-top:8px;background:none;border:1px solid #8A3B2A;color:#8A3B2A;border-radius:6px;padding:4px 10px;font-size:11px;">Fechar</button>
+    </div>
     <nav class="tabs">
       <button data-tab="hoje" class="active">Hoje</button>
       <button data-tab="diario">Diário</button>
@@ -1884,6 +1889,20 @@ function todayStr(){ return dateStr(new Date()); }
 function fmtDate(s){ const [y,m,d]=s.split("-"); return d+"/"+m+"/"+y; }
 function toast(msg, isErr){ const t=document.getElementById("toast"); t.textContent=msg; t.className="toast show"+(isErr?" err":""); setTimeout(()=>t.classList.remove("show"),2200); }
 
+function mostrarErroDebug(origem, e){
+  const banner = document.getElementById("erroDebugBanner");
+  const texto = document.getElementById("erroDebugTexto");
+  if(!banner || !texto) return;
+  const codigo = (e && e.code) ? e.code : "sem código";
+  const mensagem = (e && e.message) ? e.message : String(e);
+  texto.textContent = `[${origem}] código: ${codigo} — ${mensagem}`;
+  banner.style.display = "block";
+}
+const btnFecharErroDebugEl = document.getElementById("btnFecharErroDebug");
+if(btnFecharErroDebugEl) btnFecharErroDebugEl.addEventListener("click",()=>{
+  document.getElementById("erroDebugBanner").style.display = "none";
+});
+
 function setSync(ok){
   const dot = document.getElementById("syncDot"), lbl = document.getElementById("syncLabel");
   if(!dot) return;
@@ -1903,6 +1922,7 @@ async function loadKey(key, fallback){
     return fallback;
   }catch(e){
     setSync(false);
+    mostrarErroDebug("carregar "+key, e);
     return fallback;
   }
 }
@@ -1923,6 +1943,7 @@ async function saveKey(key, val){
       return true;
     }catch(e2){
       setSync(false);
+      mostrarErroDebug("salvar "+key, e2);
       toast("Não deu para salvar agora. Verifique sua conexão.", true);
       return false;
     }
@@ -7663,7 +7684,7 @@ document.getElementById("btnLoginEntrar").addEventListener("click", async ()=>{
     let msg = "Não foi possível entrar. Confira e-mail e senha.";
     if(e.code === "auth/too-many-requests") msg = "Muitas tentativas. Aguarde um pouco e tente de novo.";
     if(e.code === "auth/network-request-failed") msg = "Sem conexão com a internet.";
-    erroEl.textContent = msg;
+    erroEl.textContent = msg + " (código técnico: " + (e.code||"desconhecido") + ")";
     erroEl.style.display = "block";
   }
   btn.disabled = false; btn.textContent = "Entrar";
