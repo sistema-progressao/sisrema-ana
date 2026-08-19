@@ -473,6 +473,13 @@
   </header>
 
   <section class="panel active" id="panel-hoje">
+    <div id="backupLembreteBanner" style="display:none;background:#FBF3E6;border:1px solid #E3C99A;border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+        <p id="backupLembreteTexto" style="margin:0;font-size:13px;color:#8A6A2A;flex:1;min-width:180px;"></p>
+        <button type="button" class="btn primary" id="btnBackupLembreteAgora" style="white-space:nowrap;">⬇ Exportar agora</button>
+      </div>
+    </div>
+
     <div class="callout"><span class="eyebrow">Critério do dia</span><p>&ldquo;Isso aproxima ou afasta a mulher que estou construindo?&rdquo;</p></div>
 
     <h2 class="h2">Manhã essencial</h2>
@@ -869,8 +876,22 @@
   </section>
 
   <section class="panel" id="panel-treino">
-    <div class="callout"><span class="eyebrow">Seu treino</span><p>6× por semana · Recomposição corporal, foco em glúteo e cintura mais marcada · Progressão dupla registrada por semana. Terça e quinta o cardio intenso já é o spinning — sem HIIT extra nesses dias.</p></div>
+    <div class="callout"><span class="eyebrow">Seu treino</span><p>6× por semana + domingo de descanso · Recomposição corporal — prioridade de progressão em pernas e glúteos, manutenção com carga desafiadora em costas/ombros/braços, sem buscar aumentar a largura. Terça e quinta o cardio intenso já é o spinning — sem HIIT extra nesses dias.</p></div>
+    <div class="callout" style="margin-top:10px;"><p><b>Princípio central:</b> não preciso levantar o maior peso possível — preciso usar a maior carga que consigo controlar corretamente dentro da faixa de repetições prescrita. Para pernas/glúteos: treinar → recuperar → progredir. Para superiores: intensidade suficiente para força e manutenção, sem transformar hipertrofia máxima em prioridade. Técnica primeiro, carga depois.</p></div>
     <div class="card" id="treinoEnergiaInsight" style="display:none;"></div>
+
+    <h3 class="h3">🎯 Como escolher a carga certa (RIR)</h3>
+    <div class="card">
+      <p class="desc" style="margin:0 0 8px;">RIR = Repetições em Reserva. Ao terminar uma série, pergunte: "quantas repetições a mais eu conseguiria, mantendo a mesma técnica?"</p>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+        <div>🟢 <b>5 ou mais</b> — carga muito leve pra uma série de trabalho. Nos exercícios prioritários, considere aumentar.</div>
+        <div>🟢 <b>≈3</b> — carga boa, com margem. Pode manter ou progredir aos poucos.</div>
+        <div>⭐ <b>1–2</b> — faixa ideal para a maioria das séries produtivas.</div>
+        <div>🔴 <b>0 (falha)</b> — pode acontecer ocasionalmente em isoladores, principalmente na última série. Não precisa ser o objetivo de todas as séries.</div>
+        <div>🔴 <b>Não atingiu o mínimo da faixa</b> — carga excessiva. Reduza.</div>
+      </div>
+      <p class="desc" style="margin:10px 0 0;">Nunca aumente peso se isso exigir perder amplitude, balançar o corpo, compensar, executar mal, sentir dor, ou perder o controle do movimento.</p>
+    </div>
 
     <h3 class="h3">Como estão minhas pernas hoje?</h3>
     <div class="card" id="treinoPernasHoje"></div>
@@ -879,15 +900,42 @@
     <div class="card">
       <button class="btn primary" id="btnNovaEvolucao">+ Novo registro</button>
       <div id="evolucaoForm" style="display:none;margin-top:14px;">
+        <label class="field-label" style="display:block;margin-bottom:2px;">Medidas manuais</label>
         <div class="grid3">
           <div class="field"><label class="field-label">Peso (kg)</label><input type="text" inputmode="decimal" id="ev-peso"></div>
+          <div class="field"><label class="field-label">Pescoço (cm)</label><input type="text" inputmode="decimal" id="ev-pescoco"></div>
+          <div class="field"><label class="field-label">Ombros (cm)</label><input type="text" inputmode="decimal" id="ev-ombros"></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label class="field-label">Tórax (cm)</label><input type="text" inputmode="decimal" id="ev-torax"></div>
           <div class="field"><label class="field-label">Cintura (cm)</label><input type="text" inputmode="decimal" id="ev-cintura"></div>
           <div class="field"><label class="field-label">Abdômen (cm)</label><input type="text" inputmode="decimal" id="ev-abdominal"></div>
         </div>
         <div class="grid2">
           <div class="field"><label class="field-label">Quadril (cm)</label><input type="text" inputmode="decimal" id="ev-quadril"></div>
-          <div class="field"><label class="field-label">Coxa (cm)</label><input type="text" inputmode="decimal" id="ev-coxa"></div>
+          <div class="field"><label class="field-label">Braço direito (cm)</label><input type="text" inputmode="decimal" id="ev-braco-d"></div>
         </div>
+        <div class="grid3">
+          <div class="field"><label class="field-label">Braço esquerdo (cm)</label><input type="text" inputmode="decimal" id="ev-braco-e"></div>
+          <div class="field"><label class="field-label">Coxa direita (cm)</label><input type="text" inputmode="decimal" id="ev-coxa-d"></div>
+          <div class="field"><label class="field-label">Coxa esquerda (cm)</label><input type="text" inputmode="decimal" id="ev-coxa-e"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label class="field-label">Panturrilha direita (cm)</label><input type="text" inputmode="decimal" id="ev-pant-d"></div>
+          <div class="field"><label class="field-label">Panturrilha esquerda (cm)</label><input type="text" inputmode="decimal" id="ev-pant-e"></div>
+        </div>
+        <label class="field-label" style="display:block;margin:12px 0 2px;">Bioimpedância (opcional)</label>
+        <div class="grid3">
+          <div class="field"><label class="field-label">Peso na bioimpedância (kg)</label><input type="text" inputmode="decimal" id="ev-peso-bio"></div>
+          <div class="field"><label class="field-label">Gordura corporal (%)</label><input type="text" inputmode="decimal" id="ev-gordura-pct"></div>
+          <div class="field"><label class="field-label">Massa gorda (kg)</label><input type="text" inputmode="decimal" id="ev-massa-gorda"></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label class="field-label">Massa livre de gordura (kg)</label><input type="text" inputmode="decimal" id="ev-massa-livre"></div>
+          <div class="field"><label class="field-label">Massa muscular esquelética (kg)</label><input type="text" inputmode="decimal" id="ev-massa-muscular"></div>
+          <div class="field"><label class="field-label">Água corporal (kg)</label><input type="text" inputmode="decimal" id="ev-agua"></div>
+        </div>
+        <div class="field"><label class="field-label">Gordura visceral</label><input type="text" inputmode="decimal" id="ev-visceral"></div>
         <div class="field"><label class="field-label">Foto de evolução (opcional)</label><input type="file" id="ev-foto" accept="image/*"></div>
         <button class="btn primary" id="btnSalvarEvolucao">Salvar registro</button>
       </div>
@@ -1767,77 +1815,80 @@ const BLOCOS = [
 ];
 
 const TREINO_DIAS = [
-{id:"seg", emoji:"🍑", nome:"Segunda-feira", foco:"Glúteo A + Posterior de coxa",
- cardioBanner:"Aquecimento: 5–10 minutos leves/moderados — sem escada intensa antes da musculação, para não prejudicar o desempenho no treino de força.",
+{id:"seg", emoji:"🍑", nome:"Segunda-feira", foco:"Glúteo + Posterior — treino prioritário de progressão",
+ cardioBanner:"Aquecimento: 5–8 minutos de esteira ou escada leve — não transforme o aquecimento em cardio intenso, ele é só pra preparar o corpo.",
  exercicios:[
-  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8–10 respirações", safe:true, tip:"Inspire expandindo as costelas lateralmente e posteriormente (não estufe a barriga para frente). Expire lentamente realizando uma contração abdominal suave, puxando o umbigo em direção à coluna. Não prenda a respiração. Não 'sugue' o abdômen de forma agressiva. Prepara o core para estabilizar os exercícios de hoje."},
-  {nome:"Hip Thrust — Máquina ou Barra", sets:"4 séries × 6–10 reps · 1–2 segundos no topo", prioritario:true, tip:"Sente no chão com as costas apoiadas no banco, barra/almofada no quadril. Empurre o quadril para cima até o corpo ficar reto. Segure 1–2 segundos contraindo forte o glúteo no topo. Desça devagar. Joelhos alinhados com os pés. Exercício prioritário — registre sempre a carga. Progressão dupla: comece com uma carga que permita pelo menos 6 reps com boa técnica; nas sessões seguintes, tente subir as repetições até 10. Ao atingir 10 reps em todas as séries com técnica adequada, aumente a carga discretamente e volte para 6–8 reps."},
-  {nome:"Agachamento Livre ou Smith", sets:"3–4 séries × 6–10 reps · Amplitude confortável", prioritario:true, tip:"Pés na largura dos ombros ou um pouco mais abertos. Desça como se fosse sentar numa cadeira baixa, mantendo o peito aberto e joelhos apontando para fora, dentro de uma amplitude tecnicamente controlada. Priorize técnica e progressão de carga/repetições. Sobe empurrando o chão."},
-  {nome:"Stiff com Halteres", sets:"3 séries × 8–10 reps · Sente o alongamento", prioritario:true, tip:"Em pé, segure os halteres na frente das coxas. Desça deslizando os halteres pelas pernas, mantendo as costas retas e os joelhos levemente dobrados, sem perder a posição da coluna. Priorize o alongamento do posterior e o controle da descida. Sobe contraindo o glúteo."},
-  {nome:"Cadeira Flexora", sets:"3 séries × 10–12 reps · Posterior isolado", tip:"Sentada ou deitada na máquina, pés sob o rolo. Puxe os calcanhares em direção às nádegas com força e contraia no topo por 1 segundo. Controle principalmente a fase de retorno (volta devagar) — é onde o músculo cresce."},
-  {nome:"Afundo Reverso com Halteres", sets:"3 séries × 8–10 reps cada perna", prioritario:true, tip:"Em pé, dê um passo para trás e desça até o joelho de trás quase tocar o chão. O joelho da frente fica alinhado com o tornozelo, sem passar da ponta do pé. Empurre pelo calcanhar da frente para voltar. Se houver dor no joelho, não insista no movimento — substitua por afundo estático ou elevação pélvica unilateral nesse dia."},
-  {nome:"Abdução no Cabo ou Máquina", sets:"3 séries × 15–20 reps · Lateral do glúteo", tip:"Na máquina de abdução: sente com as almofadas na parte externa das coxas e empurre para fora. No cabo: fica de lado, tornozeleira no tornozelo de fora, eleva a perna lateralmente mantendo o tronco estável. Foco em glúteo médio/lateral."},
-  {nome:"Dead Bug", sets:"3 séries × 8–10 reps cada lado", safe:true, tip:"Deitada de costas, braços esticados para cima, joelhos dobrados a 90° no ar. Execução lenta: expire e abaixe o braço direito e a perna esquerda simultaneamente, mantendo a lombar colada no chão e o controle da parede abdominal. Se a lombar levantar, pare ali. Volta e troca de lado."},
-  {nome:"Heel Slide", sets:"2 séries × 10 reps cada lado", safe:true, tip:"Deitada de costas, joelhos dobrados, pés apoiados no chão. Deslize um calcanhar afastando a perna até quase esticar, mantendo a lombar estável e o abdômen levemente ativado. Volta devagar controlando o movimento e troca de lado."}
+  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8 respirações", safe:true, tip:"Inspire expandindo as costelas lateralmente e posteriormente (não estufe a barriga para frente). Expire lentamente realizando uma contração abdominal suave, puxando o umbigo em direção à coluna. Não prenda a respiração. Prepara o core para estabilizar os exercícios de hoje."},
+  {nome:"Hip Thrust — Máquina ou Barra", sets:"4 séries × 6–10 reps · pausa de 1–2s no topo", prioritario:true, tip:"Sente no chão com as costas apoiadas no banco, barra/almofada no quadril. Empurre o quadril para cima até o corpo ficar reto. Segure 1–2 segundos contraindo forte o glúteo no topo. Carga PESADA, respeitando a técnica — este é o exercício de prioridade máxima de progressão da semana. RIR alvo: 1–2 na maioria das séries."},
+  {nome:"Stiff / RDL", sets:"3 séries × 8–10 reps · carga moderada/pesada", prioritario:true, tip:"Em pé, segure a barra ou os halteres na frente das coxas. Desça deslizando o peso pelas pernas, mantendo as costas retas e os joelhos levemente dobrados, sentindo o alongamento do posterior e do glúteo. RIR alvo: 1–3. Sobe contraindo o glúteo."},
+  {nome:"Agachamento Livre ou Smith", sets:"3 séries × 8–10 reps · carga moderada/pesada", prioritario:true, tip:"Pés na largura dos ombros ou um pouco mais abertos. Desça como se fosse sentar numa cadeira baixa, mantendo o peito aberto. Priorize amplitude completa e boa execução — a carga só sobe quando a técnica está sólida."},
+  {nome:"Cadeira Flexora", sets:"3 séries × 10–12 reps · carga moderada/pesada", prioritario:true, tip:"Sentada ou deitada na máquina, pés sob o rolo. Puxe os calcanhares em direção às nádegas com força e contraia no topo por 1 segundo. As últimas repetições devem ser realmente difíceis."},
+  {nome:"Afundo Reverso com Halteres", sets:"3 séries × 8–10 reps cada perna · carga moderada", prioritario:true, tip:"Comece pela perna direita. Dê um passo para trás e desça até o joelho de trás quase tocar o chão, sem passar do tornozelo com o joelho da frente. A esquerda repete o mesmo número de repetições tecnicamente boas feitas pela direita — não adicione séries extras pra nenhum lado. Não sacrifique estabilidade para aumentar peso. Se houver dor no joelho, substitua nesse dia."},
+  {nome:"Abdução no Cabo ou Máquina", sets:"3 séries × 15–20 reps · carga moderada", prioritario:true, tip:"Na máquina: sente com as almofadas na parte externa das coxas e empurre para fora. No cabo: de lado, tornozeleira no tornozelo de fora, eleva a perna lateralmente mantendo o tronco estável. A última série pode chegar próxima da falha técnica."}
  ]
 },
-{id:"ter", emoji:"💪", nome:"Terça-feira", foco:"Costas + Bíceps + Spinning",
+{id:"ter", emoji:"💪", nome:"Terça-feira", foco:"Costas + Bíceps + Spinning — manutenção, sem priorizar largura",
  exercicios:[
-  {nome:"Puxada Frontal — Pegada Larga", sets:"3 séries × 8–12 reps · Costas largas", tip:"Sente na máquina, segure a barra com pegada mais larga que os ombros. Puxe em direção ao peito, abrindo os cotovelos para baixo e para os lados. Imagine que você está tentando dobrar a barra ao meio. Sobe devagar controlando o movimento."},
-  {nome:"Remada Curvada — Barra ou Halteres", sets:"3 séries × 8–12 reps · Costas média e lombar", tip:"Incline o tronco ~45°, costas retas. Puxe a barra/halteres em direção ao umbigo, cotovelos próximos ao corpo. Esprema as escápulas juntas no topo. Não balance o tronco — o movimento é só dos braços."},
-  {nome:"Remada Cavalinho (Baixa no Cabo)", sets:"3 séries × 10–12 reps · Costas baixas", tip:"Sentada no banco baixo, pés apoiados, segure o triângulo do cabo. Puxe em direção ao abdômen mantendo as costas eretas. Cotovelos passam do tronco para trás. Pausa de 1 segundo. Estende os braços controlando."},
-  {nome:"Rosca Direta com Barra", sets:"3 séries × 10–12 reps · Bíceps", tip:"Em pé, cotovelos fixos ao lado do corpo. Suba a barra dobrando os cotovelos, sem balançar o tronco. Contraia o bíceps no topo por 1 segundo. Desce devagar."},
-  {nome:"Rosca Martelo", sets:"3 séries × 10–12 reps · Bíceps + braquial", tip:"Segure os halteres com as palmas voltadas uma para a outra (posição neutra, como se segurasse um martelo). Suba um halter de cada vez ou os dois juntos. Não rotacione o pulso."},
-  {nome:"Bird Dog", sets:"3 séries × 8–10 reps cada lado", safe:true, tip:"De quatro apoios, mãos sob os ombros e joelhos sob o quadril. Execução lenta: estenda o braço direito à frente e a perna esquerda para trás ao mesmo tempo, mantendo a coluna neutra (sem arquear a lombar) e evitando rotação do quadril. Segure 2 segundos contraindo o core. Volta controlada e troca de lado."}
+  {nome:"Remada Baixa — Pegada Neutra", sets:"3 séries × 8–12 reps · carga moderada/desafiadora", tip:"Sentada no aparelho de remada baixa, segure a barra com pegada neutra (palmas voltadas uma pra outra). Puxe em direção ao abdômen mantendo as costas eretas, cotovelos passando do tronco pra trás. Objetivo: força e postura, sem buscar progressão máxima de carga."},
+  {nome:"Remada Unilateral", sets:"3 séries × 10 reps cada lado · carga moderada", tip:"Apoiada no banco com um joelho e uma mão, puxe o halter em direção ao quadril, cotovelo próximo ao corpo. Esprema a escápula no topo. Movimento controlado, sem girar o tronco."},
+  {nome:"Puxada Frontal — Pegada Neutra/Média", sets:"2 séries × 10–12 reps · carga moderada", tip:"Sente na máquina, segure a barra com pegada neutra ou pouco mais aberta que os ombros (não use a pegada larga). Puxe em direção ao peito, abrindo os cotovelos para baixo. Foco em postura e ativação das costas, sem perseguir carga máxima."},
+  {nome:"Face Pull", sets:"3 séries × 12–15 reps · carga leve/moderada", tip:"No cabo na altura do rosto, segure a corda com as duas mãos e puxe em direção ao rosto, afastando as pontas da corda e levando os cotovelos para trás e para cima. Carga que permita controle total — o objetivo principal aqui é postura e controle escapular, não força bruta."},
+  {nome:"Rosca Direta com Barra", sets:"2 séries × 10–12 reps · carga moderada/desafiadora", tip:"Em pé, cotovelos fixos ao lado do corpo. Suba a barra dobrando os cotovelos, sem balançar o tronco. Não use peso propositalmente leve — a série deve terminar em torno de RIR 1–3, desafiadora mas tecnicamente limpa."},
+  {nome:"Rosca Martelo", sets:"2 séries × 10–12 reps · carga moderada/desafiadora", tip:"Segure os halteres com as palmas voltadas uma para a outra. Suba um halter de cada vez ou os dois juntos, sem rotacionar o pulso. Mesma lógica da rosca direta: desafiadora, mas controlada."}
  ],
- cardioFinal:"Cardio do dia: Spinning (aula). Esse é o principal estímulo cardiovascular intenso de hoje — não adicione HIIT extra."
+ cardioFinal:"Cardio do dia: Spinning (aula). Não fazer HIIT adicional depois — o spinning já é o estímulo cardiovascular principal de hoje."
 },
-{id:"qua", emoji:"🦵", nome:"Quarta-feira", foco:"Quadríceps + Panturrilha",
+{id:"qua", emoji:"🦵", nome:"Quarta-feira", foco:"Quadríceps + Glúteo — segundo treino prioritário",
  exercicios:[
-  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8–10 respirações", safe:true, tip:"Mesmo protocolo de segunda-feira: inspire expandindo as costelas, expire puxando o umbigo em direção à coluna, sem prender a respiração. A ativação prévia melhora a estabilidade da lombar no leg press e no agachamento sumô."},
-  {nome:"Leg Press 45°", sets:"4 séries × 8–12 reps · Pés médios", prioritario:true, tip:"Sente no leg press, pés na plataforma na altura dos ombros. Solte as travas e desça controlado até o joelho fazer ~90°. Não deixe o joelho entrar para dentro. Empurre de volta sem travar o joelho no topo. Priorize progressão de carga mantendo amplitude e técnica."},
-  {nome:"Cadeira Extensora", sets:"3 séries × 10–15 reps · Quadríceps isolado", tip:"Sente na máquina, joelhos na borda, rolo sobre os tornozelos. Estenda as pernas até ficarem retas, contraindo forte a coxa no topo por 1 segundo. Controle a subida e a descida. Não use cargas que provoquem dor no joelho."},
-  {nome:"Agachamento Sumô", sets:"3 séries × 8–12 reps · Pés bem abertos", tip:"Pés bem afastados (além da largura dos ombros), dedos apontando para fora ~45°. Desça mantendo o tronco ereto, joelhos alinhados com os dedos dos pés. Ativa muito adutores e glúteo. Segure um halter no centro se quiser carga."},
-  {nome:"Panturrilha em Pé", sets:"4 séries × 12–20 reps · Na máquina ou livre", tip:"Em pé na máquina ou no degrau, sobe na ponta do pé o mais alto possível. Segura 1 segundo no topo. Desce até sentir alongamento no calcanhar. Movimento lento e controlado."},
-  {nome:"Cadeira Flexora", sets:"3 séries × 10–12 reps · Posterior complementar, carga moderada", tip:"Mesmo exercício da segunda-feira. Puxe os calcanhares em direção às nádegas com contração no topo por 1 segundo. Desce devagar. Aqui a carga pode ser um pouco menor — o músculo já está mais fatigado da semana."},
-  {nome:"Pallof Press", sets:"3 séries × 10–12 reps cada lado", safe:true, tip:"De pé, de lado para o cabo ou elástico preso na altura do peito. Segure com as duas mãos perto do esterno e empurre os braços para a frente, resistindo à rotação do tronco — o corpo fica parado, sem girar. Segure 2 segundos estendida e volte. Fortalece o core de forma isométrica."},
-  {nome:"Prancha Lateral", sets:"2–3 séries × 20–30 segundos cada lado", safe:true, tip:"Apoiada no antebraço e na lateral do pé, corpo em linha reta. Quadril elevado, sem deixar cair. Comece com os joelhos apoiados no chão (regressão) se precisar de menos carga, e progrida para a prancha completa somente mantendo bom controle abdominal."}
+  {nome:"Respiração Diafragmática + Ativação do Transverso", sets:"2 séries × 8 respirações", safe:true, tip:"Mesmo protocolo de segunda-feira: inspire expandindo as costelas, expire puxando o umbigo em direção à coluna, sem prender a respiração."},
+  {nome:"Leg Press 45°", sets:"4 séries × 8–12 reps · carga pesada", prioritario:true, tip:"Sente no leg press, pés na plataforma na altura dos ombros. Desça controlado até o joelho fazer ~90°, sem deixar o joelho entrar para dentro. Carga PESADA, com amplitude completa e controle — prioridade de progressão. RIR alvo: aproximadamente 1–3."},
+  {nome:"Agachamento Búlgaro", sets:"3 séries × 8–10 reps por perna · carga moderada/pesada", prioritario:true, tip:"Comece pela perna direita, pé de trás apoiado num banco. Técnica e equilíbrio vêm antes do aumento de carga. A esquerda repete o mesmo número de repetições boas feitas pela direita."},
+  {nome:"Cadeira Extensora", sets:"3 séries × 10–15 reps · carga moderada/desafiadora", prioritario:true, tip:"Sente na máquina, joelhos na borda, rolo sobre os tornozelos. Estenda as pernas contraindo forte a coxa no topo. Não insista em carga ou amplitude que provoque dor no joelho."},
+  {nome:"Agachamento Sumô", sets:"3 séries × 10–12 reps · carga moderada/pesada", prioritario:true, tip:"Pés bem afastados, dedos apontando para fora ~45°. Desça mantendo o tronco ereto. Ativa bastante adutores e glúteo. Segure um halter no centro para adicionar carga."},
+  {nome:"Extensão de Quadril no Cabo", sets:"2 séries × 12–15 reps por perna · carga moderada", tip:"Tornozeleira presa no cabo baixo. Empurre a perna para trás e para cima, mantendo o joelho dobrado a 90°, contraindo o glúteo no topo por 1 segundo."},
+  {nome:"Panturrilha em Pé", sets:"3 séries × 12–15 reps · carga moderada/pesada", tip:"Em pé na máquina ou no degrau, sobe na ponta do pé o mais alto possível. Pausa no topo e descida controlada até sentir o alongamento no calcanhar."}
  ],
- cardioFinal:"Cardio: 10–15 minutos de caminhada inclinada, intensidade leve/moderada. Sem transformar em HIIT."
+ cardioFinal:"Cardio: 10–15 minutos de caminhada leve/moderada, opcional. Sem HIIT."
 },
-{id:"qui", emoji:"✨", nome:"Quinta-feira", foco:"Ombro + Tríceps + Core + Spinning",
- cardioBanner:"Em caso de abaulamento/coning persistente na linha média abdominal, sensação de peso ou pressão pélvica, perda urinária, dor ou dificuldade importante de controle abdominal, é recomendável procurar avaliação individualizada com fisioterapeuta pélvica/pós-parto.",
+{id:"qui", emoji:"✨", nome:"Quinta-feira", foco:"Ombro + Tríceps + Core + Spinning — manutenção, sem priorizar largura",
+ cardioBanner:"Se houver abaulamento/coning importante da linha média abdominal, sensação de peso ou pressão pélvica, perda urinária, dor ou dificuldade importante de controle abdominal, é recomendável procurar avaliação individualizada com fisioterapeuta pélvica/pós-parto.",
  exercicios:[
-  {nome:"Desenvolvimento com Halteres", sets:"3 séries × 8–12 reps · Ombro redondo", tip:"Sentada ou em pé, halteres na altura dos ombros com cotovelos dobrados. Empurre para cima até os braços quase esticarem. Não arquee as costas. Desce devagar até a altura dos ombros. Mantém o core contraído durante todo o movimento."},
-  {nome:"Elevação Lateral", sets:"3 séries × 12–15 reps · Ombros definidos", tip:"Em pé, halteres ao lado do corpo. Eleve os braços lateralmente até a altura dos ombros, cotovelos levemente dobrados. Imagine despejar água de uma jarra — polegar levemente abaixado. Desce devagar. Não balance o tronco."},
-  {nome:"Tríceps Corda no Cabo", sets:"3 séries × 10–15 reps · Braços sem flacidez", tip:"De frente para o cabo alto, segure a corda com os dois lados. Cotovelos fixos ao lado do corpo. Puxe a corda para baixo abrindo as pontas para os lados no final. Espreme o tríceps no fundo por 1 segundo. Sobe devagar."},
-  {nome:"Tríceps Francês (Testa) com Halteres", sets:"3 séries × 10–15 reps · Alonga e define", tip:"Deitada ou sentada, halteres acima da cabeça com os braços estendidos. Dobre apenas os cotovelos, descendo os halteres atrás da cabeça, mantendo os braços fixos. Estenda de volta contraindo o tríceps no topo."},
-  {nome:"Dead Bug", sets:"3 séries × 8–10 reps cada lado", safe:true, tip:"Deitada de costas, braços esticados para cima, joelhos dobrados a 90° no ar. Expire e abaixe o braço direito e a perna esquerda simultaneamente, mantendo a lombar colada no chão. Se a lombar levantar, pare ali. Volta e troca."},
-  {nome:"Prancha Frontal", sets:"3 séries × 20–45 segundos", safe:true, tip:"Apoiada nos antebraços e pontas dos pés. Corpo em linha reta da cabeça aos calcanhares. Respire normalmente — não é para segurar o vacuum máximo durante toda a prancha. Progrida somente se houver bom controle abdominal: se houver abaulamento/coning evidente na linha média, use uma regressão (ex.: prancha com joelhos apoiados)."},
-  {nome:"Pallof Press", sets:"3 séries × 10 reps cada lado", safe:true, tip:"De pé, de lado para o cabo ou elástico preso na altura do peito. Segure perto do esterno e empurre os braços para a frente, resistindo à rotação do tronco. Segure 2 segundos estendida e volte."},
-  {nome:"Vacuum Abdominal (opcional)", sets:"2–3 séries curtas", safe:true, tip:"Expire todo o ar dos pulmões. Puxe o umbigo em direção à coluna e para cima. Segure sem prender a respiração (respire suavemente pelo nariz). Solte e repita. É um exercício complementar de consciência e controle da musculatura abdominal — não fecha diástase nem afina a cintura por si só."}
+  {nome:"Desenvolvimento com Halteres", sets:"2 séries × 8–12 reps · carga moderada", tip:"Sentada ou em pé, halteres na altura dos ombros. Empurre para cima até os braços quase esticarem, sem arquear as costas. Série desafiadora, mas sem perseguir progressão agressiva de carga — o objetivo aqui é força e manutenção, não aumentar a largura dos ombros."},
+  {nome:"Elevação Lateral", sets:"2 séries × 12–15 reps · carga leve/moderada", tip:"Em pé, halteres ao lado do corpo. Eleve os braços lateralmente até a altura dos ombros, cotovelos levemente dobrados. Movimento controlado — não aumente o peso sacrificando a execução."},
+  {nome:"Crucifixo Inverso / Deltoide Posterior", sets:"2 séries × 12–15 reps · carga leve/moderada", tip:"Inclinada à frente ou sentada no aparelho, eleve os braços lateralmente até a altura dos ombros, focando no deltoide posterior (parte de trás do ombro). Movimento controlado, sem impulso."},
+  {nome:"Tríceps Corda no Cabo", sets:"3 séries × 10–12 reps · carga moderada/desafiadora", tip:"De frente para o cabo alto, segure a corda com os dois lados, cotovelos fixos ao lado do corpo. Puxe para baixo abrindo as pontas no final. RIR alvo aproximado: 1–3."},
+  {nome:"Tríceps Francês (Testa) com Halteres", sets:"2 séries × 10–12 reps · carga moderada/desafiadora", tip:"Deitada ou sentada, halteres acima da cabeça. Dobre apenas os cotovelos, descendo os halteres atrás da cabeça, mantendo os braços fixos."},
+  {nome:"Dead Bug", sets:"3 séries × 8–10 reps cada lado", safe:true, tip:"Deitada de costas, braços esticados para cima, joelhos dobrados a 90° no ar. Expire e abaixe o braço direito e a perna esquerda simultaneamente, mantendo a lombar colada no chão. Controle absoluto do movimento."},
+  {nome:"Pallof Press", sets:"3 séries × 10 reps cada lado", safe:true, tip:"De pé, de lado para o cabo ou elástico preso na altura do peito. Empurre os braços para a frente, resistindo à rotação do tronco. Carga suficiente para oferecer resistência real, sem deixar o tronco girar."},
+  {nome:"Bird Dog", sets:"2 séries × 8 reps cada lado", safe:true, tip:"De quatro apoios, mãos sob os ombros e joelhos sob o quadril. Estenda o braço direito à frente e a perna esquerda para trás ao mesmo tempo, mantendo a coluna neutra. Volta controlada e troca de lado."},
+  {nome:"Prancha Frontal", sets:"2 séries × 20–40 segundos", safe:true, tip:"Apoiada nos antebraços e pontas dos pés, corpo em linha reta. Mantenha apenas enquanto houver controle abdominal e respiração normal — se houver abaulamento/coning importante da linha média, interrompa ou use uma regressão."},
+  {nome:"Vacuum Abdominal (opcional)", sets:"2–3 séries curtas", safe:true, tip:"Expire todo o ar dos pulmões, puxe o umbigo em direção à coluna e para cima, respirando suavemente pelo nariz. Ferramenta de consciência e controle da musculatura abdominal — não é método de perda localizada de gordura nem garante o fechamento de diástase."}
  ],
- cardioFinal:"Cardio do dia: Spinning (aula). Sem HIIT adicional — spinning junto com HIIT extra não deve virar rotina."
+ cardioFinal:"Cardio do dia: Spinning (aula). Sem HIIT adicional."
 },
-{id:"sex", emoji:"🍑", nome:"Sexta-feira", foco:"Glúteo B — Volume e formato",
+{id:"sex", emoji:"🍑", nome:"Sexta-feira", foco:"Glúteo B + Posterior/Adutores — segundo grande estímulo de glúteos",
  exercicios:[
-  {nome:"Hip Thrust — Máquina ou Barra", sets:"4 séries × 6–10 reps · Prioridade de carga", prioritario:true, tip:"Mesmo movimento de segunda, com foco total em progressão de carga e repetições. Sente no chão com as costas apoiadas no banco, empurre o quadril para cima até o corpo ficar reto, segure 1–2 segundos no topo. Registre carga e repetições."},
-  {nome:"Afundo Búlgaro com Ênfase em Glúteo", sets:"3 séries × 8–10 reps cada perna", prioritario:true, tip:"Pé de trás apoiado num banco, passo confortável à frente, leve inclinação do tronco para frente. Descida controlada, sem pressa. Se houver dor no joelho, não insista — use uma alternativa nesse dia (ex.: afundo reverso)."},
-  {nome:"Extensão de Quadril no Cabo / Coice", sets:"3 séries × 12–15 reps cada perna", tip:"Prenda a tornozeleira no cabo baixo da polia. De quatro apoios ou em pé de frente para a máquina, empurre a perna para trás e para cima, mantendo o joelho dobrado a 90°. Contraia o glúteo no topo por 1 segundo. Mantenha só essa variação de coice no treino."},
-  {nome:"Abdução no Cabo ou Máquina", sets:"3 séries × 15–20 reps · Glúteo médio/lateral", tip:"Na máquina de abdução: sente com as almofadas na parte externa das coxas e empurre para fora. No cabo: fica de lado, tornozeleira no tornozelo de fora, eleva a perna lateralmente mantendo o tronco estável."},
-  {nome:"Adutora na Máquina", sets:"3 séries × 12–15 reps · Parte interna da coxa", tip:"Sentada na máquina, almofadas na parte interna das coxas, pernas abertas. Feche as pernas trazendo os joelhos juntos com força. Contraia no fechamento por 1 segundo. Abre devagar."},
-  {nome:"Farmer Walk", sets:"3 séries × 30–40 metros", tip:"Segure um halter pesado em cada mão, braços ao lado do corpo. Caminhe em ritmo controlado mantendo a postura neutra, ombros para trás, core controlado — sem deixar o tronco balançar."},
-  {nome:"Marcha Supina ou Dead Bug", sets:"2–3 séries × 8–10 reps cada lado", safe:true, tip:"Deitada de costas, joelhos a 90°. Na marcha supina, alterne elevando um pé por vez sem deixar a lombar perder o contato com o chão. Se preferir, use o Dead Bug (braço e perna opostos) no lugar."}
+  {nome:"Hip Thrust — Máquina ou Barra", sets:"3 séries × 10–12 reps · carga moderada/pesada, pausa de 2s no topo", prioritario:true, tip:"Mesmo movimento de segunda, com foco em progressão de carga e repetições. RIR alvo: 1–2. Registre sempre a carga e as repetições."},
+  {nome:"Afundo Búlgaro com Ênfase em Glúteo", sets:"3 séries × 10 reps por perna · carga moderada/desafiadora", prioritario:true, tip:"Comece pela perna direita, pé de trás apoiado num banco (pode alternar com Step-up se preferir). A esquerda repete o mesmo número de repetições boas feitas pela direita."},
+  {nome:"Extensão de Quadril no Cabo / Coice", sets:"3 séries × 12–15 reps por perna · carga moderada", prioritario:true, tip:"Tornozeleira presa no cabo baixo da polia. Empurre a perna para trás e para cima, joelho dobrado a 90°, contraindo o glúteo no topo por 1 segundo."},
+  {nome:"Cadeira Flexora", sets:"3 séries × 10–12 reps · carga moderada/pesada", prioritario:true, tip:"Puxe os calcanhares em direção às nádegas com força, contraindo no topo por 1 segundo. Últimas repetições realmente desafiadoras."},
+  {nome:"Adutora na Máquina", sets:"2 séries × 12–15 reps · carga moderada/desafiadora", prioritario:true, tip:"Sentada na máquina, feche as pernas trazendo os joelhos juntos com força, contraindo no fechamento por 1 segundo."},
+  {nome:"Abdução no Cabo ou Máquina", sets:"3 séries × 15–20 reps · carga moderada", prioritario:true, tip:"Na máquina: empurre as almofadas para fora. No cabo: eleva a perna lateralmente mantendo o tronco estável. A última série pode chegar próxima da falha técnica."}
  ],
- cardioFinal:"Cardio opcional: se estiver bem recuperada, 5–10 minutos leves. Se pernas/glúteos estiverem cansados, nenhum cardio hoje. Sem escada como obrigação."
+ cardioFinal:"Cardio opcional: 5–10 minutos de caminhada ou escada leve, se estiver bem recuperada. Sem HIIT."
 },
-{id:"sab", emoji:"🔥", nome:"Sábado", foco:"Recuperação / atividade opcional", isSabado:true,
+{id:"sab", emoji:"🌿", nome:"Sábado", foco:"Recuperação", isSabado:true,
  opcoes:[
-  ["Opção A","Pilates."],
-  ["Opção B","Caminhada leve/moderada de 30–40 minutos."],
-  ["Opção C","Descanso completo."]
+  ["Opção A","Descanso completo."],
+  ["Opção B","Caminhada de 30–45 minutos."],
+  ["Opção C","Pilates."],
+  ["Opção D","Mobilidade / alongamento."],
+  ["Opção E","Atividade recreativa leve."]
  ],
- notaExtra:"Sábado não é um sexto treino pesado obrigatório. Spinning adicional só se estiver bem recuperada e quiser — não é necessário para o emagrecimento."
+ notaExtra:"Sábado não é um sexto treino pesado obrigatório. Spinning extra só ocasionalmente, e apenas se estiver bem recuperada — não é necessário para o resultado."
+},
+{id:"dom", emoji:"😴", nome:"Domingo", foco:"Descanso", isDescanso:true,
+ notaExtra:"Dia de recuperação completa. O corpo constrói músculo e se recupera fora do treino — descansar também é parte do progresso."
 }
 ];
 
@@ -1876,7 +1927,8 @@ function saveKey(key, val){
    STATE (loaded once at startup, kept in memory, persisted on change)
    ============================================================ */
 let rotina = {}, diario = {}, energia = [], cardapio = null, reposicao = [], freezer = [], geladeira = [], afirmacoes = [];
-let treinoCargas = {}, treinoNotas = {}, treinoNotasHistorico = {}, treinoSummary = {}, treinoSemanal = [], treinoRIR = {};
+let treinoCargas = {}, treinoNotas = {}, treinoNotasHistorico = {}, treinoSummary = {}, treinoSemanal = [], treinoRIR = {}, treinoReps = {}, treinoUltimaSessao = {}, treinoSessaoAtualData = {};
+let ultimoBackupData = null;
 let planejamento = [];
 let planejamentoMeta = {lastReset: null};
 let tarefas = [];
@@ -1933,8 +1985,27 @@ function updateProgress(progId, items, arr){
   const done = items.reduce((n,_,i)=> n + (arr[i]?1:0), 0);
   document.getElementById(progId).textContent = `${done} de ${items.length} concluídos hoje`;
 }
+function renderBackupLembrete(){
+  const banner = document.getElementById("backupLembreteBanner");
+  const texto = document.getElementById("backupLembreteTexto");
+  if(!banner || !texto) return;
+  let diasSemBackup = null;
+  if(ultimoBackupData) diasSemBackup = daysBetween(ultimoBackupData, todayStr());
+  if(!ultimoBackupData){
+    texto.textContent = "Você ainda não exportou nenhum backup. Como o app salva só neste aparelho, é importante ter uma cópia guardada em outro lugar (e-mail, Drive, iCloud).";
+    banner.style.display = "block";
+  } else if(diasSemBackup >= 7){
+    texto.textContent = `Já se passaram ${diasSemBackup} dias desde seu último backup (${fmtDate(ultimoBackupData)}). Exporte uma cópia pra manter seus dados seguros.`;
+    banner.style.display = "block";
+  } else {
+    banner.style.display = "none";
+  }
+}
+document.getElementById("btnBackupLembreteAgora").addEventListener("click", exportarBackup);
+
 function renderHoje(){
   const state = ensureToday();
+  renderBackupLembrete();
   renderChecklist("cl-manha","prog-manha",CL_MANHA,"manha");
   renderChecklist("cl-noite","prog-noite",CL_NOITE,"noite");
   renderMeusMedicamentos();
@@ -6065,6 +6136,28 @@ function migrarTreinoChavesPosicionaisParaNome(){
     saveKey("treino_notas_historico", treinoNotasHistorico);
   }
 }
+const TREINO_RENOMEACOES_V3 = [
+  {dia:"seg", de:"Stiff com Halteres", para:"Stiff / RDL"},
+  {dia:"ter", de:"Remada Cavalinho (Baixa no Cabo)", para:"Remada Baixa — Pegada Neutra"}
+];
+const TREINO_MOVIMENTACOES_V3 = [
+  {deDia:"ter", deNome:"Bird Dog", paraDia:"qui", paraNome:"Bird Dog"}
+];
+function migrarTreinoV3(){
+  let mudou = false;
+  function copiar(chaveAntiga, chaveNova){
+    if(treinoCargas[chaveAntiga] && !treinoCargas[chaveNova]){ treinoCargas[chaveNova] = treinoCargas[chaveAntiga]; mudou = true; }
+    if(treinoRIR[chaveAntiga] && !treinoRIR[chaveNova]){ treinoRIR[chaveNova] = treinoRIR[chaveAntiga]; mudou = true; }
+    if(treinoNotasHistorico[chaveAntiga] && !treinoNotasHistorico[chaveNova]){ treinoNotasHistorico[chaveNova] = treinoNotasHistorico[chaveAntiga]; mudou = true; }
+  }
+  TREINO_RENOMEACOES_V3.forEach(r=> copiar(treinoKey(r.dia, r.de), treinoKey(r.dia, r.para)));
+  TREINO_MOVIMENTACOES_V3.forEach(m=> copiar(treinoKey(m.deDia, m.deNome), treinoKey(m.paraDia, m.paraNome)));
+  if(mudou){
+    saveKey("treino_cargas", treinoCargas);
+    saveKey("treino_rir", treinoRIR);
+    saveKey("treino_notas_historico", treinoNotasHistorico);
+  }
+}
 
 function renderTreinoSubnav(){
   const nav = document.getElementById("treinoSubnav");
@@ -6085,27 +6178,40 @@ function renderTreinoSubnav(){
 function exerciseCardHtml(day, ex, idx){
   const key = treinoKey(day.id, ex.nome);
   const cargas = treinoCargas[key] || ["","","",""];
+  const reps = treinoReps[key] || ["","","",""];
   const rir = treinoRIR[key] || ["","","",""];
+  const ultima = treinoUltimaSessao[key];
   const hist = treinoNotasHistorico[key] || [];
   const todayEntry = hist.find(h=> h.date === todayStr());
   const notaHoje = todayEntry ? todayEntry.text : "";
   const anteriores = hist.filter(h=> h.date !== todayStr()).slice(0,3);
+  function resumoSessao(cargasArr, repsArr){
+    return [0,1,2,3].map(i=>{
+      const c = (cargasArr[i]||"").toString().trim();
+      const r = (repsArr[i]||"").toString().trim();
+      if(!c && !r) return null;
+      return (c?c+"kg":"—") + (r?" × "+r:"");
+    }).filter(Boolean).join(" / ");
+  }
+  const resumoUltima = ultima ? resumoSessao(ultima.cargas||[], ultima.reps||[]) : "";
   return `
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
         <div>
           <b style="font-size:14.5px;color:var(--ink);">${idx}. ${ex.nome}</b>
           ${ex.safe ? '<span class="safe-pill">✓ SEGURO PÓS-PARTO</span>' : ""}
-          ${ex.prioritario ? '<span class="priority-pill">⭐ PRIORIDADE DE CARGA</span>' : ""}
+          ${ex.prioritario ? '<span class="priority-pill">⭐ PRIORIDADE DE PROGRESSÃO</span>' : ""}
           <div class="ex-sets-line">${ex.sets}</div>
         </div>
       </div>
       <p class="desc" style="margin-bottom:0;"><b style="color:var(--accent-dark);font-weight:700;">Como fazer:</b> ${ex.tip}</p>
+      ${resumoUltima ? `<p class="desc" style="margin:6px 0 0;color:var(--muted);"><b>Última sessão${ultima.date?" ("+fmtDate(ultima.date)+")":""}:</b> ${resumoUltima}</p>` : ""}
       <div class="load-grid">
         ${[0,1,2,3].map(w=>`
           <div class="load-box">
-            <label>Semana ${w+1}</label>
+            <label>Série ${w+1}</label>
             <input type="text" inputmode="decimal" placeholder="— kg" data-key="${key}" data-week="${w}" value="${(cargas[w]||"").toString().replace(/"/g,'&quot;')}">
+            <input type="text" inputmode="numeric" placeholder="reps" class="reps-input" data-repkey="${key}" data-week="${w}" value="${(reps[w]||"").toString().replace(/"/g,'&quot;')}" style="margin-top:4px;font-size:11px;padding:4px 3px;text-align:center;border-radius:6px;border:1px solid var(--line);width:100%;color:var(--ink);">
             <select class="rir-select" data-rirkey="${key}" data-week="${w}">
               <option value="">RIR</option>
               <option value="0"${rir[w]==="0"?" selected":""}>0</option>
@@ -6125,6 +6231,11 @@ function exerciseCardHtml(day, ex, idx){
 }
 
 function dayPanelHtml(day){
+  if(day.isDescanso){
+    return `
+      <div class="day-focus-line">${day.foco}</div>
+      ${day.notaExtra ? `<div class="callout" style="margin-top:10px;"><p>${day.notaExtra}</p></div>` : ""}`;
+  }
   if(day.isSabado){
     return `
       <div class="day-focus-line">${day.foco}</div>
@@ -6162,6 +6273,7 @@ function dayPanelHtml(day){
 }
 
 function wireDayPanelEvents(day, panelEl){
+  if(day.isDescanso) return;
   if(day.isSabado){
     panelEl.querySelector("#treinoPeso").value = treinoSummary.peso || "";
     panelEl.querySelector("#treinoFeitos").value = treinoSummary.treinos || "";
@@ -6189,8 +6301,37 @@ function wireDayPanelEvents(day, panelEl){
     renderTreinoSemanalList(panelEl);
     return;
   }
-  let debounceLoad, debounceNote;
-  panelEl.querySelectorAll(".load-box input").forEach(inp=>{
+  let debounceLoad, debounceNote, debounceReps;
+  function arquivarSessaoAnteriorSeNovoDia(key){
+    const hoje = todayStr();
+    if(treinoSessaoAtualData[key] === hoje) return;
+    const cargasAtuais = treinoCargas[key] || ["","","",""];
+    const temAlgo = cargasAtuais.some(v=> (v||"").toString().trim() !== "");
+    if(temAlgo){
+      treinoUltimaSessao[key] = {
+        date: treinoSessaoAtualData[key] || "",
+        cargas: cargasAtuais.slice(),
+        reps: (treinoReps[key] || ["","","",""]).slice(),
+        rir: (treinoRIR[key] || ["","","",""]).slice()
+      };
+      saveKey("treino_ultima_sessao", treinoUltimaSessao);
+      treinoCargas[key] = ["","","",""];
+      treinoReps[key] = ["","","",""];
+      treinoRIR[key] = ["","","",""];
+      saveKey("treino_cargas", treinoCargas);
+      saveKey("treino_rir", treinoRIR);
+      saveKey("treino_reps", treinoReps);
+      panelEl.querySelectorAll(`input[data-key="${key}"]`).forEach(el=> el.value = "");
+      panelEl.querySelectorAll(`input[data-repkey="${key}"]`).forEach(el=> el.value = "");
+      panelEl.querySelectorAll(`select[data-rirkey="${key}"]`).forEach(el=> el.value = "");
+    }
+    treinoSessaoAtualData[key] = hoje;
+    saveKey("treino_sessao_atual_data", treinoSessaoAtualData);
+  }
+  panelEl.querySelectorAll(".load-box input[data-key]").forEach(inp=>{
+    inp.addEventListener("focus",()=>{
+      arquivarSessaoAnteriorSeNovoDia(inp.dataset.key);
+    });
     inp.addEventListener("input",()=>{
       const key = inp.dataset.key, w = +inp.dataset.week;
       if(!treinoCargas[key]) treinoCargas[key] = ["","","",""];
@@ -6199,7 +6340,22 @@ function wireDayPanelEvents(day, panelEl){
       debounceLoad = setTimeout(()=> saveKey("treino_cargas", treinoCargas), 500);
     });
   });
+  panelEl.querySelectorAll(".reps-input").forEach(inp=>{
+    inp.addEventListener("focus",()=>{
+      arquivarSessaoAnteriorSeNovoDia(inp.dataset.repkey);
+    });
+    inp.addEventListener("input",()=>{
+      const key = inp.dataset.repkey, w = +inp.dataset.week;
+      if(!treinoReps[key]) treinoReps[key] = ["","","",""];
+      treinoReps[key][w] = inp.value;
+      clearTimeout(debounceReps);
+      debounceReps = setTimeout(()=> saveKey("treino_reps", treinoReps), 500);
+    });
+  });
   panelEl.querySelectorAll(".rir-select").forEach(sel=>{
+    sel.addEventListener("focus",()=>{
+      arquivarSessaoAnteriorSeNovoDia(sel.dataset.rirkey);
+    });
     sel.addEventListener("change",()=>{
       const key = sel.dataset.rirkey, w = +sel.dataset.week;
       if(!treinoRIR[key]) treinoRIR[key] = ["","","",""];
@@ -6336,18 +6492,46 @@ function renderTreinoPernasHoje(){
    TREINO — Acompanhamento da Evolução
    ============================================================ */
 let treinoEvolucao = [];
+const EVOLUCAO_CAMPOS = [
+  ["peso","peso","Peso","kg"],
+  ["pescoco","pescoco","Pescoço","cm"],
+  ["ombros","ombros","Ombros","cm"],
+  ["torax","torax","Tórax","cm"],
+  ["cintura","cintura","Cintura","cm"],
+  ["abdominal","abdominal","Abdômen","cm"],
+  ["quadril","quadril","Quadril","cm"],
+  ["braco-d","bracoD","Braço direito","cm"],
+  ["braco-e","bracoE","Braço esquerdo","cm"],
+  ["coxa-d","coxaD","Coxa direita","cm"],
+  ["coxa-e","coxaE","Coxa esquerda","cm"],
+  ["pant-d","pantD","Panturrilha direita","cm"],
+  ["pant-e","pantE","Panturrilha esquerda","cm"],
+  ["peso-bio","pesoBio","Peso na bioimpedância","kg"],
+  ["gordura-pct","gorduraPct","Gordura corporal","%"],
+  ["massa-gorda","massaGorda","Massa gorda","kg"],
+  ["massa-livre","massaLivre","Massa livre de gordura","kg"],
+  ["massa-muscular","massaMuscular","Massa muscular esquelética","kg"],
+  ["agua","agua","Água corporal","kg"],
+  ["visceral","visceral","Gordura visceral",""]
+];
+function evolucaoSeedBase(){
+  if(treinoEvolucao.some(e=> e.id==="evo_base_20260817")) return;
+  treinoEvolucao.push({
+    id:"evo_base_20260817", date:"2026-08-17", foto:null,
+    peso:"70.35", pescoco:"34", ombros:"105", torax:"96", cintura:"86", abdominal:"84", quadril:"108",
+    bracoD:"33", bracoE:"34", coxaD:"58", coxaE:"62", pantD:"40", pantE:"40",
+    pesoBio:"70.65", gorduraPct:"36.6", massaGorda:"25.9", massaLivre:"44.7", massaMuscular:"24.4", agua:"32.8", visceral:"12"
+  });
+  treinoEvolucao.sort((a,b)=> b.date.localeCompare(a.date));
+  saveKey("treino_evolucao", treinoEvolucao);
+}
 document.getElementById("btnNovaEvolucao").addEventListener("click",()=>{
   const form = document.getElementById("evolucaoForm");
   form.style.display = form.style.display==="none" ? "block" : "none";
 });
 document.getElementById("btnSalvarEvolucao").addEventListener("click", async ()=>{
-  const campos = {
-    peso: document.getElementById("ev-peso").value.trim(),
-    cintura: document.getElementById("ev-cintura").value.trim(),
-    abdominal: document.getElementById("ev-abdominal").value.trim(),
-    quadril: document.getElementById("ev-quadril").value.trim(),
-    coxa: document.getElementById("ev-coxa").value.trim()
-  };
+  const campos = {};
+  EVOLUCAO_CAMPOS.forEach(([idSuf, key])=>{ campos[key] = document.getElementById("ev-"+idSuf).value.trim(); });
   const fileInput = document.getElementById("ev-foto");
   if(!Object.values(campos).some(v=>v) && fileInput.files.length===0) return;
   const btn = document.getElementById("btnSalvarEvolucao");
@@ -6360,27 +6544,45 @@ document.getElementById("btnSalvarEvolucao").addEventListener("click", async ()=
   const ok = await saveKey("treino_evolucao", treinoEvolucao);
   btn.disabled = false; btn.textContent = "Salvar registro";
   if(!ok){ treinoEvolucao.shift(); toast("Não deu pra salvar — tente com foto menor", true); return; }
-  ["ev-peso","ev-cintura","ev-abdominal","ev-quadril","ev-coxa"].forEach(id=> document.getElementById(id).value="");
+  EVOLUCAO_CAMPOS.forEach(([idSuf])=> document.getElementById("ev-"+idSuf).value="");
   fileInput.value = "";
   document.getElementById("evolucaoForm").style.display = "none";
   renderEvolucaoLista();
   toast("Registro salvo");
 });
 function renderEvolucaoLista(){
+  evolucaoSeedBase();
   const box = document.getElementById("evolucaoLista");
   if(!box) return;
   if(treinoEvolucao.length===0){ box.innerHTML = `<div class="histempty">Seus registros de evolução vão aparecer aqui.</div>`; return; }
-  box.innerHTML = treinoEvolucao.map(e=>{
-    const medidas = [
-      e.peso?`Peso: ${e.peso}kg`:"", e.cintura?`Cintura: ${e.cintura}cm`:"", e.abdominal?`Abdômen: ${e.abdominal}cm`:"",
-      e.quadril?`Quadril: ${e.quadril}cm`:"", e.coxa?`Coxa: ${e.coxa}cm`:""
-    ].filter(Boolean).join(" · ");
+  box.innerHTML = treinoEvolucao.map((e,idx)=>{
+    const medidas = EVOLUCAO_CAMPOS.map(([,key,label,unidade])=> e[key] ? `${label}: ${e[key]}${unidade}` : "").filter(Boolean).join(" · ");
+    let rcq = "";
+    if(e.cintura && e.quadril && parseFloat(e.quadril)>0){
+      rcq = `Relação cintura/quadril: ${(parseFloat(e.cintura)/parseFloat(e.quadril)).toFixed(2)}`;
+    }
+    const anterior = treinoEvolucao[idx+1];
+    let tendencia = "";
+    if(anterior){
+      const partes = [];
+      [["peso","Peso"],["cintura","Cintura"],["abdominal","Abdômen"],["quadril","Quadril"],["massaMuscular","Massa muscular"]].forEach(([key,label])=>{
+        if(e[key] && anterior[key]){
+          const diff = parseFloat(e[key]) - parseFloat(anterior[key]);
+          if(!isNaN(diff) && Math.abs(diff) >= 0.05){
+            partes.push(`${label} ${diff>0?"↑":"↓"}${Math.abs(diff).toFixed(1)}`);
+          }
+        }
+      });
+      if(partes.length) tendencia = partes.join(" · ");
+    }
     return `<div class="card" data-evoid="${e.id}">
       <div style="display:flex;gap:12px;">
         ${e.foto ? `<img src="${e.foto}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : ""}
         <div style="flex:1;">
           <b style="color:var(--ink);">${fmtDate(e.date)}</b>
           ${medidas ? `<p class="desc" style="margin:4px 0 0;">${medidas}</p>` : ""}
+          ${rcq ? `<p class="desc" style="margin:2px 0 0;">${rcq}</p>` : ""}
+          ${tendencia ? `<p class="desc" style="margin:4px 0 0;color:var(--accent-dark);"><b>Desde o registro anterior:</b> ${tendencia}</p>` : ""}
         </div>
       </div>
       <div class="qactions"><button class="btn" data-action="excluir">Excluir</button></div>
@@ -7241,13 +7443,20 @@ async function downloadBlob(filename, content, type){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   return true;
 }
-document.getElementById("btnExportJson").addEventListener("click", async ()=>{
+async function exportarBackup(){
   const data = {rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes, planejamento, planejamento_meta: planejamentoMeta, hidratacao, visao, ident_biblioteca: identBiblioteca, alimentacao_state: amState, diario_alimentar: diarioAlimentar, tarefas, planejamento_dia: planejamentoDia, planejamento_dia_meta: planejamentoDiaMeta, desabafos, tarefas_concluidas: tarefasConcluidas, trabalho_feito: trabalhoFeito, trabalho_pendencias: trabalhoPendencias, trabalho_pendencias_concluidas: trabalhoPendenciasConcluidas, trabalho_andamento: trabalhoAndamento, trabalho_andamento_concluidos: trabalhoAndamentoConcluidos, insights, casa_rotina: casaRotina, casa_freq_log: freqLog, casa_freq_sub: freqSubProgress, sonhos, sonhos_categorias: sonhosCategoriasCustom, inspiracoes, ciclos, alan_rotina: alanRotina, alan_config: alanConfig, alan_eventos: alanEventos, alan_medicamentos_eventuais: alanMedicamentosEventuais, skincare_rotina: skincareRotina, skincare_produtos: skincareProdutos, skincare_diario_pele: skincareDiarioPele, esp_reflexoes: espReflexoes, esp_registros_forca: espRegistrosForca, esp_eixo_hoje: espEixoHoje, esp_orixas_biblioteca: espOrixasBiblioteca, esp_cadernos: espCadernos, esp_orientacoes: espOrientacoes, esp_praticas: espPraticas, treino_pernas_hoje: treinoPernasHoje, treino_evolucao: treinoEvolucao, meus_medicamentos: meusMedicamentos, meus_med_registros: meusMedRegistros, meus_med_reavaliacoes: meusMedReavaliacoes,
-    treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal, treino_rir: treinoRIR,
+    treino_cargas: treinoCargas, treino_notas: treinoNotas, treino_notas_historico: treinoNotasHistorico, treino_summary: treinoSummary, treino_semanal: treinoSemanal, treino_rir: treinoRIR, treino_reps: treinoReps, treino_ultima_sessao: treinoUltimaSessao, treino_sessao_atual_data: treinoSessaoAtualData,
     _exportedAt: new Date().toISOString()};
   const ok = await downloadBlob(`sistema-operacional-ana-backup-${todayStr()}.json`, JSON.stringify(data,null,2), "application/json");
-  if(ok) toast("Backup exportado");
-});
+  if(ok){
+    toast("Backup exportado");
+    ultimoBackupData = todayStr();
+    await saveKey("ultimo_backup_data", ultimoBackupData);
+    renderBackupLembrete();
+  }
+  return ok;
+}
+document.getElementById("btnExportJson").addEventListener("click", exportarBackup);
 document.getElementById("btnImportJson").addEventListener("click",()=> document.getElementById("fileImport").click());
 document.getElementById("fileImport").addEventListener("change",(e)=>{
   const file = e.target.files[0];
@@ -7269,6 +7478,9 @@ document.getElementById("fileImport").addEventListener("change",(e)=>{
       if(data.treino_notas!==undefined){ treinoNotas = data.treino_notas; ops.push(saveKey("treino_notas", treinoNotas)); }
       if(data.treino_notas_historico!==undefined){ treinoNotasHistorico = data.treino_notas_historico; ops.push(saveKey("treino_notas_historico", treinoNotasHistorico)); }
       if(data.treino_rir!==undefined){ treinoRIR = data.treino_rir; ops.push(saveKey("treino_rir", treinoRIR)); }
+      if(data.treino_reps!==undefined){ treinoReps = data.treino_reps; ops.push(saveKey("treino_reps", treinoReps)); }
+      if(data.treino_ultima_sessao!==undefined){ treinoUltimaSessao = data.treino_ultima_sessao; ops.push(saveKey("treino_ultima_sessao", treinoUltimaSessao)); }
+      if(data.treino_sessao_atual_data!==undefined){ treinoSessaoAtualData = data.treino_sessao_atual_data; ops.push(saveKey("treino_sessao_atual_data", treinoSessaoAtualData)); }
       if(data.treino_summary!==undefined){ treinoSummary = data.treino_summary; ops.push(saveKey("treino_summary", treinoSummary)); }
       if(data.treino_semanal!==undefined){ treinoSemanal = data.treino_semanal; ops.push(saveKey("treino_semanal", treinoSemanal)); }
       if(data.planejamento!==undefined){ planejamento = data.planejamento; ops.push(saveKey("planejamento", planejamento)); }
@@ -7438,7 +7650,7 @@ function renderResumo(){
   // treino
   let totalEx = 0, exComCarga = 0;
   TREINO_DIAS.forEach(day=>{
-    if(day.isSabado) return;
+    if(day.isSabado || day.isDescanso) return;
     day.exercicios.forEach((ex,i)=>{
       totalEx++;
       const cargas = treinoCargas[treinoKey(day.id, ex.nome)];
@@ -7489,7 +7701,7 @@ function renderAll(){
 async function init(){
   try{
     [rotina, diario, energia, cardapio, reposicao, freezer, geladeira, afirmacoes,
-     treinoCargas, treinoNotas, treinoNotasHistorico, treinoSummary, treinoSemanal, treinoRIR, planejamento, hidratacao, visao, identBiblioteca, amState, planejamentoMeta, diarioAlimentar, tarefas, planejamentoDia, planejamentoDiaMeta, desabafos, tarefasConcluidas, trabalhoFeito, trabalhoPendencias, trabalhoPendenciasConcluidas, trabalhoAndamento, trabalhoAndamentoConcluidos, insights, casaRotina, freqLog, freqSubProgress, sonhos, sonhosCategoriasCustom, inspiracoes, ciclos, alanRotina, alanConfig, alanEventos, alanMedicamentosEventuais, skincareRotina, skincareProdutos, skincareDiarioPele, espReflexoes, espRegistrosForca, espEixoHoje, espOrixasBiblioteca, espCadernos, espOrientacoes, espPraticas, treinoPernasHoje, treinoEvolucao, meusMedicamentos, meusMedRegistros, meusMedReavaliacoes] = await Promise.all([
+     treinoCargas, treinoNotas, treinoNotasHistorico, treinoSummary, treinoSemanal, treinoRIR, treinoReps, treinoUltimaSessao, treinoSessaoAtualData, planejamento, hidratacao, visao, identBiblioteca, amState, planejamentoMeta, diarioAlimentar, tarefas, planejamentoDia, planejamentoDiaMeta, desabafos, tarefasConcluidas, trabalhoFeito, trabalhoPendencias, trabalhoPendenciasConcluidas, trabalhoAndamento, trabalhoAndamentoConcluidos, insights, casaRotina, freqLog, freqSubProgress, sonhos, sonhosCategoriasCustom, inspiracoes, ciclos, alanRotina, alanConfig, alanEventos, alanMedicamentosEventuais, skincareRotina, skincareProdutos, skincareDiarioPele, espReflexoes, espRegistrosForca, espEixoHoje, espOrixasBiblioteca, espCadernos, espOrientacoes, espPraticas, treinoPernasHoje, treinoEvolucao, meusMedicamentos, meusMedRegistros, meusMedReavaliacoes, ultimoBackupData] = await Promise.all([
       loadKey("rotina", {}),
       loadKey("diario", {}),
       loadKey("energia", []),
@@ -7504,6 +7716,9 @@ async function init(){
       loadKey("treino_summary", {}),
       loadKey("treino_semanal", []),
       loadKey("treino_rir", {}),
+      loadKey("treino_reps", {}),
+      loadKey("treino_ultima_sessao", {}),
+      loadKey("treino_sessao_atual_data", {}),
       loadKey("planejamento", []),
       loadKey("hidratacao", {}),
       loadKey("visao", {}),
@@ -7547,7 +7762,8 @@ async function init(){
       loadKey("treino_evolucao", []),
       loadKey("meus_medicamentos", []),
       loadKey("meus_med_registros", []),
-      loadKey("meus_med_reavaliacoes", [])
+      loadKey("meus_med_reavaliacoes", []),
+      loadKey("ultimo_backup_data", null)
     ]);
     let migrated = false;
     Object.keys(treinoNotas||{}).forEach(key=>{
@@ -7574,6 +7790,7 @@ async function init(){
     cardapio = DIAS.map(()=> REFEICOES.map(()=> ""));
   }
   migrarTreinoChavesPosicionaisParaNome();
+  migrarTreinoV3();
   renderAll();
   document.getElementById("loadingOverlay").style.display = "none";
 }
